@@ -12,12 +12,12 @@ class Person {
     this.angle = random(0, 3);
   }
 
-  // Calls the display method
+  // Calls the display method.
   update() {
     this.display();
   }
 
-  // Displays this person's image on the canvas at its position and rotation
+  // Displays this person's image on the canvas at its position and rotation.
   display() {
     push();
     imageMode(CENTER);
@@ -40,6 +40,10 @@ class Person {
       return true;
     }
     else {
+      // If the sound is already playing, nothing happens. If not, sound plays.
+      if (!wrong.isPlaying()) {
+        wrong.play();
+        }
       return false;
     }
   }

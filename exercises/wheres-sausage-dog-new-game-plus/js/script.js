@@ -5,6 +5,11 @@ Where's Bernie?
 Valentine Sénégas
 */
 
+////////////////////////////////////////////////////////
+// Note: I wrote persons instead of people for variables and functions because it makes it easier to change the text if needed. It might be irritating to read, I apologize in advance. ( ͡❛ ͜ʖ ͡❛)
+////////////////////////////////////////////////////////
+
+
 // GLOBAL CONSTANTS AND VARIABLES
 // Constants for image loading
 const NUM_PERSON_IMAGES = 5;
@@ -23,13 +28,15 @@ let bernieImage;
 // Bernie object
 let bernie;
 
-let backgroundImage;
+// Background images
+let backgroundImage1;
+let backgroundImage2;
 
 // Sounds
 let wrong;
 let yay;
 
-// State of the game; can be `findBernie` or `title`
+// State of the game; can be `findBernie`, `title` or `ending`.
 let state = `title`;
 
 // ------------------ //
@@ -48,7 +55,9 @@ function preload() {
   // Load the Bernie image
   bernieImage = loadImage(`${BERNIE_IMAGE}`);
 
-  backgroundImage = loadImage(`assets/images/background.jpg`);
+  // Load the background images
+  backgroundImage1 = loadImage(`assets/images/background1.jpg`);
+  backgroundImage2 = loadImage(`assets/images/background2.jpg`);
 
   // Load the sound of Donald Trump saying WRONG
   wrong = loadSound('assets/sounds/wrong.mp3');
@@ -69,13 +78,13 @@ function setup() {
 // ----------------- //
 // CREATE CHARACTERS //
 
-// Creates all the persons at random positions with random person images
+// Creates all the people at random positions with random person images
 function createPersons() {
-  // Create the correct number of persons
+  // Create the correct number of people
   for (let i = 0; i < NUM_PERSONS; i++) {
     // Create one random person
     let person = createRandomPerson();
-    // Add it to the persons array
+    // Add it to the people array
     persons.push(person);
   }
 }
@@ -100,9 +109,9 @@ function createBernie() {
 // ----------------- //
 // UPDATE CHARACTERS //
 
-// Calls the update() method for all persons
+// Calls the update() method for all people
 function updatePersons() {
-  // Loop through all persons
+  // Loop through all people
   for (let i = 0; i < persons.length; i++) {
     // Update the current person
     persons[i].update();
@@ -118,14 +127,16 @@ function updateBernie() {
 // ---------------- //
 // DRAW
 
-// Draws the background then updates all persons and Bernie
+// Draws the background then updates all people and Bernie
 function draw() {
-  background(255);
+  background(backgroundImage1);
 
   if (state === `findBernie`) {
     findBernie();
   } else if (state === `title`) {
     title();
+  } else if (state === `ending`) {
+    ending();
   }
 }
 
@@ -134,7 +145,6 @@ function draw() {
 
 // The actual game.
 function findBernie() {
-  background(backgroundImage);
   updatePersons();
   updateBernie();
 }
@@ -142,19 +152,35 @@ function findBernie() {
 // Title page before the game starts.
 function title() {
   push();
-  background(backgroundImage);
   textSize(64);
   fill(24, 24, 26);
   textAlign(CENTER, CENTER);
-  text(`Find the Bernie`, width / 2, height / 6);
+  text(`Find Bernie`, width / 2, height / 6);
   textSize(32);
   text(`Press any key to start`, width / 2, height / 4);
   pop();
 }
 
-// Create the characters when starting a new game.
+// Appears when the player found Bernie.
+function ending() {
+  background(backgroundImage2);
+  textSize(64);
+  fill(255, 255, 255);
+  textAlign(CENTER, CENTER);
+  text(`You found Bernie!`, width / 2, height / 6);
+  textSize(32);
+  text(`Press any key to play again`, width / 2, height / 4);
+  pop();
+}
+
+// Resets the characters when starting a new game.
 function reset() {
-  state = `title`;
+
+// If the player was in the game and found Bernie, show the ending page.
+  if (state === `findBernie`){
+      state = `ending`;
+  }
+
   createPersons();
   createBernie();
 }
@@ -164,16 +190,15 @@ function reset() {
 // Call the Bernie's mousePressed() method so it knows
 // the mouse was clicked.
 function mousePressed() {
-
   if (state === `findBernie`) {
   bernie.mousePressed();
   }
 }
 
 
-// To start the simulation, press any key
+// To start the game, press any key.
 function keyPressed(){
-  if (state === `title`) {
+  if (state === `title` || state === `ending`) {
     state = `findBernie`;
   }
 }

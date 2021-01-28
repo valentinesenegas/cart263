@@ -22,7 +22,7 @@ class Bernie extends Person {
     }
   }
 
-  // Checks if this Bernie was clicked and remembers it was found if so
+  // Checks if Bernie was clicked and remembers it was found if so
   mousePressed() {
     if (!this.found && this.overlap(mouseX, mouseY)) {
       this.found = true;
@@ -32,7 +32,13 @@ class Bernie extends Person {
     }
 
     else {
-      wrong.play();
+      // if (wrong.isPlaying()) {
+      //     // .isPlaying() returns a boolean
+      //     // wrong.stop();
+      //   } else {
+      //     wrong.play();
+      //   }
+      // wrong.play();
     }
   }
 }
