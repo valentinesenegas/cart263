@@ -1,113 +1,179 @@
 "use strict";
 
 /**
-Where's Sausage Dog?
+Where's Bernie?
 Valentine Sénégas
 */
 
 // GLOBAL CONSTANTS AND VARIABLES
 // Constants for image loading
-const NUM_ANIMAL_IMAGES = 5;
-const ANIMAL_IMAGE_PREFIX = `assets/images/person`;
-const SAUSAGE_DOG_IMAGE = `assets/images/bernie.png`;
+const NUM_PERSON_IMAGES = 5;
+const PERSON_IMAGE_PREFIX = `assets/images/person`;
+const BERNIE_IMAGE = `assets/images/bernie.png`;
 
 // Number of images to display
-const NUM_ANIMALS = 80;
+const NUM_PERSONS = 80;
 
-// Array of the loaded animal images
-let animalImages = [];
-// Array of animal objects
-let animals = [];
-// Loaded sausage dog image
-let sausageDogImage;
-// Sausage dog object
-let sausageDog;
+// Array of the loaded people's images
+let personImages = [];
+// Array of person objects
+let persons = [];
+// Loaded Bernie image
+let bernieImage;
+// Bernie object
+let bernie;
 
+let backgroundImage;
+
+// Sounds
 let wrong;
+let yay;
 
+// State of the game; can be `findBernie` or `title`
+let state = `title`;
 
 // ------------------ //
 
 
-// Loads all the animal images and the sausage dog image
+// Loads all the person images and the Bernie image
 function preload() {
-  // Loop once for each animal image, starting from 0
-  for (let i = 0; i < NUM_ANIMAL_IMAGES; i++) {
+  // Loop once for each person image, starting from 0
+  for (let i = 0; i < NUM_PERSON_IMAGES; i++) {
     // Load the image with the current number (starting from 0)
-    let animalImage = loadImage(`${ANIMAL_IMAGE_PREFIX}${i}.png`);
+    let personImage = loadImage(`${PERSON_IMAGE_PREFIX}${i}.png`);
     // Add the image to the array for use later when randomly selecting
-    animalImages.push(animalImage);
+    personImages.push(personImage);
   }
 
-  // Load the sausage dog image
-  sausageDogImage = loadImage(`${SAUSAGE_DOG_IMAGE}`);
+  // Load the Bernie image
+  bernieImage = loadImage(`${BERNIE_IMAGE}`);
+
+  backgroundImage = loadImage(`assets/images/background.jpg`);
 
   // Load the sound of Donald Trump saying WRONG
-   wrong = loadSound('assets/sounds/wrong.mp3');
+  wrong = loadSound('assets/sounds/wrong.mp3');
+  // Load the sound of a voice saying yay
+  yay = loadSound('assets/sounds/yay.wav');
 }
 
 
-// Creates all the animal objects and a sausage dog object
+// Creates all the person objects and a Bernie object
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
-  createAnimals();
-  createSausageDog();
+  // New characters are created.
+  reset();
+
 }
 
-// Creates all the animals at random positions with random animal images
-function createAnimals() {
-  // Create the correct number of animals
-  for (let i = 0; i < NUM_ANIMALS; i++) {
-    // Create one random animal
-    let animal = createRandomAnimal();
-    // Add it to the animals array
-    animals.push(animal);
+// ----------------- //
+// CREATE CHARACTERS //
+
+// Creates all the persons at random positions with random person images
+function createPersons() {
+  // Create the correct number of persons
+  for (let i = 0; i < NUM_PERSONS; i++) {
+    // Create one random person
+    let person = createRandomPerson();
+    // Add it to the persons array
+    persons.push(person);
   }
 }
 
-// Create an animal object at a random position with a random image
-// then return that created animal
-function createRandomAnimal() {
+// Create a person object at a random position with a random image
+// then return that created person
+function createRandomPerson() {
   let x = random(0, width);
   let y = random(0, height);
-  let animalImage = random(animalImages);
-  let animal = new Animal(x, y, animalImage);
-  return animal;
+  let personImage = random(personImages);
+  let person = new Person(x, y, personImage);
+  return person;
 }
 
-// Creates a sausage dog at a random position
-function createSausageDog() {
+// Creates a Bernie at a random position
+function createBernie() {
   let x = random(0, width);
   let y = random(0, height);
-  sausageDog = new SausageDog(x, y, sausageDogImage);
+  bernie = new Bernie(x, y, bernieImage);
 }
 
-// Draws the background then updates all animals and the sausage dog
+// ----------------- //
+// UPDATE CHARACTERS //
+
+// Calls the update() method for all persons
+function updatePersons() {
+  // Loop through all persons
+  for (let i = 0; i < persons.length; i++) {
+    // Update the current person
+    persons[i].update();
+  }
+}
+
+// Calls the update() method of Bernie
+function updateBernie() {
+  bernie.update();
+}
+
+
+// ---------------- //
+// DRAW
+
+// Draws the background then updates all persons and Bernie
 function draw() {
   background(255);
 
-  updateAnimals();
-  updateSausageDog();
-}
-
-// Calls the update() method for all animals
-function updateAnimals() {
-  // Loop through all animals
-  for (let i = 0; i < animals.length; i++) {
-    // Update the current animal
-    animals[i].update();
+  if (state === `findBernie`) {
+    findBernie();
+  } else if (state === `title`) {
+    title();
   }
 }
 
-// Calls the update() method of the sausage dog
-function updateSausageDog() {
-  sausageDog.update();
+// ---------------- //
+// STATES
+
+// The actual game.
+function findBernie() {
+  background(backgroundImage);
+  updatePersons();
+  updateBernie();
 }
 
+// Title page before the game starts.
+function title() {
+  push();
+  background(backgroundImage);
+  textSize(64);
+  fill(24, 24, 26);
+  textAlign(CENTER, CENTER);
+  text(`Find the Bernie`, width / 2, height / 6);
+  textSize(32);
+  text(`Press any key to start`, width / 2, height / 4);
+  pop();
+}
+
+// Create the characters when starting a new game.
+function reset() {
+  state = `title`;
+  createPersons();
+  createBernie();
+}
+
+
 // Automatically called by p5 when the mouse is pressed.
-// Call the sausage dog's mousePressed() method so it knows
+// Call the Bernie's mousePressed() method so it knows
 // the mouse was clicked.
 function mousePressed() {
-  sausageDog.mousePressed();
+
+  if (state === `findBernie`) {
+  bernie.mousePressed();
+  }
+}
+
+
+// To start the simulation, press any key
+function keyPressed(){
+  if (state === `title`) {
+    state = `findBernie`;
+  }
 }

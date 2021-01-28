@@ -1,9 +1,9 @@
-// SausageDog
-// An extension of the Animal class
+// Bernie
+// An extension of the Person class
 // Adds the idea of being found when clicked
 // and spinning when found
 
-class SausageDog extends Animal {
+class Bernie extends Person {
   // constructor(x,y,image)
   // Calls the super constructor
   // Adds properties for being found and for a rotation speed
@@ -22,10 +22,13 @@ class SausageDog extends Animal {
     }
   }
 
-  // Checks if this sausage dog was clicked and remembers it was found if so
+  // Checks if this Bernie was clicked and remembers it was found if so
   mousePressed() {
     if (!this.found && this.overlap(mouseX, mouseY)) {
       this.found = true;
+
+      yay.play();
+      setTimeout(reset, 3000);
     }
 
     else {

@@ -1,7 +1,7 @@
-// Animal
-// A class defining an animal that can be displayed as an image
+// Person
+// A class defining a person that can be displayed as an image
 
-class Animal {
+class Person {
   // constructor(x, y, image)
   // Stores position and image as properties
   // Creates an angle property for potential rotation
@@ -9,7 +9,7 @@ class Animal {
     this.x = x;
     this.y = y;
     this.image = image;
-    this.angle = 0;
+    this.angle = random(0, 3);
   }
 
   // Calls the display method
@@ -17,7 +17,7 @@ class Animal {
     this.display();
   }
 
-  // Displays this animal's image on the canvas at its position and rotation
+  // Displays this person's image on the canvas at its position and rotation
   display() {
     push();
     imageMode(CENTER);
@@ -27,7 +27,7 @@ class Animal {
     pop();
   }
 
-  // Checks whether the position x,y is inside this animal's image
+  // Checks whether the position x,y is inside this person's image
   // Returns: true if the click was inside the image and false otherwise
   overlap(x, y) {
     // Check if the x is greater than the left side and less that the right side
