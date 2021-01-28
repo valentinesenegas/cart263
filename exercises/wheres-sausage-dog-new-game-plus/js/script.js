@@ -7,12 +7,12 @@ Valentine Sénégas
 
 // GLOBAL CONSTANTS AND VARIABLES
 // Constants for image loading
-const NUM_ANIMAL_IMAGES = 10;
-const ANIMAL_IMAGE_PREFIX = `assets/images/animal`;
-const SAUSAGE_DOG_IMAGE = `assets/images/sausage-dog.png`;
+const NUM_ANIMAL_IMAGES = 5;
+const ANIMAL_IMAGE_PREFIX = `assets/images/person`;
+const SAUSAGE_DOG_IMAGE = `assets/images/bernie.png`;
 
 // Number of images to display
-const NUM_ANIMALS = 100;
+const NUM_ANIMALS = 80;
 
 // Array of the loaded animal images
 let animalImages = [];
@@ -23,11 +23,12 @@ let sausageDogImage;
 // Sausage dog object
 let sausageDog;
 
+let wrong;
+
 
 // ------------------ //
 
 
-// preload()
 // Loads all the animal images and the sausage dog image
 function preload() {
   // Loop once for each animal image, starting from 0
@@ -40,10 +41,12 @@ function preload() {
 
   // Load the sausage dog image
   sausageDogImage = loadImage(`${SAUSAGE_DOG_IMAGE}`);
+
+  // Load the sound of Donald Trump saying WRONG
+   wrong = loadSound('assets/sounds/wrong.mp3');
 }
 
 
-// setup()
 // Creates all the animal objects and a sausage dog object
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -52,7 +55,6 @@ function setup() {
   createSausageDog();
 }
 
-// createAnimals()
 // Creates all the animals at random positions with random animal images
 function createAnimals() {
   // Create the correct number of animals
@@ -64,7 +66,6 @@ function createAnimals() {
   }
 }
 
-// createRandomAnimal()
 // Create an animal object at a random position with a random image
 // then return that created animal
 function createRandomAnimal() {
@@ -75,7 +76,6 @@ function createRandomAnimal() {
   return animal;
 }
 
-// createSausageDog()
 // Creates a sausage dog at a random position
 function createSausageDog() {
   let x = random(0, width);
@@ -83,7 +83,6 @@ function createSausageDog() {
   sausageDog = new SausageDog(x, y, sausageDogImage);
 }
 
-// draw()
 // Draws the background then updates all animals and the sausage dog
 function draw() {
   background(255);
@@ -92,7 +91,6 @@ function draw() {
   updateSausageDog();
 }
 
-// updateAnimals()
 // Calls the update() method for all animals
 function updateAnimals() {
   // Loop through all animals
@@ -102,13 +100,11 @@ function updateAnimals() {
   }
 }
 
-// updateSausageDog()
 // Calls the update() method of the sausage dog
 function updateSausageDog() {
   sausageDog.update();
 }
 
-// mousePressed()
 // Automatically called by p5 when the mouse is pressed.
 // Call the sausage dog's mousePressed() method so it knows
 // the mouse was clicked.

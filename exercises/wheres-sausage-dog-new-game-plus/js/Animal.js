@@ -12,13 +12,11 @@ class Animal {
     this.angle = 0;
   }
 
-  // update()
   // Calls the display method
   update() {
     this.display();
   }
 
-  // display()
   // Displays this animal's image on the canvas at its position and rotation
   display() {
     push();
@@ -29,7 +27,6 @@ class Animal {
     pop();
   }
 
-  // overlap(x,y)
   // Checks whether the position x,y is inside this animal's image
   // Returns: true if the click was inside the image and false otherwise
   overlap(x, y) {

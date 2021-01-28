@@ -14,7 +14,6 @@ class SausageDog extends Animal {
     this.rotationSpeed = 0.25;
   }
 
-  // update()
   // Calls the super update() and changes angle if found (to rotate!)
   update() {
     super.update();
@@ -23,11 +22,14 @@ class SausageDog extends Animal {
     }
   }
 
-  // mousePressed()
   // Checks if this sausage dog was clicked and remembers it was found if so
   mousePressed() {
     if (!this.found && this.overlap(mouseX, mouseY)) {
       this.found = true;
+    }
+
+    else {
+      wrong.play();
     }
   }
 }
