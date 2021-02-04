@@ -8,6 +8,10 @@ backwards and the user has to figure out what it was and say the
 name forwards.
 ******************/
 
+// //////////////////////////////
+// GLOBAL CONSTANTS AND VARIABLES
+// //////////////////////////////
+
 // An array of country names from
 // https://github.com/dariusk/corpora/blob/master/data/geography/countries.json
 const countries = [
@@ -213,7 +217,7 @@ const countries = [
 
 const QUESTION_DELAY = 2000; // in milliseconds
 
-// The current answer to display (we use it initially to display the click instruction)
+// The current answer to display
 let currentAnswer = ``;
 // The current country name the user is trying to guess
 let currentCountry = ``;
@@ -226,9 +230,16 @@ let responsiveVoiceRate = 1;
 let pitchChanged = false;
 let rateChanged = false;
 
+let feedback = false;
+
+let nbAnswers = 0;
 let nbAnwersIncremented = false;
 
-let feedback = false;
+let nbCorrectAnswers = 0;
+let nbCorrectAnwersIncremented = false;
+
+let nbIncorrectAnswers = 0;
+let nbIncorrectAnwersIncremented = false;
 
 // When laumching the page on the browser, the game is not started yet.
 // The game starts when the mouse is clicked.
@@ -236,7 +247,22 @@ let gameStarted = false;
 
 let state = `title`;
 
-let nbAnswers = 0;
+// Images
+let imgEarth;
+let imgHappyEarth;
+let imgSadEarth;
+let imgEarthEnd;
+
+/*
+Preload images
+*/
+function preload() {
+  imgEarth = loadImage(`https://media.giphy.com/media/iMMfCfD9TLuCY/giphy.gif`);
+  imgHappyEarth = loadImage(`https://media.giphy.com/media/dt54M1Cz0XkWtGJ13m/giphy.gif`);
+  imgSadEarth = loadImage(`https://media.giphy.com/media/l4FGE1R55fzvZq5va/giphy.gif`);
+  imgEarthEnd = loadImage(`https://media.giphy.com/media/y9qmt4hqGjuHm/giphy.gif`);
+
+}
 
 /**
 Create a canvas
@@ -268,7 +294,7 @@ function setup() {
 Display the current answer.
  */
 function draw() {
-  background(255);
+  background(24, 24, 26);
 
   if (state === `game`) {
     displayAnswer();
@@ -357,6 +383,9 @@ Feedback from the responsive voice, increase of pitch and rate of the responsive
 function correctGuess() {
   fill(0, 255, 0);
 
+  imageMode(CENTER);
+  image(imgHappyEarth, width/2, height/2);
+
   if (!pitchChanged) {
     responsiveVoicePitch += 0.2;
     console.log(responsiveVoicePitch);
@@ -376,6 +405,11 @@ function correctGuess() {
     });
     feedback = true;
   }
+
+  if (!nbCorrectAnwersIncremented) {
+    nbCorrectAnswers += 1;
+    nbCorrectAnwersIncremented = true;
+  }
 }
 
 /**
@@ -386,12 +420,20 @@ function incorrectGuess() {
 
   fill(255, 0, 0);
 
+  imageMode(CENTER);
+  image(imgSadEarth, width/2, height/2);
+
   if (!feedback) {
     responsiveVoice.speak("You are a sad strange little man, and you have my pity.", "UK English Male", {
       pitch: 0.6,
       rate: 0.8
     });
     feedback = true;
+  }
+
+  if (!nbIncorrectAnwersIncremented) {
+    nbIncorrectAnswers += 1;
+    nbIncorrectAnwersIncremented = true;
   }
 }
 
@@ -405,8 +447,10 @@ function incrementNbAnswers() {
     nbAnwersIncremented = true;
   }
 
-  if (nbAnswers === 2) {
-    state = `ending`;
+  if (nbAnswers === 6) {
+    // Waits for 2 seconds before showing the ending screen.
+    setTimeout(
+      () => { state = `ending`; }, 2 * 1000 );
   }
 }
 
@@ -423,22 +467,28 @@ function resetVariables() {
 // Title page before the game starts.
 function title() {
   push();
+  imageMode(CENTER);
+  image(imgEarth, width/2, height/2);
   textSize(64);
-  fill(24, 24, 26);
+  fill(255, 255, 255);
   textAlign(CENTER, CENTER);
   text(`Guess the country`, width / 2, height / 6);
+  textSize(36);
+  text(`Say "The country is..."`, width / 2, height / 4);
   textSize(32);
-  text(`Click to start`, width / 2, height / 4);
+  text(`Click to start`, width / 2, height / 1.2);
   pop();
 }
 
 // Ending page that appears after a certain number of answers have been given.
 function ending() {
   push();
+  imageMode(CENTER);
+  image(imgEarthEnd, width/2, height/2);
   textSize(64);
-  fill(24, 24, 26);
+  fill(255, 255, 255);
   textAlign(CENTER, CENTER);
-  text(`Done!`, width / 2, height / 6);
+  text(`You have ` + nbCorrectAnswers + ` correct answers!`, width / 2, height / 6);
   textSize(32);
   text(`Click to play again`, width / 2, height / 4);
   pop();
