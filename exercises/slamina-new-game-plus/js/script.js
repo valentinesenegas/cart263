@@ -221,12 +221,22 @@ let currentCountry = ``;
 let responsiveVoicePitch = 1;
 let responsiveVoiceRate = 1;
 
+// if the pitch / rate have already been changed for the current answer, set to true.
+// The reset function sets it to false again before another round.
 let pitchChanged = false;
 let rateChanged = false;
 
+let nbAnwersIncremented = false;
+
 let feedback = false;
 
+// When laumching the page on the browser, the game is not started yet.
+// The game starts when the mouse is clicked.
 let gameStarted = false;
+
+let state = `title`;
+
+let nbAnswers = 0;
 
 /**
 Create a canvas
@@ -258,9 +268,15 @@ function setup() {
 Display the current answer.
  */
 function draw() {
-  background(0);
+  background(255);
 
-  displayAnswer();
+  if (state === `game`) {
+    displayAnswer();
+  } else if (state === `title`) {
+    title();
+  } else if (state === `ending`) {
+    ending();
+  }
 }
 
 /**
@@ -271,14 +287,12 @@ function displayAnswer() {
 
   if (gameStarted && currentAnswer != ``) {
     if (currentAnswer === currentCountry) {
-
       correctGuess();
-
     } else {
       incorrectGuess();
     }
-
     text(currentAnswer, width / 2, height / 2);
+    incrementNbAnswers();
   }
 }
 
@@ -330,11 +344,9 @@ function nextQuestion() {
 When the user clicks, go to the next question
 */
 function mousePressed() {
-
   gameStarted = true;
-
+  state = `game`;
   nextQuestion();
-
   resetVariables();
 }
 
@@ -343,7 +355,6 @@ Function that is called when the user guesses correctly.
 Feedback from the responsive voice, increase of pitch and rate of the responsive voice.
 */
 function correctGuess() {
-
   fill(0, 255, 0);
 
   if (!pitchChanged) {
@@ -365,9 +376,12 @@ function correctGuess() {
     });
     feedback = true;
   }
-
 }
 
+/**
+Function that is called when the user guesses correctly.
+Feedback from the responsive voice, increase of pitch and rate of the responsive voice.
+*/
 function incorrectGuess() {
 
   fill(255, 0, 0);
@@ -381,9 +395,51 @@ function incorrectGuess() {
   }
 }
 
+/**
+Function that is called when the user made a guess.
+The number of answers is increased when the answer is correct or incorrect.
+*/
+function incrementNbAnswers() {
+  if (!nbAnwersIncremented) {
+    nbAnswers += 1;
+    nbAnwersIncremented = true;
+  }
 
+  if (nbAnswers === 2) {
+    state = `ending`;
+  }
+}
+
+/**
+Function that resets the variables to allow the user to play again.
+*/
 function resetVariables() {
   pitchChanged = false;
   rateChanged = false;
   feedback = false;
+  nbAnwersIncremented = false;
+}
+
+// Title page before the game starts.
+function title() {
+  push();
+  textSize(64);
+  fill(24, 24, 26);
+  textAlign(CENTER, CENTER);
+  text(`Guess the country`, width / 2, height / 6);
+  textSize(32);
+  text(`Click to start`, width / 2, height / 4);
+  pop();
+}
+
+// Ending page that appears after a certain number of answers have been given.
+function ending() {
+  push();
+  textSize(64);
+  fill(24, 24, 26);
+  textAlign(CENTER, CENTER);
+  text(`Done!`, width / 2, height / 6);
+  textSize(32);
+  text(`Click to play again`, width / 2, height / 4);
+  pop();
 }
