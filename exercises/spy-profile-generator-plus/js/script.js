@@ -20,6 +20,10 @@ https://github.com/dariusk/corpora/
 const TAROT_DATA_URL = `https://raw.githubusercontent.com/dariusk/corpora/master/data/divination/tarot_interpretations.json`;
 const OBJECT_DATA_URL = `https://raw.githubusercontent.com/dariusk/corpora/master/data/objects/objects.json`;
 const INSTRUMENT_DATA_URL = `https://raw.githubusercontent.com/dariusk/corpora/master/data/music/instruments.json`;
+const CANNABIS_DATA_URL = `https://raw.githubusercontent.com/dariusk/corpora/master/data/plants/cannabis.json`;
+const STATES_OF_DRUNKENNESS = `https://raw.githubusercontent.com/dariusk/corpora/master/data/words/states_of_drunkenness.json`;
+const EGYPTIAN_GODS = `https://raw.githubusercontent.com/dariusk/corpora/master/data/mythology/egyptian_gods.json`;
+
 // The key used to save and load the data for this program
 const PROFILE_DATA_KEY = `spy-profile-data`;
 
@@ -28,12 +32,20 @@ let spyProfile = {
   name: `**REDACTED**`,
   alias: `**REDACTED**`,
   secretWeapon: `**REDACTED**`,
-  password: `**REDACTED**`
+  password: `**REDACTED**`,
+  currentMission: `**REDACTED**`,
+  contactCode: `**REDACTED**`,
+  emergencyContact: `**REDACTED**`
 };
 // Variables to store JSON data for generating the profile
 let tarotData;
 let objectsData;
 let instrumentsData;
+let cannabisData;
+let statesOfDrunkennessData;
+let egyptianGodsData;
+
+let imgBg;
 
 ///////////////////////////////
 
@@ -44,6 +56,11 @@ function preload() {
   tarotData = loadJSON(TAROT_DATA_URL);
   objectsData = loadJSON(OBJECT_DATA_URL);
   instrumentsData = loadJSON(INSTRUMENT_DATA_URL);
+  cannabisData = loadJSON(CANNABIS_DATA_URL);
+  statesOfDrunkennessData = loadJSON(STATES_OF_DRUNKENNESS);
+  egyptianGodsData = loadJSON(EGYPTIAN_GODS);
+
+  imgBg = loadImage(`assets/images/imgBg.jpg`);
 }
 
 /**
@@ -79,6 +96,9 @@ function setupSpyProfile(data) {
   spyProfile.alias = data.alias;
   spyProfile.secretWeapon = data.secretWeapon;
   spyProfile.password = data.password;
+  spyProfile.currentMission = data.currentMission;
+  spyProfile.contactCode = data.contactCode;
+  spyProfile.emergencyContact = data.emergencyContact;
 }
 
 /**
@@ -94,6 +114,13 @@ function generateSpyProfile() {
   // Generate a password from a random keyword for a random tarot card
   let card = random(tarotData.tarot_interpretations);
   spyProfile.password = random(card.keywords);
+
+  spyProfile.currentMission = random(cannabisData.cannabis);
+
+  spyProfile.contactCode = random(statesOfDrunkennessData.states_of_drunkenness);
+
+  spyProfile.emergencyContact = random(egyptianGodsData.egyptian_gods);
+
   // Save the resulting profile to local storage
   localStorage.setItem(PROFILE_DATA_KEY, JSON.stringify(spyProfile));
 }
@@ -102,21 +129,41 @@ function generateSpyProfile() {
 Displays the current spy profile.
 */
 function draw() {
-  background(255);
+  background(10);
+  imageMode(LEFT, TOP);
+  image(imgBg, 0, 0);
 
   // Generate the profile as a string using the data
-  let spyText = `** TOP SECRET SPY PROFILE **
-Name: ${spyProfile.name}
-Alias: ${spyProfile.alias}
-Secret Weapon: ${spyProfile.secretWeapon}
-Password: ${spyProfile.password}`;
+//   let spyText = `** TOP SECRET SPY PROFILE **
+// Name: ${spyProfile.name}
+// Alias: ${spyProfile.alias}
+// Secret Weapon: ${spyProfile.secretWeapon}
+// Password: ${spyProfile.password}`;
 
   // Display the profile
   push();
   textSize(32);
   textAlign(LEFT, TOP);
-  textFont(`Courier, monospace`);
-  fill(0);
-  text(spyText, 0, 0);
+  textFont(`Bai Jamjuree, Courier, monospace`);
+  fill(255);
+
+  // Left part: name, alias, secret weapon, password
+  text(spyProfile.name, 100, 258);
+  text(spyProfile.alias, 100, 395);
+  text(spyProfile.secretWeapon, 100, 532);
+  text(spyProfile.password, 100, 669);
+  //  137 Right part: mission, secret phrase
+  text(spyProfile.currentMission, 628, 648);
+  text(spyProfile.contactCode, 628, 785);
+  // text(spyProfile.emergencyContact, 928, 948);
+
+
   pop();
+}
+
+
+function keyPressed() {
+  if (key === 'd') {
+    generateSpyProfile();
+  }
 }
