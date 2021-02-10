@@ -22,7 +22,7 @@ const OBJECT_DATA_URL = `https://raw.githubusercontent.com/dariusk/corpora/maste
 const INSTRUMENT_DATA_URL = `https://raw.githubusercontent.com/dariusk/corpora/master/data/music/instruments.json`;
 const CANNABIS_DATA_URL = `https://raw.githubusercontent.com/dariusk/corpora/master/data/plants/cannabis.json`;
 const STATES_OF_DRUNKENNESS = `https://raw.githubusercontent.com/dariusk/corpora/master/data/words/states_of_drunkenness.json`;
-const EGYPTIAN_GODS = `https://raw.githubusercontent.com/dariusk/corpora/master/data/mythology/egyptian_gods.json`;
+const SCIENTISTS = `https://raw.githubusercontent.com/dariusk/corpora/master/data/humans/scientists.json`
 
 // The key used to save and load the data for this program
 const PROFILE_DATA_KEY = `spy-profile-data`;
@@ -43,7 +43,7 @@ let objectsData;
 let instrumentsData;
 let cannabisData;
 let statesOfDrunkennessData;
-let egyptianGodsData;
+let scientistsData;
 
 let imgBg;
 
@@ -58,7 +58,7 @@ function preload() {
   instrumentsData = loadJSON(INSTRUMENT_DATA_URL);
   cannabisData = loadJSON(CANNABIS_DATA_URL);
   statesOfDrunkennessData = loadJSON(STATES_OF_DRUNKENNESS);
-  egyptianGodsData = loadJSON(EGYPTIAN_GODS);
+  scientistsData = loadJSON(SCIENTISTS);
 
   imgBg = loadImage(`assets/images/imgBg.jpg`);
 }
@@ -81,8 +81,7 @@ function setup() {
       // If is is, then setup the spy profile with the data
       setupSpyProfile(data);
     }
-  }
-  else {
+  } else {
     // If there is no data, generate a spy profile for the user
     generateSpyProfile();
   }
@@ -119,7 +118,7 @@ function generateSpyProfile() {
 
   spyProfile.contactCode = random(statesOfDrunkennessData.states_of_drunkenness);
 
-  spyProfile.emergencyContact = random(egyptianGodsData.egyptian_gods);
+  spyProfile.emergencyContact = random(scientistsData.scientists);
 
   // Save the resulting profile to local storage
   localStorage.setItem(PROFILE_DATA_KEY, JSON.stringify(spyProfile));
@@ -133,37 +132,61 @@ function draw() {
   imageMode(LEFT, TOP);
   image(imgBg, 0, 0);
 
-  // Generate the profile as a string using the data
-//   let spyText = `** TOP SECRET SPY PROFILE **
-// Name: ${spyProfile.name}
-// Alias: ${spyProfile.alias}
-// Secret Weapon: ${spyProfile.secretWeapon}
-// Password: ${spyProfile.password}`;
-
   // Display the profile
   push();
   textSize(32);
   textAlign(LEFT, TOP);
   textFont(`Bai Jamjuree, Courier, monospace`);
-  fill(255);
 
+  // Title
+  fill(0);
+  text(`TOP SECRET SPY PROFILE`, 90, 138);
+
+  fill(255);
   // Left part: name, alias, secret weapon, password
   text(spyProfile.name, 100, 258);
   text(spyProfile.alias, 100, 395);
   text(spyProfile.secretWeapon, 100, 532);
   text(spyProfile.password, 100, 669);
-  //  137 Right part: mission, secret phrase
+
+  // Right part: mission, secret phrase
   text(spyProfile.currentMission, 628, 648);
   text(spyProfile.contactCode, 628, 785);
-  // text(spyProfile.emergencyContact, 928, 948);
+
+  textSize(20);
+  text(`In case of emergency, contact ${spyProfile.emergencyContact}.`, 980, 728);
 
 
   pop();
 }
 
 
+// Responsive voice reads the profile.
+function readProfile() {
+
+  let spyText = `TOP SECRET SPY PROFILE.
+  Name: ${spyProfile.name}.
+  Alias: ${spyProfile.alias}.
+  Secret Weapon: ${spyProfile.secretWeapon}.
+  Password: ${spyProfile.password}.
+  Name of current mission: ${spyProfile.currentMission}.
+  The code you need to say when you meet your contact: ${spyProfile.contactCode}.
+  In case of emergency, contact: ${spyProfile.emergencyContact}. But seriously, I wouldn't count on that.
+  Good luck on your mission, agent. Hasta la vista!`;
+
+  responsiveVoice.speak(spyText, "UK English Female");
+}
+
+// User interaction when pressing keys.
 function keyPressed() {
-  if (key === 'd') {
+  console.log(localStorage);
+  // N key to Generate a (N)ew profile
+  if (key === 'n') {
     generateSpyProfile();
+  }
+
+  // R key to (R)ead the profile
+  if (key === 'r') {
+    readProfile();
   }
 }
