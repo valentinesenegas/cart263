@@ -45,12 +45,10 @@ let score = 0;
 
 let popSound;
 
-
+// Preload the sounds.
 function preload() {
   popSound = loadSound("assets/sounds/pop.wav");
-
 }
-
 
 /**
 Starts the webcam and the Handpose, creates a bubble object
@@ -67,7 +65,9 @@ function setup() {
     flipHorizontal: true
   }, function() {
     // Switch to the running state
-    state = `running`;
+    // state = `running`;
+    state = `title`;
+    console.log(state);
   });
 
   // Listen for prediction events from Handpose and store the results in our
@@ -77,27 +77,26 @@ function setup() {
   });
 
   // Create our basic bubble
-  bubble = {
-    x: random(width),
-    y: height,
-    size: 100,
-    vx: 0,
-    vy: -2
-  }
+  bubble = new Bubble();
 }
 
 /**
 Handles the two states of the program: loading, running
 */
 function draw() {
+  background(255, 226, 222);
+
   if (state === `loading`) {
     loading();
-  }
-  else if (state === `running`) {
+  } else if (state === `running`) {
     running();
+  } else if (state === `title`) {
+    title();
   }
 }
 
+
+//---- LOADING ----//
 /**
 Displays a simple loading screen with the loading model's name
 */
@@ -110,6 +109,29 @@ function loading() {
   pop();
 }
 
+//---- TITLE ----//
+/**
+Displays a title screen with instructions
+*/
+function title() {
+  push();
+  textSize(16);
+  textStyle(BOLD);
+  textAlign(CENTER, CENTER);
+  text(`Use your index finger to pop the bubbles!`, width / 2, height / 4);
+  textSize(20);
+  text(`Press any key to start.`, width / 2, height / 3);
+  pop();
+}
+
+function keyPressed() {
+  if (state === `title`) {
+    state = `running`;
+  }
+}
+
+
+//---- RUNNING ----//
 /**
 Displays the webcam.
 If there is a hand it outlines it and highlights the tip of the index finger
@@ -120,7 +142,8 @@ function running() {
   // image(flippedVideo, 0, 0, width, height);
 
   // Use this line to just see a black background. More theatrical!
-  background(255, 239, 237);
+  // background(255, 239, 237);
+  background(255, 226, 222);
 
   // Check if there currently predictions to display
   if (predictions.length > 0) {
@@ -132,7 +155,8 @@ function running() {
     if (d < bubble.size / 2) {
       // Pop!
       popSound.play();
-      resetBubble();
+      bubble.resetBubble();
+      bubble.increaseDifficulty();
       incrementScore();
     }
     // Display the current position of the pin
@@ -141,9 +165,9 @@ function running() {
 
   // Handle the bubble's movement and display (independent of hand detection
   // so it doesn't need to be inside the predictions check)
-  moveBubble();
+  bubble.moveBubble();
   checkOutOfBounds();
-  displayBubble();
+  bubble.displayBubble();
   displayScore();
 }
 
@@ -155,14 +179,6 @@ function updatePin(prediction) {
   pin.tip.y = prediction.annotations.indexFinger[3][1];
   pin.head.x = prediction.annotations.indexFinger[0][0];
   pin.head.y = prediction.annotations.indexFinger[0][1];
-}
-
-/**
-Resets the bubble to the bottom of the screen in a new x position
-*/
-function resetBubble() {
-  bubble.x = random(width);
-  bubble.y = height;
 }
 
 // Increment the score (number of bubbles that were popped).
@@ -180,31 +196,12 @@ function displayScore() {
 }
 
 /**
-Moves the bubble according to its velocity
-*/
-function moveBubble() {
-  bubble.x += bubble.vx;
-  bubble.y += bubble.vy;
-}
-
-/**
 Resets the bubble if it moves off the top of the canvas
 */
 function checkOutOfBounds() {
   if (bubble.y < 0) {
-    resetBubble();
+    bubble.resetBubble();
   }
-}
-
-/**
-Displays the bubble as a circle
-*/
-function displayBubble() {
-  push();
-  noStroke();
-  fill(100, 100, 200, 150);
-  ellipse(bubble.x, bubble.y, bubble.size);
-  pop();
 }
 
 /**
