@@ -43,11 +43,16 @@ let pin = {
 // The number of bubbles that were popped.
 let score = 0;
 
+// Sounds and Font.
 let popSound;
+let manyBubblesSound;
+let truculenta;
 
-// Preload the sounds.
+// Preload the sounds and font.
 function preload() {
   popSound = loadSound("assets/sounds/pop.wav");
+  manyBubblesSound = loadSound("assets/sounds/manyBubbles.wav");
+  truculenta = loadFont('assets/fonts/Truculenta_12pt-Regular.ttf');
 }
 
 /**
@@ -64,10 +69,8 @@ function setup() {
   handpose = ml5.handpose(video, {
     flipHorizontal: true
   }, function() {
-    // Switch to the running state
-    // state = `running`;
+    // Switch to the title state
     state = `title`;
-    console.log(state);
   });
 
   // Listen for prediction events from Handpose and store the results in our
@@ -92,16 +95,20 @@ function draw() {
     running();
   } else if (state === `title`) {
     title();
+  } else if (state === `ending`) {
+    ending();
   }
 }
 
+//----||||****  STATES  ****||||----//
 
 //---- LOADING ----//
 /**
-Displays a simple loading screen with the loading model's name
+Displays a simple loading screen with the loading model's name.
 */
 function loading() {
   push();
+  textFont(truculenta);
   textSize(32);
   textStyle(BOLD);
   textAlign(CENTER, CENTER);
@@ -111,30 +118,24 @@ function loading() {
 
 //---- TITLE ----//
 /**
-Displays a title screen with instructions
+Displays a title screen with instructions.
 */
 function title() {
   push();
-  textSize(16);
+  textFont(truculenta);
+  textSize(20);
   textStyle(BOLD);
   textAlign(CENTER, CENTER);
-  text(`Use your index finger to pop the bubbles!`, width / 2, height / 4);
-  textSize(20);
-  text(`Press any key to start.`, width / 2, height / 3);
+  text(`Use your index finger to pop the bubbles!`, width / 2, height / 1.5);
+  textSize(24);
+  text(`Press any key to start.`, width / 2, height / 2);
   pop();
 }
-
-function keyPressed() {
-  if (state === `title`) {
-    state = `running`;
-  }
-}
-
 
 //---- RUNNING ----//
 /**
 Displays the webcam.
-If there is a hand it outlines it and highlights the tip of the index finger
+If there is a hand it outlines it and highlights the tip of the index finger.
 */
 function running() {
   // Use these lines to see the video feed
@@ -171,6 +172,17 @@ function running() {
   displayScore();
 }
 
+//---- ENDING ----//
+function ending() {
+  push();
+  textFont(truculenta);
+  textSize(30);
+  textStyle(BOLD);
+  textAlign(CENTER, CENTER);
+  text(`Yay! You popped ${score} bubbles!`, width / 2, height / 2);
+  pop();
+}
+
 /**
 Updates the position of the pin according to the latest prediction
 */
@@ -184,12 +196,19 @@ function updatePin(prediction) {
 // Increment the score (number of bubbles that were popped).
 function incrementScore() {
   score++;
+
+  // When the user has popped 10 bubbles, switch to the ending state.
+  if (score === 10) {
+    state = `ending`;
+    manyBubblesSound.play();
+  }
 }
 
 // Display the number of bubbles that were popped.
 function displayScore() {
   push();
-  textSize(20);
+  textFont(truculenta);
+  textSize(24);
   fill(255, 102, 102);
   text(score + ` bubbles popped`, 15, 40);
   pop();
@@ -222,4 +241,13 @@ function displayPin() {
   noStroke();
   ellipse(pin.head.x, pin.head.y, pin.head.size);
   pop();
+}
+
+// Keyboard control.
+// Press any key to start the game.
+function keyPressed() {
+  // Switch to the running state.
+  if (state === `title`) {
+    state = `running`;
+  }
 }
