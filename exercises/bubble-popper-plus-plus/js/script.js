@@ -40,7 +40,16 @@ let pin = {
   }
 };
 
+// The number of bubbles that were popped.
 let score = 0;
+
+let popSound;
+
+
+function preload() {
+  popSound = loadSound("assets/sounds/pop.wav");
+
+}
 
 
 /**
@@ -111,7 +120,7 @@ function running() {
   // image(flippedVideo, 0, 0, width, height);
 
   // Use this line to just see a black background. More theatrical!
-  background(0);
+  background(255, 239, 237);
 
   // Check if there currently predictions to display
   if (predictions.length > 0) {
@@ -122,6 +131,7 @@ function running() {
     let d = dist(pin.tip.x, pin.tip.y, bubble.x, bubble.y);
     if (d < bubble.size / 2) {
       // Pop!
+      popSound.play();
       resetBubble();
       incrementScore();
     }
@@ -155,11 +165,12 @@ function resetBubble() {
   bubble.y = height;
 }
 
+// Increment the score (number of bubbles that were popped).
 function incrementScore() {
   score++;
-  console.log(score);
 }
 
+// Display the number of bubbles that were popped.
 function displayScore() {
   push();
   textSize(20);
@@ -180,7 +191,7 @@ function moveBubble() {
 Resets the bubble if it moves off the top of the canvas
 */
 function checkOutOfBounds() {
-  if (bubble < 0) {
+  if (bubble.y < 0) {
     resetBubble();
   }
 }
@@ -210,7 +221,7 @@ function displayPin() {
 
   // Draw pinhead
   push();
-  fill(255, 0, 0);
+  fill(255, 102, 102);
   noStroke();
   ellipse(pin.head.x, pin.head.y, pin.head.size);
   pop();
