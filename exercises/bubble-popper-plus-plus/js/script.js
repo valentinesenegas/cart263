@@ -40,6 +40,8 @@ let pin = {
   }
 };
 
+let score = 0;
+
 
 /**
 Starts the webcam and the Handpose, creates a bubble object
@@ -121,6 +123,7 @@ function running() {
     if (d < bubble.size / 2) {
       // Pop!
       resetBubble();
+      incrementScore();
     }
     // Display the current position of the pin
     displayPin();
@@ -131,6 +134,7 @@ function running() {
   moveBubble();
   checkOutOfBounds();
   displayBubble();
+  displayScore();
 }
 
 /**
@@ -149,6 +153,19 @@ Resets the bubble to the bottom of the screen in a new x position
 function resetBubble() {
   bubble.x = random(width);
   bubble.y = height;
+}
+
+function incrementScore() {
+  score++;
+  console.log(score);
+}
+
+function displayScore() {
+  push();
+  textSize(20);
+  fill(255, 102, 102);
+  text(score + ` bubbles popped`, 15, 40);
+  pop();
 }
 
 /**
@@ -180,8 +197,8 @@ function displayBubble() {
 }
 
 /**
-Displays the pin based on the tip and base coordinates. Draws
-a line between them and adds a red pinhead.
+Displays the pin based on the tip and base coordinates.
+Draws a line between them and adds a red pinhead.
 */
 function displayPin() {
   // Draw pin
