@@ -2,44 +2,37 @@
 
 "use strict";
 
-let imgCharacterStanding;
-let imgCharacterFightLeft;
-let imgCharacterFightRight;
+// The images are loaded in an array.
+let imgCharacter = [];
 
-// Preload the images
+//  Index of each state.
+const standing = 0;
+const fightLeft = 1;
+const fightRight = 2;
+
+// Preload the images in the array
 function preloadCharacter() {
-  imgCharacterStanding = loadImage("assets/images/character-1-standing.png");
-  imgCharacterFightLeft = loadImage("assets/images/character-1-fight-left.png");
-  imgCharacterFightRight = loadImage("assets/images/character-1-fight-right.png");
+  imgCharacter.push(loadImage("assets/images/character-1-standing.png"));
+  imgCharacter.push(loadImage("assets/images/character-1-fight-left.png"));
+  imgCharacter.push(loadImage("assets/images/character-1-fight-right.png"));
 }
 
 // Class for the character.
 class Character {
-  constructor () {
-    // this.image = keyboardControls;
-    // console.log(this.image);
+  constructor(state) {
+    this.state = state;
   }
 
   // Displays the character
   drawCharacter() {
     push();
     imageMode(CENTER);
-    image(imgCharacterStanding, width/2, height/2);
+    image(imgCharacter[this.state], width/2, height/2);
     pop();
   }
 
-  drawCharacterFightLeft() {
-    push();
-    imageMode(CENTER);
-    image(imgCharacterFightLeft, width/2, height/2);
-    pop();
-  }
-
-  drawCharacterFightRight() {
-    push();
-    imageMode(CENTER);
-    image(imgCharacterFightRight, width/2, height/2);
-    pop();
+  setState(state) {
+    this.state = state;
   }
 
 }

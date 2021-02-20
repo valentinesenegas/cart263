@@ -27,7 +27,7 @@ function drawScene() {
   // Place the background.
   background(252);
 
-  // Draw the platform.
+  // Draw the central platform.
   push();
   fill(224,224,224);
   noStroke();

@@ -8,18 +8,17 @@ This is a game inspired by the movie The Platform directed by Galder Gaztelu-Urr
 */
 
 let character;
-
-const standing = 0;
-const fightLeft = 1;
-const fightRight = 2;
-let characterState = standing;
-
+let enemy1 = null;
+let enemy2 = null;
+let floor1;
+let floor2;
 
 /**
 Description of preload
 */
 function preload() {
   preloadCharacter();
+  preloadEnemies();
   preloadScene();
 }
 
@@ -29,38 +28,59 @@ Description of setup
 */
 function setup() {
   setupScene();
+  setupGame();
 }
 
+function setupGame() {
+  character = new Character(standing);
+}
 
 /**
-Description of draw()
+Draw the scene, the main characters and the enemies.
 */
 function draw() {
 
   drawScene();
-
-  // Draw the main character.
-  character = new Character();
-
-  if (characterState === fightLeft) {
-    character.drawCharacterFightLeft();
-  } else if (characterState === fightRight) {
-    character.drawCharacterFightRight();
-  }
-
-  else {
-    character.drawCharacter();
-  }
-
-
+  character.drawCharacter();
+  if (enemy1 != null)
+    enemy1.drawCharacter();
+  if (enemy2 != null)
+    enemy2.drawCharacter();
+  if (floor1 != null)
+    floor1.draw();
+  if (floor2 != null)
+    floor2.draw();
 }
 
 function keyPressed() {
   if (keyCode === LEFT_ARROW) {
-    characterState = fightLeft;
+    character.setState(fightLeft);
   } else if (keyCode === RIGHT_ARROW) {
-    characterState = fightRight;
+    character.setState(fightRight);
   } else {
-    characterState = standing;
+    character.setState(standing);
   }
+}
+
+// ***** For test purposes only. Triggers the start of the level. ***
+function mousePressed() {
+  levelPreparation();
+}
+
+
+function levelPreparation() {
+  // The floors appear from the bottom of the screen, one on the left, one on the right side.
+  // There is an enemy on each floor.
+  enemy1 = new Enemy(150, height/2, imgEnemy1[0]);
+  enemy2 = new Enemy(width-150, height/2, imgEnemy2[0]);
+  console.log(random(imgEnemies));
+
+  floor1 = new Floor(0);
+  floor2 = new Floor(900);
+}
+
+function levelReady() {
+  // The levels are aligned with the platform.
+  // Enemies start moving toward the platform.
+
 }
