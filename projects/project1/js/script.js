@@ -42,10 +42,20 @@ function draw() {
 
   drawScene();
   character.drawCharacter();
-  if (enemy1 != null)
+  if (enemy1 != null) {
     enemy1.drawCharacter();
-  if (enemy2 != null)
+    enemy1.goUpStart();
+    enemy1.moveRight();
+    floor1.goUpStart();
+  }
+
+  if (enemy2 != null) {
     enemy2.drawCharacter();
+    enemy2.goUpStart();
+    enemy2.moveLeft();
+    floor2.goUpStart();
+  }
+
   if (floor1 != null)
     floor1.draw();
   if (floor2 != null)
@@ -71,9 +81,9 @@ function mousePressed() {
 function levelPreparation() {
   // The floors appear from the bottom of the screen, one on the left, one on the right side.
   // There is an enemy on each floor.
+  // Enemy Parameters: x, yFinal, index.
   enemy1 = new Enemy(150, height/2, imgEnemy1[0]);
   enemy2 = new Enemy(width-150, height/2, imgEnemy2[0]);
-  console.log(random(imgEnemies));
 
   floor1 = new Floor(0);
   floor2 = new Floor(900);

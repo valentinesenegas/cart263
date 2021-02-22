@@ -39,10 +39,13 @@ function preloadEnemies() {
 
 
 class Enemy {
-  constructor(x, y, index) {
+  constructor(x, yFinal, index) {
     this.x = x;
-    this.y = y;
+    this.y = height + 250;
+    this.yFinal = yFinal;
     this.index = index;
+    this.speedX = 3;
+    this.speedY = 6;
   }
 
   drawCharacter() {
@@ -51,4 +54,25 @@ class Enemy {
     image(this.index, this.x, this.y);
     pop();
   }
+
+  // Character on the left moves toward the platform.
+  moveRight() {
+    if (this.y === 448 && this.x < 500)
+      this.x += this.speedX;
+
+  }
+
+  // Character on the right moves toward the platform.
+  moveLeft() {
+    if (this.y === 448 && this.x > 800)
+      this.x -= this.speedX;
+  }
+
+  // Character moves up along with the floor.
+  goUpStart() {
+    if (this.y > this.yFinal) {
+      this.y -= this.speedY;
+    }
+  }
+
 }
