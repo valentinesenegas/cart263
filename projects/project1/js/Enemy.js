@@ -13,28 +13,22 @@ let imgEnemies = [imgEnemy1, imgEnemy2];
 // const standing = 0;
 // const fightLeft = 1;
 // const fightRight = 2;
-
-// let imgEnemy1Standing;
-// let imgEnemy1FightLeft;
-// let imgEnemy1FightRight;
-//
-// let imgEnemy2Standing;
-// let imgEnemy2FightLeft;
-// let imgEnemy2FightRight;
+// crouchLeft = 3
+// crouchRight = 4
 
 // Preload the images
 function preloadEnemies() {
   imgEnemy1.push(loadImage("assets/images/enemy-1-standing.png"));
   imgEnemy1.push(loadImage("assets/images/enemy-1-fight-left.png"));
   imgEnemy1.push(loadImage("assets/images/enemy-1-fight-right.png"));
+  imgEnemy1.push(loadImage("assets/images/enemy-1-crouch-left.png"));
+  imgEnemy1.push(loadImage("assets/images/enemy-1-crouch-right.png"));
 
   imgEnemy2.push(loadImage("assets/images/enemy-2-standing.png"));
   imgEnemy2.push(loadImage("assets/images/enemy-2-fight-left.png"));
   imgEnemy2.push(loadImage("assets/images/enemy-2-fight-right.png"));
-  //
-  // imgEnemy2Standing = loadImage("assets/images/enemy-2-standing.png");
-  // imgEnemy2FightLeft = loadImage("assets/images/enemy-2-fight-left.png");
-  // imgEnemy2FightRight = loadImage("assets/images/enemy-2-fight-right.png");
+  imgEnemy2.push(loadImage("assets/images/enemy-2-crouch-left.png"));
+  imgEnemy2.push(loadImage("assets/images/enemy-2-crouch-right.png"));
 }
 
 
@@ -55,17 +49,17 @@ class Enemy {
     pop();
   }
 
-  // Character on the left moves toward the platform.
-  moveRight() {
-    if (this.y === 448 && this.x < 500)
-      this.x += this.speedX;
-
-  }
-
   // Character on the right moves toward the platform.
   moveLeft() {
-    if (this.y === 448 && this.x > 800)
+    if (this.y === 448 && this.x > 850)
       this.x -= this.speedX;
+  }
+
+  // Character on the left moves toward the platform.
+  moveRight() {
+    if (this.y === 448 && this.x < 430)
+      this.x += this.speedX;
+
   }
 
   // Character moves up along with the floor.

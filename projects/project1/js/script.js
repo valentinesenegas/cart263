@@ -7,24 +7,29 @@ Valentine Sénégas
 This is a game inspired by the movie The Platform directed by Galder Gaztelu-Urrutia.
 */
 
+// Variables
 let character;
+let food1;
 let enemy1 = null;
 let enemy2 = null;
 let floor1;
 let floor2;
 
+let lastKeyPressedLeft = true;
+
 /**
-Description of preload
+Preload the main character, the enemies, the scene and the food on the platform.
 */
 function preload() {
   preloadCharacter();
   preloadEnemies();
   preloadScene();
+  preloadFood();
 }
 
 
 /**
-Description of setup
+Setup the scene and the game in general.
 */
 function setup() {
   setupScene();
@@ -33,6 +38,14 @@ function setup() {
 
 function setupGame() {
   character = new Character(standing);
+  food1 = new Food();
+
+  // for (let i = 0; i < numImgFood; i++) {
+  //   console.log("hehe");
+  //   `food[${i}]`.new Food();
+  //   // `food[${i}`].new Food();
+  //     // imgFood.push(loadImage(`assets/images/food/food${i}.png`));
+  // }
 }
 
 /**
@@ -40,8 +53,12 @@ Draw the scene, the main characters and the enemies.
 */
 function draw() {
 
-  drawScene();
-  character.drawCharacter();
+  // Part 1: Draw the scene (platform), food and the character.
+  drawSceneFoodCharacter();
+
+  detectKeyboardInput();
+
+  // Part 2: Draw enemies and floors
   if (enemy1 != null) {
     enemy1.drawCharacter();
     enemy1.goUpStart();
@@ -60,21 +77,75 @@ function draw() {
     floor1.draw();
   if (floor2 != null)
     floor2.draw();
+
 }
 
-function keyPressed() {
-  if (keyCode === LEFT_ARROW) {
-    character.setState(fightLeft);
-  } else if (keyCode === RIGHT_ARROW) {
-    character.setState(fightRight);
+function detectKeyboardInput() {
+  // Arrow keys: move left or right.
+  if (keyIsDown(LEFT_ARROW)) {
+    character.moveLeft();
+    lastKeyPressedLeft = true;
+
+  } else if (keyIsDown(RIGHT_ARROW)) {
+    character.moveRight();
+    lastKeyPressedLeft = false;
   } else {
     character.setState(standing);
   }
+
+// Space bar: attack left or right depending on the last arrow key pressed.
+  if (keyIsDown(32)) {
+    if (lastKeyPressedLeft === true) {
+      character.setState(fightLeft);
+    }
+    if (lastKeyPressedLeft === false) {
+      character.setState(fightRight);
+    }
+  }
+}
+
+function keyPressed() {
+  // if (keyCode === LEFT_ARROW) {
+  //   character.setState(fightLeft);
+  //   character.moveLeft();
+  //   lastKeyPressedLeft = true;
+  //
+  // } else if (keyCode === RIGHT_ARROW) {
+  //   character.setState(fightRight);
+  //   lastKeyPressedLeft = false;
+  // } else {
+  //   character.setState(standing);
+  // }
+
+  // Space bar: attack left or right depending on the last key pressed.
+  // if (keyCode === 32) {
+  //   console.log(lastKeyPressedLeft);
+  //   if (lastKeyPressedLeft = true) {
+  //     character.setState(fightLeft);
+  //   }
+  //   else if (lastKeyPressedLeft = false) {
+  //     character.setState(fightRight);
+  //   }
+  // }
+
 }
 
 // ***** For test purposes only. Triggers the start of the level. ***
 function mousePressed() {
   levelPreparation();
+}
+
+
+function drawSceneFoodCharacter() {
+  drawScene();
+
+  food1.draw();
+
+  // (let i = 0; i < numImgFood; i++) {
+  //   food[i].draw();
+  // }
+
+  character.drawCharacter();
 }
 
 

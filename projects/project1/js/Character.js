@@ -21,18 +21,28 @@ function preloadCharacter() {
 class Character {
   constructor(state) {
     this.state = state;
+    this.x = width/2;
+    this.y = height/2;
   }
 
   // Displays the character
   drawCharacter() {
     push();
     imageMode(CENTER);
-    image(imgCharacter[this.state], width/2, height/2);
+    image(imgCharacter[this.state], this.x, this.y);
     pop();
   }
 
   setState(state) {
     this.state = state;
+  }
+
+  moveLeft() {
+    this.x -= 3;
+  }
+
+  moveRight() {
+    this.x += 3;
   }
 
 }

@@ -1,6 +1,7 @@
 "use strict";
 
 // Creation of canvas, background, prealoading fonts.
+// Creation of the Platform.
 // ---------- //
 let bg;
 
@@ -32,7 +33,7 @@ function drawScene() {
   fill(224,224,224);
   noStroke();
   rectMode(CENTER);
-  rect(width/2, 650, 400, 20);
+  rect(width/2, 650, 480, 20);
   pop();
 
   // Display the Level.
