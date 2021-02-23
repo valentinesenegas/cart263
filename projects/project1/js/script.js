@@ -17,9 +17,8 @@ let floor2;
 
 let lastKeyPressedLeft = true;
 
-/**
-Preload the main character, the enemies, the scene and the food on the platform.
-*/
+
+// Preload the main character, the enemies, the scene and the food on the platform.
 function preload() {
   preloadCharacter();
   preloadEnemies();
@@ -28,9 +27,7 @@ function preload() {
 }
 
 
-/**
-Setup the scene and the game in general.
-*/
+// Setup the scene and the game in general.
 function setup() {
   setupScene();
   setupGame();
@@ -52,7 +49,6 @@ function setupGame() {
 Draw the scene, the main characters and the enemies.
 */
 function draw() {
-
   // Part 1: Draw the scene (platform), food and the character.
   drawSceneFoodCharacter();
 
