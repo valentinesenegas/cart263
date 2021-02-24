@@ -10,6 +10,8 @@ const standing = 0;
 const fightLeft = 1;
 const fightRight = 2;
 
+let hit = false;
+
 // Preload the images in the array
 function preloadCharacter() {
   imgCharacter.push(loadImage("assets/images/character-1-standing.png"));
@@ -21,14 +23,14 @@ function preloadCharacter() {
 class Character {
   constructor(state) {
     this.state = state;
-    this.x = width/2;
-    this.y = height/2;
+    this.x = width/2 - imgCharacter[0].width/2;
+    this.y = height/2 - imgCharacter[0].height/2;
   }
 
   // Displays the character
   drawCharacter() {
     push();
-    imageMode(CENTER);
+    imageMode(CORNER);
     image(imgCharacter[this.state], this.x, this.y);
     pop();
   }
@@ -43,6 +45,19 @@ class Character {
 
   moveRight() {
     this.x += 3;
+  }
+
+  detectCollision() {
+    push();
+    fill('rgba(0,255,0, 0.25)');
+    rect(this.x, this.y + 220, 100, 40);
+    rect(mouseX, mouseY, 50, 75);
+
+
+   hit = collideRectRect(this.x, this.y + 220, 100, 40, mouseX, mouseY, 50, 75);
+   stroke(hit ? color('red') : 0);
+    print('colliding?', hit);
+    pop();
   }
 
 }

@@ -40,6 +40,7 @@ class Enemy {
     this.index = index;
     this.speedX = 3;
     this.speedY = 6;
+    this.injured = false;
   }
 
   drawCharacter() {

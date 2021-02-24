@@ -53,6 +53,8 @@ function draw() {
   drawSceneFoodCharacter();
 
   detectKeyboardInput();
+  detectCollision();
+  character.detectCollision();
 
   // Part 2: Draw enemies and floors
   if (enemy1 != null) {
@@ -60,6 +62,8 @@ function draw() {
     enemy1.goUpStart();
     enemy1.moveRight();
     floor1.goUpStart();
+
+    enemy1.detectCollision();
   }
 
   if (enemy2 != null) {
@@ -75,6 +79,7 @@ function draw() {
     floor2.draw();
 
 }
+
 
 function detectKeyboardInput() {
   // Arrow keys: move left or right.
@@ -100,29 +105,8 @@ function detectKeyboardInput() {
   }
 }
 
-function keyPressed() {
-  // if (keyCode === LEFT_ARROW) {
-  //   character.setState(fightLeft);
-  //   character.moveLeft();
-  //   lastKeyPressedLeft = true;
-  //
-  // } else if (keyCode === RIGHT_ARROW) {
-  //   character.setState(fightRight);
-  //   lastKeyPressedLeft = false;
-  // } else {
-  //   character.setState(standing);
-  // }
-
-  // Space bar: attack left or right depending on the last key pressed.
-  // if (keyCode === 32) {
-  //   console.log(lastKeyPressedLeft);
-  //   if (lastKeyPressedLeft = true) {
-  //     character.setState(fightLeft);
-  //   }
-  //   else if (lastKeyPressedLeft = false) {
-  //     character.setState(fightRight);
-  //   }
-  // }
+function detectCollision() {
+  // console.log(character);
 
 }
 
