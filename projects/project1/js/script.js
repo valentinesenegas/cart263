@@ -45,25 +45,21 @@ function setupGame() {
   // }
 }
 
-/**
-Draw the scene, the main characters and the enemies.
-*/
+
+// Draw the scene, the main characters and the enemies.
 function draw() {
   // Part 1: Draw the scene (platform), food and the character.
   drawSceneFoodCharacter();
 
   detectKeyboardInput();
-  detectCollision();
-  character.detectCollision();
-
-  // Part 2: Draw enemies and floors
+  // Part 2: Draw enemies and floors. Detect collisions.
   if (enemy1 != null) {
     enemy1.drawCharacter();
     enemy1.goUpStart();
     enemy1.moveRight();
     floor1.goUpStart();
-
-    enemy1.detectCollision();
+    let collisionEnemy1 = character.getRectangle().detectCollision(enemy1.getRectangle());
+    console.log(collisionEnemy1);
   }
 
   if (enemy2 != null) {
@@ -71,6 +67,8 @@ function draw() {
     enemy2.goUpStart();
     enemy2.moveLeft();
     floor2.goUpStart();
+    let collisionEnemy2 =character.getRectangle().detectCollision(enemy2.getRectangle());
+    console.log(collisionEnemy2);
   }
 
   if (floor1 != null)
@@ -105,10 +103,6 @@ function detectKeyboardInput() {
   }
 }
 
-function detectCollision() {
-  // console.log(character);
-
-}
 
 // ***** For test purposes only. Triggers the start of the level. ***
 function mousePressed() {
@@ -133,8 +127,11 @@ function levelPreparation() {
   // The floors appear from the bottom of the screen, one on the left, one on the right side.
   // There is an enemy on each floor.
   // Enemy Parameters: x, yFinal, index.
-  enemy1 = new Enemy(150, height/2, imgEnemy1[0]);
-  enemy2 = new Enemy(width-150, height/2, imgEnemy2[0]);
+  enemy1 = new Enemy(100, 270, imgEnemy1[0]);
+  enemy2 = new Enemy(width-150, 270, imgEnemy2[0]);
+
+  // enemy1 = new Enemy(150, height/2, imgEnemy1[0]);
+  // enemy2 = new Enemy(width-150, height/2, imgEnemy2[0]);
 
   floor1 = new Floor(0);
   floor2 = new Floor(900);

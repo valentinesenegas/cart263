@@ -47,17 +47,14 @@ class Character {
     this.x += 3;
   }
 
-  detectCollision() {
-    push();
+  // Create a rectangle on top of the character to detect collisions.
+  getRectangle() {
     fill('rgba(0,255,0, 0.25)');
-    rect(this.x, this.y + 220, 100, 40);
-    rect(mouseX, mouseY, 50, 75);
-
-
-   hit = collideRectRect(this.x, this.y + 220, 100, 40, mouseX, mouseY, 50, 75);
-   stroke(hit ? color('red') : 0);
-    print('colliding?', hit);
-    pop();
+    if (this.state == fightLeft)
+      return new Rectangle(this.x, this.y + 220, 200,100);
+    else if (this.state == fightRight)
+      return new Rectangle(this.x, this.y + 220, 200,100);
+    else
+      return new Rectangle(this.x, this.y, 110,392);
   }
-
 }

@@ -45,20 +45,20 @@ class Enemy {
 
   drawCharacter() {
     push();
-    imageMode(CENTER);
+    imageMode(CORNER);
     image(this.index, this.x, this.y);
     pop();
   }
 
   // Character on the right moves toward the platform.
   moveLeft() {
-    if (this.y === 448 && this.x > 850)
+    if (this.y < 270 && this.x > 750)
       this.x -= this.speedX;
   }
 
   // Character on the left moves toward the platform.
   moveRight() {
-    if (this.y === 448 && this.x < 430)
+    if (this.y < 270 && this.x < 430)
       this.x += this.speedX;
 
   }
@@ -68,6 +68,17 @@ class Enemy {
     if (this.y > this.yFinal) {
       this.y -= this.speedY;
     }
+  }
+
+  // Create a rectangle on top of the enemy to detect collisions.
+  getRectangle() {
+    fill('rgba(0,255,0, 0.25)');
+    if (this.state == fightLeft)
+      return new Rectangle(this.x, this.y, 200,100);
+    else if (this.state == fightRight)
+      return new Rectangle(this.x, this.y, 200,100);
+    else
+      return new Rectangle(this.x, this.y, 110,392);
   }
 
 }
