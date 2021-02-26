@@ -28,4 +28,8 @@ class Floor {
       this.y -= this.speedY;
     }
   }
+
+  hasReachedFinalPosition() {
+    return (this.y == this.yFinal);
+  }
 }

@@ -44,3 +44,32 @@ function drawScene() {
   text('Level 01', 10, 60);
   pop();
 }
+
+// Display the health of the main character.
+function drawHealth() {
+  // Health remaining
+  push();
+  noStroke();
+  rectMode(CENTER);
+  fill('rgba(0,255,0, 0.25)');
+  rect(width/2, 140, 300, 40, 4);
+  pop();
+
+  // Stroke
+  push();
+  stroke(100);
+  strokeWeight(3);
+  noFill();
+  rectMode(CENTER);
+  rect(width/2, 140, 300, 40, 4);
+  pop();
+
+  // Text
+  push();
+  textSize(16);
+  textFont(lexendMega);
+  textAlign(CENTER);
+  fill(79,79,79);
+  text('Your health', width/2, 110);
+  pop();
+}

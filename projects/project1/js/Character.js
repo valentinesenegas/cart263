@@ -39,6 +39,10 @@ class Character {
     this.state = state;
   }
 
+  getState() {
+    return this.state;
+  }
+
   moveLeft() {
     this.x -= 3;
   }
@@ -51,10 +55,10 @@ class Character {
   getRectangle() {
     fill('rgba(0,255,0, 0.25)');
     if (this.state == fightLeft)
-      return new Rectangle(this.x, this.y + 220, 200,100);
+      return new Rectangle(this.x, this.y + 220, 150, 60);
     else if (this.state == fightRight)
-      return new Rectangle(this.x, this.y + 220, 200,100);
+      return new Rectangle(this.x + 60, this.y + 220, 150, 60);
     else
-      return new Rectangle(this.x, this.y, 110,392);
+      return new Rectangle(this.x, this.y, 110, 392); // Standing
   }
 }

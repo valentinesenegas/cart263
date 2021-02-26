@@ -15,6 +15,12 @@ let imgEnemies = [imgEnemy1, imgEnemy2];
 // const fightRight = 2;
 // crouchLeft = 3
 // crouchRight = 4
+const enemyStanding = 0;
+const enemyEntering = 1;
+const enemyFightingLeft = 2;
+const enemyFightingRight = 3;
+const enemyExitingLeft = 4;
+const enemyExitingRight = 5;
 
 // Preload the images
 function preloadEnemies() {
@@ -51,6 +57,10 @@ class Enemy {
   }
 
   // Character on the right moves toward the platform.
+  move() {
+  }
+
+// Character on the right moves toward the platform.
   moveLeft() {
     if (this.y < 270 && this.x > 750)
       this.x -= this.speedX;

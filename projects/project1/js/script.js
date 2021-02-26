@@ -14,6 +14,10 @@ let enemy1 = null;
 let enemy2 = null;
 let floor1;
 let floor2;
+const stateFloorEnter = 0;
+const stateFight = 1;
+const stateFloorLeave = 2;
+let gameState;
 
 let lastKeyPressedLeft = true;
 
@@ -31,11 +35,13 @@ function preload() {
 function setup() {
   setupScene();
   setupGame();
+  setupLevel();
 }
 
 function setupGame() {
   character = new Character(standing);
   food1 = new Food();
+  gameState = stateFloorEnter;
 
   // for (let i = 0; i < numImgFood; i++) {
   //   console.log("hehe");
@@ -49,33 +55,14 @@ function setupGame() {
 // Draw the scene, the main characters and the enemies.
 function draw() {
   // Part 1: Draw the scene (platform), food and the character.
-  drawSceneFoodCharacter();
-
   detectKeyboardInput();
-  // Part 2: Draw enemies and floors. Detect collisions.
-  if (enemy1 != null) {
-    enemy1.drawCharacter();
-    enemy1.goUpStart();
-    enemy1.moveRight();
-    floor1.goUpStart();
-    let collisionEnemy1 = character.getRectangle().detectCollision(enemy1.getRectangle());
-    console.log(collisionEnemy1);
-  }
 
-  if (enemy2 != null) {
-    enemy2.drawCharacter();
-    enemy2.goUpStart();
-    enemy2.moveLeft();
-    floor2.goUpStart();
-    let collisionEnemy2 =character.getRectangle().detectCollision(enemy2.getRectangle());
-    console.log(collisionEnemy2);
-  }
-
-  if (floor1 != null)
-    floor1.draw();
-  if (floor2 != null)
-    floor2.draw();
-
+  drawScene();
+  drawFloor();
+  drawFood();
+  drawEnemies();
+  drawCharacter();
+  drawHealth();
 }
 
 
@@ -105,25 +92,76 @@ function detectKeyboardInput() {
 
 
 // ***** For test purposes only. Triggers the start of the level. ***
-function mousePressed() {
-  levelPreparation();
-}
+//function mousePressed() {
+//  levelPreparation();
+//}
 
-
-function drawSceneFoodCharacter() {
-  drawScene();
-
+function drawFood() {
   food1.draw();
 
   // (let i = 0; i < numImgFood; i++) {
   //   food[i].draw();
   // }
 
+}
+
+function drawCharacter() {
   character.drawCharacter();
 }
 
+// If the enemies are already created, draw them and animate them.
+// Detect collisions.
+function drawEnemies() {
+  if (enemy1 != null) {
+    if (gameState == stateFloorEnter)
+      enemy1.goUpStart();
+    else if (gameState == stateFight)
+      enemy1.move();
+    enemy1.drawCharacter();
 
-function levelPreparation() {
+    let collisionEnemy1 = character.getRectangle().detectCollision(enemy1.getRectangle());
+    if (collisionEnemy1) {
+      if (character.getState() == fightLeft)
+      // Do something
+      console.log(collisionEnemy1);
+    }
+  }
+
+  if (enemy2 != null) {
+    if (gameState == stateFloorEnter)
+      enemy2.goUpStart();
+    else if (gameState == stateFight)
+      enemy2.move();
+    enemy2.drawCharacter();
+
+    let collisionEnemy2 =character.getRectangle().detectCollision(enemy2.getRectangle());
+
+    if (collisionEnemy2) {
+      if (character.getState() == fightRight)
+      // Do something
+      console.log(collisionEnemy2);
+    }
+  }
+}
+
+
+function drawFloor() {
+  if (floor1.hasReachedFinalPosition() === false) {
+    floor1.goUpStart();
+  }
+
+  if (floor2.hasReachedFinalPosition() === false) {
+    floor2.goUpStart();
+    if (floor1.hasReachedFinalPosition() === true &&
+        floor2.hasReachedFinalPosition() === true)
+          gameState = stateFight;
+  }
+
+  floor1.draw();
+  floor2.draw();
+}
+
+function setupLevel() {
   // The floors appear from the bottom of the screen, one on the left, one on the right side.
   // There is an enemy on each floor.
   // Enemy Parameters: x, yFinal, index.
@@ -135,10 +173,4 @@ function levelPreparation() {
 
   floor1 = new Floor(0);
   floor2 = new Floor(900);
-}
-
-function levelReady() {
-  // The levels are aligned with the platform.
-  // Enemies start moving toward the platform.
-
 }
