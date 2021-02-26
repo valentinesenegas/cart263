@@ -51,6 +51,10 @@ class Character {
     this.x += 3;
   }
 
+  getX() {
+    return this.x;
+  }
+
   // Create a rectangle on top of the character to detect collisions.
   getRectangle() {
     fill('rgba(0,255,0, 0.25)');

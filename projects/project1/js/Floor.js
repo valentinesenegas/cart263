@@ -5,7 +5,7 @@ class Floor {
     this.x = x;
     this.y = height + 450;
     this.yFinal = 650;
-    this.speedY = 6;
+    this.speedY = 8;
   }
 
   draw() {
@@ -30,6 +30,6 @@ class Floor {
   }
 
   hasReachedFinalPosition() {
-    return (this.y == this.yFinal);
+    return (this.y <= this.yFinal);
   }
 }

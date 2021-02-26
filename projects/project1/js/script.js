@@ -90,19 +90,12 @@ function detectKeyboardInput() {
   }
 }
 
-
-// ***** For test purposes only. Triggers the start of the level. ***
-//function mousePressed() {
-//  levelPreparation();
-//}
-
 function drawFood() {
   food1.draw();
 
   // (let i = 0; i < numImgFood; i++) {
   //   food[i].draw();
   // }
-
 }
 
 function drawCharacter() {
@@ -116,14 +109,15 @@ function drawEnemies() {
     if (gameState == stateFloorEnter)
       enemy1.goUpStart();
     else if (gameState == stateFight)
-      enemy1.move();
+      enemy1.move(character.getX());
     enemy1.drawCharacter();
 
     let collisionEnemy1 = character.getRectangle().detectCollision(enemy1.getRectangle());
     if (collisionEnemy1) {
       if (character.getState() == fightLeft)
-      // Do something
-      console.log(collisionEnemy1);
+        enemy1.exitLeft();
+      else if (character.getState() == fightRight)
+        enemy1.exitRight();
     }
   }
 
@@ -131,15 +125,16 @@ function drawEnemies() {
     if (gameState == stateFloorEnter)
       enemy2.goUpStart();
     else if (gameState == stateFight)
-      enemy2.move();
+      enemy2.move(character.getX());
     enemy2.drawCharacter();
 
     let collisionEnemy2 =character.getRectangle().detectCollision(enemy2.getRectangle());
 
     if (collisionEnemy2) {
       if (character.getState() == fightRight)
-      // Do something
-      console.log(collisionEnemy2);
+        enemy2.exitRight();
+      else if (character.getState() == fightLeft)
+        enemy2.exitLeft();
     }
   }
 }
@@ -165,8 +160,8 @@ function setupLevel() {
   // The floors appear from the bottom of the screen, one on the left, one on the right side.
   // There is an enemy on each floor.
   // Enemy Parameters: x, yFinal, index.
-  enemy1 = new Enemy(100, 270, imgEnemy1[0]);
-  enemy2 = new Enemy(width-150, 270, imgEnemy2[0]);
+  enemy1 = new Enemy(100, 270, 0);
+  enemy2 = new Enemy(width-150, 270, 1);
 
   // enemy1 = new Enemy(150, height/2, imgEnemy1[0]);
   // enemy2 = new Enemy(width-150, height/2, imgEnemy2[0]);
