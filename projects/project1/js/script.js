@@ -68,6 +68,9 @@ function draw() {
 
 function detectKeyboardInput() {
   // Arrow keys: move left or right.
+  if (character.getState() == injured)
+    return;
+
   if (keyIsDown(LEFT_ARROW)) {
     character.moveLeft();
     lastKeyPressedLeft = true;
@@ -75,11 +78,10 @@ function detectKeyboardInput() {
   } else if (keyIsDown(RIGHT_ARROW)) {
     character.moveRight();
     lastKeyPressedLeft = false;
-  } else {
-    character.setState(standing);
-  }
+  } else
+      character.setState(standing);
 
-// Space bar: attack left or right depending on the last arrow key pressed.
+  // Space bar: attack left or right depending on the last arrow key pressed.
   if (keyIsDown(32)) {
     if (lastKeyPressedLeft === true) {
       character.setState(fightLeft);
@@ -88,6 +90,8 @@ function detectKeyboardInput() {
       character.setState(fightRight);
     }
   }
+  else if (keyIsPressed && keyCode === 32)
+    character.setState(standing);
 }
 
 function drawFood() {
@@ -109,11 +113,13 @@ function drawEnemies() {
     if (gameState == stateFloorEnter)
       enemy1.goUpStart();
     else if (gameState == stateFight)
-      enemy1.move(character.getX());
+      enemy1.move(character.getState(), character.getX());
     enemy1.drawCharacter();
 
     let collisionEnemy1 = character.getRectangle().detectCollision(enemy1.getRectangle());
     if (collisionEnemy1) {
+      if (enemy1.getState() == enemyFightingLeft || enemy1.getState() == enemyFightingRight)
+        character.hit();
       if (character.getState() == fightLeft)
         enemy1.exitLeft();
       else if (character.getState() == fightRight)
@@ -125,12 +131,14 @@ function drawEnemies() {
     if (gameState == stateFloorEnter)
       enemy2.goUpStart();
     else if (gameState == stateFight)
-      enemy2.move(character.getX());
+      enemy2.move(character.getState(), character.getX());
     enemy2.drawCharacter();
 
     let collisionEnemy2 =character.getRectangle().detectCollision(enemy2.getRectangle());
 
     if (collisionEnemy2) {
+      if (enemy2.getState() == enemyFightingLeft || enemy2.getState() == enemyFightingRight)
+        character.hit();
       if (character.getState() == fightRight)
         enemy2.exitRight();
       else if (character.getState() == fightLeft)

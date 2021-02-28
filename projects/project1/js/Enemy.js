@@ -21,6 +21,9 @@ const enemyExitingLeft = 3;
 const enemyExitingRight = 4;
 const enemyHasExited = 5;
 
+const normalEnemySpeed = 3;
+const fightingEnemySpeed = 5;
+
 // Preload the images
 function preloadEnemies() {
   imgEnemy1.push(loadImage("assets/images/enemy-1-standing.png"));
@@ -51,8 +54,11 @@ class Enemy {
   }
 
   drawCharacter() {
+    // If the enemy has exited (is dead), don't draw.
     if (this.state == enemyHasExited)
       return;
+
+    // Draw the enemy with the correct index.
     push();
     imageMode(CORNER);
     let img = this.images[0];
@@ -64,7 +70,7 @@ class Enemy {
     pop();
   }
 
-  move(characterX) {
+  move(characterState, characterX) {
     if (this.state == enemyHasExited)
       return;
     if (this.state == enemyExitingLeft)
@@ -81,35 +87,43 @@ class Enemy {
       let newMove = random() * 10;
 
       // Moving away.
-      if (newMove < 1) {
+      if (characterState == injured || newMove < 2) {
         this.state = enemyStanding;
-        this.speedX = (this.x > characterX) ? Math.abs(this.speedX) : -Math.abs(this.speedX);
+        this.speedX = (this.x > characterX) ? normalEnemySpeed : -normalEnemySpeed;
       }
 
-      // Movin in.
-      else if (newMove < 8) {
+      // Moving in.
+      else if (newMove < 7) {
         this.state = enemyStanding;
-        this.speedX = (this.x < characterX) ? Math.abs(this.speedX) : -Math.abs(this.speedX);
+        this.speedX = (this.x < characterX) ? normalEnemySpeed : -normalEnemySpeed;
       }
 
-      // Movin in.
+      // Fighting.
       else {
         let directionLeft = (this.x > characterX);
         this.state = directionLeft ? enemyFightingLeft : enemyFightingRight;
-        this.speedX = directionLeft ? Math.abs(this.speedX) : -Math.abs(this.speedX);
+        this.speedX = directionLeft ? -fightingEnemySpeed : fightingEnemySpeed;
       }
 
       // New random duration of state.
-      this.timeout = random() * 10 + 1;
+      this.timeout = random() * 40 + 20;
     }
     else
     {
       this.timeout--;
       this.x = this.x + this.speedX;
     }
+
+    // Don't let the enemy go out of the screen.
+    if (this.x <= 0) {
+      this.x = 0;
+    }
+    if (this.x >= width) {
+      this.x = width;
+    }
   }
 
-
+  // If the character kicks the enemy, the enemy exits the screen.
   exitLeft() {
     this.state = enemyExitingLeft;
   }
@@ -149,4 +163,7 @@ class Enemy {
       return new Rectangle(this.x, this.y, 110,392);
   }
 
+  getState() {
+    return this.state;
+  }
 }

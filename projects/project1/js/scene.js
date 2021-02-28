@@ -47,24 +47,26 @@ function drawScene() {
 
 // Display the health of the main character.
 function drawHealth() {
-  // Health remaining
+  let maxHealthWidth = 300;
+
+  // Draw the remaining health.
   push();
   noStroke();
-  rectMode(CENTER);
+  rectMode(CORNER);
+  rect(width/2 - maxHealthWidth/2, 140, (maxHealthWidth / character.getMaxHealth()) * character.getHealth(), 40, 4);
   fill('rgba(0,255,0, 0.25)');
-  rect(width/2, 140, 300, 40, 4);
   pop();
 
-  // Stroke
+  // Stroke. Does not change.
   push();
   stroke(100);
   strokeWeight(3);
   noFill();
-  rectMode(CENTER);
-  rect(width/2, 140, 300, 40, 4);
+  rectMode(CORNER);
+  rect(width/2 - maxHealthWidth/2, 140, maxHealthWidth, 40, 4);
   pop();
 
-  // Text
+  // Descriptive Text.
   push();
   textSize(16);
   textFont(lexendMega);
