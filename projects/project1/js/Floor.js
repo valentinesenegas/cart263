@@ -4,7 +4,7 @@ class Floor {
   constructor(x) {
     this.x = x;
     this.y = height + 450;
-    this.yFinal = 650;
+    this.yStart = 650;
     this.speedY = 8;
   }
 
@@ -18,7 +18,7 @@ class Floor {
   }
 
   goUpStart() {
-    if (this.y > this.yFinal) {
+    if (this.y > this.yStart) {
       this.y -= this.speedY;
     }
   }
@@ -29,7 +29,11 @@ class Floor {
     }
   }
 
-  hasReachedFinalPosition() {
-    return (this.y <= this.yFinal);
+  hasReachedStartPosition() {
+    return (this.y <= this.yStart);
+  }
+
+  hasReachedEndPosition() {
+    return (this.y < 0);
   }
 }

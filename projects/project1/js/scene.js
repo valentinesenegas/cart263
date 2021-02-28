@@ -3,7 +3,6 @@
 // Creation of canvas, background, prealoading fonts.
 // Creation of the Platform.
 // ---------- //
-let bg;
 
 // Fonts
 let bigShouldersDisplay;
@@ -17,13 +16,13 @@ function preloadScene() {
   lexendMega = loadFont("assets/fonts/LexendMega-Regular.ttf");
 }
 
-
+// Create the canvas and set default font.
 function setupScene() {
   createCanvas(1267, 900);
   textFont(lexendMega);
 }
 
-
+// Draw elements of the interface.
 function drawScene() {
   // Place the background.
   background(252);
@@ -36,12 +35,12 @@ function drawScene() {
   rect(width/2, 650, 480, 20);
   pop();
 
-  // Display the Level.
+  // Display the current level.
   push();
   textSize(62);
   textFont(bigShouldersDisplay);
   fill(79,79,79);
-  text('Level 01', 10, 60);
+  text(`Level ${level}`, 10, 60);
   pop();
 }
 
@@ -49,6 +48,7 @@ function drawScene() {
 function drawHealth() {
   let maxHealthWidth = 300;
 
+  if (character.getHealth() >= 0) {
   // Draw the remaining health.
   push();
   noStroke();
@@ -56,6 +56,7 @@ function drawHealth() {
   rect(width/2 - maxHealthWidth/2, 140, (maxHealthWidth / character.getMaxHealth()) * character.getHealth(), 40, 4);
   fill('rgba(0,255,0, 0.25)');
   pop();
+  }
 
   // Stroke. Does not change.
   push();

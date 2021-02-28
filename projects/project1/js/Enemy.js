@@ -44,9 +44,9 @@ class Enemy {
   constructor(x, yFinal, imagesIndex) {
     this.x = x;
     this.y = height;
-    this.w = this.index
     this.yFinal = yFinal;
     this.images = imgEnemies[imagesIndex];
+    this.w = this.images[0].width;
     this.speedX = 3;
     this.speedY = 8;
     this.state = enemyStanding;
@@ -107,19 +107,19 @@ class Enemy {
 
       // New random duration of state.
       this.timeout = random() * 40 + 20;
-    }
-    else
-    {
+    } else {
       this.timeout--;
       this.x = this.x + this.speedX;
     }
 
     // Don't let the enemy go out of the screen.
-    if (this.x <= 0) {
-      this.x = 0;
-    }
-    if (this.x >= width) {
-      this.x = width;
+    if (this.state === enemyStanding || this.state === enemyFightingLeft || this.state === enemyFightingRight) {
+      if (this.x <= 0) {
+        this.x = 0;
+      }
+      if (this.x >= width) {
+        this.x = width;
+      }
     }
   }
 
@@ -132,7 +132,7 @@ class Enemy {
     this.state = enemyExitingRight;
   }
 
-// Character on the right moves toward the platform.
+  // Character on the right moves toward the platform.
   moveLeft() {
     if (this.y < 270 && this.x > 750)
       this.x -= this.speedX;
@@ -156,11 +156,11 @@ class Enemy {
   getRectangle() {
     fill('rgba(0,255,0, 0.25)');
     if (this.state == fightLeft)
-      return new Rectangle(this.x, this.y, 200,100);
+      return new Rectangle(this.x, this.y + 220, 200, 100);
     else if (this.state == fightRight)
-      return new Rectangle(this.x, this.y, 200,100);
+      return new Rectangle(this.x, this.y + 220, 200, 100);
     else
-      return new Rectangle(this.x, this.y, 110,392);
+      return new Rectangle(this.x, this.y, 110, 392);
   }
 
   getState() {

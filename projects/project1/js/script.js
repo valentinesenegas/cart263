@@ -14,10 +14,15 @@ let enemy1 = null;
 let enemy2 = null;
 let floor1;
 let floor2;
+
+// The state of the game.
+let gameState;
+// gameState possible values:
 const stateFloorEnter = 0;
 const stateFight = 1;
 const stateFloorLeave = 2;
-let gameState;
+
+let level = 0;
 
 let lastKeyPressedLeft = true;
 
@@ -30,6 +35,12 @@ function preload() {
   preloadFood();
 }
 
+
+//*********************************************************************
+//                                                                   //
+//                           S E T U P                               //
+//                                                                   //
+//*********************************************************************
 
 // Setup the scene and the game in general.
 function setup() {
@@ -51,18 +62,48 @@ function setupGame() {
   // }
 }
 
+// Set up the beginning of a level. Create new enemies and new floors.
+function setupLevel() {
+  level++;
+
+  // The floors appear from the bottom of the screen, one on the left, one on the right side.
+  // Enemy 1 is on the left side, Enemy 2 is on the right side.
+  // Enemy Parameters: x, yFinal, index.
+  enemy1 = new Enemy(100, 270, 0);
+  enemy2 = new Enemy(width-150, 270, 1);
+
+  floor1 = new Floor(0);
+  floor2 = new Floor(900);
+}
+
+
+function checkEndOfLevel() {
+  // When the two enemies have exited the screen, the floor leaves and new ones appear.
+  if (gameState == stateFight && enemy1.getState() === enemyHasExited && enemy2.getState() === enemyHasExited)
+    gameState = stateFloorLeave;
+}
+
+
+
+//*********************************************************************
+//                                                                   //
+//                            D R A W                                //
+//                                                                   //
+//*********************************************************************
 
 // Draw the scene, the main characters and the enemies.
 function draw() {
-  // Part 1: Draw the scene (platform), food and the character.
+  // Detect keyboard input from the user.
   detectKeyboardInput();
 
+  // Draw the scene (platform), the floors, the food, the enemies, the character and its health.
   drawScene();
   drawFloor();
   drawFood();
   drawEnemies();
   drawCharacter();
   drawHealth();
+  checkEndOfLevel();
 }
 
 
@@ -94,6 +135,7 @@ function detectKeyboardInput() {
     character.setState(standing);
 }
 
+// Draw the food that is on the platform.
 function drawFood() {
   food1.draw();
 
@@ -102,6 +144,7 @@ function drawFood() {
   // }
 }
 
+// Draw the character
 function drawCharacter() {
   character.drawCharacter();
 }
@@ -149,31 +192,33 @@ function drawEnemies() {
 
 
 function drawFloor() {
-  if (floor1.hasReachedFinalPosition() === false) {
-    floor1.goUpStart();
-  }
+  if (gameState === stateFloorEnter) {
+    if (floor1.hasReachedStartPosition() === false) {
+      floor1.goUpStart();
+    }
 
-  if (floor2.hasReachedFinalPosition() === false) {
-    floor2.goUpStart();
-    if (floor1.hasReachedFinalPosition() === true &&
-        floor2.hasReachedFinalPosition() === true)
-          gameState = stateFight;
+    if (floor2.hasReachedStartPosition() === false) {
+      floor2.goUpStart();
+      if (floor1.hasReachedStartPosition() === true &&
+          floor2.hasReachedStartPosition() === true)
+            gameState = stateFight;
+    }
+  }
+  else if (gameState === stateFloorLeave) {
+    if (floor1.hasReachedEndPosition() === false) {
+      floor1.goUpEnd();
+    }
+
+    if (floor2.hasReachedEndPosition() === false) {
+      floor2.goUpEnd();
+      if (floor1.hasReachedEndPosition() === true &&
+          floor2.hasReachedEndPosition() === true) {
+            setupLevel();
+            gameState = stateFloorEnter;
+      }
+    }
   }
 
   floor1.draw();
   floor2.draw();
-}
-
-function setupLevel() {
-  // The floors appear from the bottom of the screen, one on the left, one on the right side.
-  // There is an enemy on each floor.
-  // Enemy Parameters: x, yFinal, index.
-  enemy1 = new Enemy(100, 270, 0);
-  enemy2 = new Enemy(width-150, 270, 1);
-
-  // enemy1 = new Enemy(150, height/2, imgEnemy1[0]);
-  // enemy2 = new Enemy(width-150, height/2, imgEnemy2[0]);
-
-  floor1 = new Floor(0);
-  floor2 = new Floor(900);
 }
