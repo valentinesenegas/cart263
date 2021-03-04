@@ -10,6 +10,7 @@ const standing = 0;
 const fightLeft = 1;
 const fightRight = 2;
 const injured = 3;
+const win = 4;
 
 const normalSpeed = 3;
 const fightSpeed = 6;
@@ -23,6 +24,7 @@ function preloadCharacter() {
   imgCharacter.push(loadImage("assets/images/character-1-fight-left.png"));
   imgCharacter.push(loadImage("assets/images/character-1-fight-right.png"));
   imgCharacter.push(loadImage("assets/images/character-1-injured.png"));
+  imgCharacter.push(loadImage("assets/images/character-1-happy.png"));
 }
 
 // Class for the character.

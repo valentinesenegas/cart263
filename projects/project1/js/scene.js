@@ -6,20 +6,21 @@
 
 // Fonts
 let bigShouldersDisplay;
-let lexendMega;
+let lexendDeca;
 
 function preloadScene() {
   // Google Fonts: Big Shoulders Display and Lexend Mega
   // Title:
   bigShouldersDisplay = loadFont("assets/fonts/BigShouldersDisplay-Regular.ttf");
   // Body text:
-  lexendMega = loadFont("assets/fonts/LexendMega-Regular.ttf");
+  lexendDeca = loadFont("assets/fonts/LexendDeca-Regular.ttf");
+  // lexendMega = loadFont("assets/fonts/LexendMega-Regular.ttf");
 }
 
 // Create the canvas and set default font.
 function setupScene() {
   createCanvas(1267, 900);
-  textFont(lexendMega);
+  textFont(lexendDeca);
 }
 
 // Draw elements of the interface.
@@ -46,17 +47,20 @@ function drawScene() {
 
 // Display the health of the main character.
 function drawHealth() {
+  if (gameState == stateWin)
+    return;
+
   let maxHealthWidth = 300;
 
   if (character.getHealth() >= 0) {
-  // Draw the remaining health.
-  push();
-  noStroke();
-  rectMode(CORNER);
-  rect(width/2 - maxHealthWidth/2, 140, (maxHealthWidth / character.getMaxHealth()) * character.getHealth(), 40, 4);
-  fill('rgba(0,255,0, 0.25)');
-  pop();
-  // rgba(202, 18, 18, 1)
+    // Draw the remaining health.
+    push();
+    noStroke();
+    rectMode(CORNER);
+    rect(width/2 - maxHealthWidth/2, 140, (maxHealthWidth / character.getMaxHealth()) * character.getHealth(), 40, 4);
+    fill('rgba(0,255,0, 0.25)');
+    pop();
+    // rgba(202, 18, 18, 1)
   }
 
   // Stroke. Does not change.
@@ -71,7 +75,7 @@ function drawHealth() {
   // Descriptive Text.
   push();
   textSize(16);
-  textFont(lexendMega);
+  textFont(lexendDeca);
   textAlign(CENTER);
   fill(79,79,79);
   text('Your health', width/2, 110);

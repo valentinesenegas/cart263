@@ -7,41 +7,15 @@ Valentine Sénégas
 This is a game inspired by the movie The Platform directed by Galder Gaztelu-Urrutia.
 */
 
-// Variables
-let character;
-let food1;
-let enemy1 = null;
-let enemy2 = null;
-let floor1;
-let floor2;
-
-// The state of the game.
-let gameState;
-// gameState possible values:
-const stateFloorEnter = 0;
-const stateFight = 1;
-const stateFloorLeave = 2;
-const stateWin = 3;
-const stateLost = 4;
-const stateHome = 5;
-const stateInstructions = 6;
-
-gameState = stateHome;
-
-let level = 0;
-
-// Used to know which side to attack depending on the last arrow key pressed.
-let lastKeyPressedLeft = true;
-
+let gameStarted = false;
 
 // Preload the main character, the enemies, the scene and the food on the platform.
 function preload() {
-  preloadHome();
-
   preloadCharacter();
   preloadEnemies();
   preloadScene();
   preloadFood();
+  preloadHome();
 }
 
 
@@ -53,13 +27,9 @@ function preload() {
 
 // Setup the scene and the game in general.
 function setup() {
-  
-    setupScene();
-
-  if (gameState != stateHome) {
-    setupGame();
-    setupLevel();
-  }
+  setupScene();
+  setupGame();
+  setupLevel();
 }
 
 
@@ -71,12 +41,19 @@ function setup() {
 
 // Draw the scene, the main characters and the enemies.
 function draw() {
+  // Check if user has started the game.
+  if (checkGameStarted() && gameStarted == false) {
+      gameStarted = true;
+      gameState = stateFloorEnter;
+  }
 
-  if (gameState === stateHome) {
-    drawHome();
-  } else {
+  // If the game has started, then check detect input and draw the game.
+  if (gameStarted) {
     // Detect keyboard input from the user.
     detectKeyboardInput();
     drawGame();
   }
+  // If game has not started, draw the home screen.
+  else
+    drawHome();
 }

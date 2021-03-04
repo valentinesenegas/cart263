@@ -1,5 +1,30 @@
 "use strict";
 
+// The state of the game.
+let gameState;
+// gameState possible values:
+const stateFloorEnter = 0;
+const stateFight = 1;
+const stateFloorLeave = 2;
+const stateWin = 3;
+const stateLost = 4;
+const stateInstructions = 6;
+
+// Level of the game, 0 means game not started.
+let level = 0;
+let levelMax = 2;   // Level to reach to win the game.<
+
+// Variables
+let character;
+let food1;
+let enemy1 = null;
+let enemy2 = null;
+let floor1;
+let floor2;
+
+// Used to know which side to attack depending on the last arrow key pressed.
+let lastKeyPressedLeft = true;
+
 
 //*********************************************************************
 //                                                                   //
@@ -23,16 +48,17 @@ function setupGame() {
 
 // Set up the beginning of a level. Create new enemies and new floors.
 function setupLevel() {
-  level++;
 
-  // The floors appear from the bottom of the screen, one on the left, one on the right side.
-  // Enemy 1 is on the left side, Enemy 2 is on the right side.
-  // Enemy Parameters: x, yFinal, index.
-  enemy1 = new Enemy(100, 270, 0);
-  enemy2 = new Enemy(width-150, 270, 1);
+    level++;
 
-  floor1 = new Floor(0);
-  floor2 = new Floor(900);
+    // The floors appear from the bottom of the screen, one on the left, one on the right side.
+    // Enemy 1 is on the left side, Enemy 2 is on the right side.
+    // Enemy Parameters: x, yFinal, index.
+    enemy1 = new Enemy(100, 270, 0);
+    enemy2 = new Enemy(width-150, 270, 1);
+
+    floor1 = new Floor(0);
+    floor2 = new Floor(900);
 }
 
 
@@ -47,10 +73,12 @@ function drawGame() {
   drawScene();
   drawFloor();
   drawFood();
-  drawEnemies();
+  if (gameState != stateWin)
+    drawEnemies();
   drawCharacter();
   drawHealth();
   checkEndOfLevel();
+  drawWin();
 }
 
 
@@ -103,6 +131,8 @@ function drawCharacter() {
 // If the enemies are already created, draw them and animate them.
 // Detect collisions.
 function drawEnemies() {
+
+  // Enemy 1
   if (enemy1 != null) {
     if (gameState == stateFloorEnter)
       enemy1.goUpStart();
@@ -121,6 +151,7 @@ function drawEnemies() {
     }
   }
 
+  // Enemy 2
   if (enemy2 != null) {
     if (gameState == stateFloorEnter)
       enemy2.goUpStart();
@@ -176,7 +207,51 @@ function drawFloor() {
 
 
 function checkEndOfLevel() {
-  // When the two enemies have exited the screen, the floor leaves and new ones appear.
-  if (gameState == stateFight && enemy1.getState() === enemyHasExited && enemy2.getState() === enemyHasExited)
-    gameState = stateFloorLeave;
+
+  if (level < levelMax) {
+    // When the two enemies have exited the screen, the floor leaves and new ones appear.
+    if (gameState == stateFight && enemy1.getState() === enemyHasExited && enemy2.getState() === enemyHasExited)
+      gameState = stateFloorLeave;
+  }
+  else {
+    character.setState(win);
+    gameState = stateWin;
+  }
+
+}
+
+
+function drawWin() {
+  if (gameState != stateWin)
+    return;
+
+  push();
+  textSize(36);
+  textFont(bigShouldersDisplay);
+  textAlign(CENTER);
+  fill('#000000');
+  textLeading(28);
+  text(`You won!`, width/2, 110);
+  pop();
+
+
+  push();
+  textSize(18);
+  textAlign(CORNER, CENTER);
+  fill('#000000');
+  textLeading(22);
+  text(`The current top-down hierarchy is harmful,
+    and it could easily be avoided if we distributed wisely
+    and be satisfied with a reasonable amount of food and wealth.`, 50, 110, 500, 500);
+  pop();
+
+  // Big text at the bottom.
+  push();
+  textSize(34);
+  textAlign(CENTER, CENTER);
+  textLeading(35);
+  fill('#000000');
+  text(`When resources are shared equally,\n
+    there is more than enough for everybody.`, width/2, 750);
+  pop();
 }

@@ -37,10 +37,10 @@ function preloadHome() {
 function drawHome() {
 background(250);
 
-// Logo.
+// Logo, The Platform.
 push();
 imageMode(CORNER);
-image(imgLogo, width/2 - imgLogo.width/2, 100);
+image(imgLogo, width/2 - imgLogo.width/2, 15);
 pop();
 
 // Introduction image. Description and plan
@@ -49,24 +49,26 @@ imageMode(CENTER);
 image(imgIntroduction, width/2, height/2);
 pop();
 
-// Intro Text.
-// push();
-// textSize(22);
-// textAlign(CORNER, CENTER);
-// fill('#000000');
-// text(`You are in a vertical prison with 10 levels.
-// On each level live two prisoners.
-// Every day, a platform comes from above and brings plenty of meals down to all of you.
-// The problem: the inmates on the first levels eat too much food, and by the time the platform reaches the lower prisoners, there is nothing left.`, 0, 170, 1100, 500);
-// pop();
-
-// Text.
+// Intro Text on the left.
 push();
-textSize(22);
+textSize(18);
 textAlign(CORNER, CENTER);
 fill('#000000');
-text(`You are a lucky one the first level, you can end this.
-You must protect the platform and the food from the hostile prisoners.`, 50, 470, 1100, 500);
+textLeading(28);
+text(`You are in a vertical prison with 10 levels.
+On each level live two prisoners.
+Every day, a platform comes from above and \nbrings plenty of meals down to all of you.\n
+The problem: the inmates on the first levels eat too much food, and by the time the platform reaches the lower \nprisoners, there is nothing left.`, 62, 110, 500, 500);
+pop();
+
+// Big text at the bottom.
+push();
+textSize(28);
+textAlign(CORNER, CENTER);
+textLeading(35);
+fill('#000000');
+text(`You are a lucky one the first level, you can end this.\n
+You must protect the platform and the food from the hostile prisoners.`, 50, 450, 1100, 500);
 pop();
 
 // Button.
@@ -81,22 +83,23 @@ function drawStartButton() {
       mouseY >= startButtonY && mouseY <= startButtonY + startButtonH) {
     if (mouseIsPressed)
       imgStartButton = imgStartButtonPressed;
-    else if (imgLastStartButton == imgStartButtonPressed) {
-      gameState = stateFloorEnter;
-      setupGame();
-      setupLevel();
-    }
-    else
+    else if (imgLastStartButton != imgStartButtonPressed) {
       imgStartButton = imgStartButtonHover;
+    }
   }
+
   imgLastStartButton = imgStartButton;
 
   push();
   imageMode(CORNER);
   image(imgStartButton,     startButtonX,     startButtonY);
-  textSize(24);
+  textSize(32);
   textAlign(CENTER, CENTER);
   fill('#ffffff');
-  text("Play", startButtonX, startButtonY, startButtonW, startButtonH);
+  text("Play", startButtonX, startButtonY, startButtonW, startButtonH -12);
   pop();
+}
+
+function checkGameStarted() {
+  return imgLastStartButton == imgStartButtonPressed;
 }
