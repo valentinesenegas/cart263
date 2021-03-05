@@ -13,8 +13,8 @@ const injured = 3;
 const win = 4;
 
 const normalSpeed = 3;
-const fightSpeed = 6;
-const maxHealth = 5;
+const fightSpeed = 8;
+const maxHealth = 10;
 
 let hit = false;
 
@@ -80,7 +80,7 @@ class Character {
 
   // Create a rectangle on top of the character to detect collisions.
   getRectangle() {
-    fill('rgba(0,255,0, 0.25)');
+    // fill('rgba(0,255,0, 0.25)'); Debug code, do not delete.
     if (this.state == fightLeft)
       return new Rectangle(this.x, this.y + 220, 150, 60);
     else if (this.state == fightRight)
@@ -107,4 +107,41 @@ class Character {
     this.timeoutInjured = 50;
   }
 
+}
+
+// Display the health of the main character.
+function drawHealth() {
+  if (gameState == stateWin || gameState == stateLost)
+    return;
+
+  let maxHealthWidth = 300;
+
+  if (character.getHealth() >= 0) {
+    // Draw the remaining health.
+    push();
+    noStroke();
+    rectMode(CORNER);
+    fill('rgba(0,255,0, 0.25)');
+    rect(width/2 - maxHealthWidth/2, 140, (maxHealthWidth / character.getMaxHealth()) * character.getHealth(), 40, 4);
+    pop();
+    // rgba(202, 18, 18, 1)
+  }
+
+  // Stroke. Does not change.
+  push();
+  stroke(100);
+  strokeWeight(3);
+  noFill();
+  rectMode(CORNER);
+  rect(width/2 - maxHealthWidth/2, 140, maxHealthWidth, 40, 4);
+  pop();
+
+  // Descriptive Text.
+  push();
+  textSize(16);
+  textFont(lexendDeca);
+  textAlign(CENTER);
+  fill(79,79,79);
+  text('Food left', width/2, 110);
+  pop();
 }

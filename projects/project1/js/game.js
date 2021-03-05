@@ -12,11 +12,11 @@ const stateInstructions = 6;
 
 // Level of the game, 0 means game not started.
 let level = 0;
-let levelMax = 2;   // Level to reach to win the game.<
+let levelMax = 3;   // Level to reach to win the game.<
 
 // Variables
 let character;
-let food1;
+let foods = [];
 let enemy1 = null;
 let enemy2 = null;
 let floor1;
@@ -35,15 +35,11 @@ let lastKeyPressedLeft = true;
 // Set up a new character and food on the platform.
 function setupGame() {
   character = new Character(standing);
-  food1 = new Food();
-  // gameState = stateFloorEnter;
 
-  // for (let i = 0; i < numImgFood; i++) {
-  //   console.log("hehe");
-  //   `food[${i}]`.new Food();
-  //   // `food[${i}`].new Food();
-  //     // imgFood.push(loadImage(`assets/images/food/food${i}.png`));
-  // }
+  let food;
+  for (food = 0; food < character.getMaxHealth(); food++) {
+    foods.push(new Food());
+  }
 }
 
 // Set up the beginning of a level. Create new enemies and new floors.
@@ -79,13 +75,14 @@ function drawGame() {
   drawHealth();
   checkEndOfLevel();
   drawWin();
+  drawLost();
 }
 
 
 // Detect keyboard input from the user.
 function detectKeyboardInput() {
   // Arrow keys: move left or right.
-  if (character.getState() == injured)
+  if (character.getState() == injured || gameState == stateLost)
     return;
 
   if (keyIsDown(LEFT_ARROW)) {
@@ -112,15 +109,11 @@ function detectKeyboardInput() {
 }
 
 
-
-
 // Draw the food that is on the platform.
 function drawFood() {
-  food1.draw();
-
-  // (let i = 0; i < numImgFood; i++) {
-  //   food[i].draw();
-  // }
+  let food;
+  for (food = 0; food < character.getHealth(); food++)
+    foods[food].draw();
 }
 
 // Draw the character
@@ -142,8 +135,11 @@ function drawEnemies() {
 
     let collisionEnemy1 = character.getRectangle().detectCollision(enemy1.getRectangle());
     if (collisionEnemy1) {
-      if (enemy1.getState() == enemyFightingLeft || enemy1.getState() == enemyFightingRight)
+      if (enemy1.getState() == enemyFightingLeft || enemy1.getState() == enemyFightingRight) {
         character.hit();
+        if (character.getHealth() == 0)
+          gameState = stateLost;
+      }
       if (character.getState() == fightLeft)
         enemy1.exitLeft();
       else if (character.getState() == fightRight)
@@ -162,8 +158,11 @@ function drawEnemies() {
     let collisionEnemy2 =character.getRectangle().detectCollision(enemy2.getRectangle());
 
     if (collisionEnemy2) {
-      if (enemy2.getState() == enemyFightingLeft || enemy2.getState() == enemyFightingRight)
+      if (enemy2.getState() == enemyFightingLeft || enemy2.getState() == enemyFightingRight) {
         character.hit();
+        if (character.getHealth() == 0)
+          gameState = stateLost;
+      }
       if (character.getState() == fightRight)
         enemy2.exitRight();
       else if (character.getState() == fightLeft)
@@ -214,10 +213,10 @@ function checkEndOfLevel() {
       gameState = stateFloorLeave;
   }
   else {
+    // When the user completes the last level, they win.
     character.setState(win);
     gameState = stateWin;
   }
-
 }
 
 
@@ -225,6 +224,7 @@ function drawWin() {
   if (gameState != stateWin)
     return;
 
+  // Main text
   push();
   textSize(36);
   textFont(bigShouldersDisplay);
@@ -234,15 +234,15 @@ function drawWin() {
   text(`You won!`, width/2, 110);
   pop();
 
-
+  // Secondary text.
   push();
   textSize(18);
   textAlign(CORNER, CENTER);
   fill('#000000');
   textLeading(22);
-  text(`The current top-down hierarchy is harmful,
-    and it could easily be avoided if we distributed wisely
-    and be satisfied with a reasonable amount of food and wealth.`, 50, 110, 500, 500);
+  text(`The current top-down hierarchy is harmful, ` +
+    `and it could easily be avoided if we distributed wisely ` +
+    `and be satisfied with a reasonable amount of food and wealth.`, 50, 100, 250, 500);
   pop();
 
   // Big text at the bottom.
@@ -253,5 +253,31 @@ function drawWin() {
   fill('#000000');
   text(`When resources are shared equally,\n
     there is more than enough for everybody.`, width/2, 750);
+  pop();
+}
+
+
+function drawLost() {
+  if (gameState != stateLost)
+    return;
+
+  // Main text
+  push();
+  textSize(36);
+  textFont(bigShouldersDisplay);
+  textAlign(CENTER);
+  fill('#000000');
+  textLeading(28);
+  text(`You lost...`, width/2, 110);
+  pop();
+
+  // Big text at the bottom.
+  push();
+  textSize(34);
+  textAlign(CENTER, CENTER);
+  textLeading(35);
+  fill('#000000');
+  text(`When resources are shared equally,\n` +
+    `there is more than enough for everybody.`, width/2, 750);
   pop();
 }

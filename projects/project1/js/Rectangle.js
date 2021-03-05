@@ -11,8 +11,8 @@ class Rectangle {
   }
 
   detectCollision(hitRectangle) {
-    rect(this.x, this.y, this.w, this.h);
-    rect(hitRectangle.x, hitRectangle.y, hitRectangle.w, hitRectangle.h);
+    //rect(this.x, this.y, this.w, this.h);  Debug code, do not delete.
+    //rect(hitRectangle.x, hitRectangle.y, hitRectangle.w, hitRectangle.h);  Debug code, do not delete.
     return collideRectRect(this.x, this.y, this.w, this.h, hitRectangle.x, hitRectangle.y, hitRectangle.w, hitRectangle.h);
   }
 }

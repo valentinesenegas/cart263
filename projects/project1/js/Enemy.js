@@ -154,7 +154,7 @@ class Enemy {
 
   // Create a rectangle on top of the enemy to detect collisions.
   getRectangle() {
-    fill('rgba(0,255,0, 0.25)');
+    //fill('rgba(0,255,0, 0.25)'); Debug code, do not delete.
     if (this.state == fightLeft)
       return new Rectangle(this.x, this.y + 220, 200, 100);
     else if (this.state == fightRight)
