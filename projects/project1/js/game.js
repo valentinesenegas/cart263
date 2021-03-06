@@ -8,11 +8,10 @@ const stateFight = 1;
 const stateFloorLeave = 2;
 const stateWin = 3;
 const stateLost = 4;
-const stateInstructions = 6;
 
 // Level of the game, 0 means game not started.
 let level = 0;
-let levelMax = 3;   // Level to reach to win the game.<
+let levelMax = 3;   // Level to reach to win the game.
 
 // Variables
 let character;
@@ -224,7 +223,7 @@ function drawWin() {
   if (gameState != stateWin)
     return;
 
-  // Main text
+  // Main text.
   push();
   textSize(36);
   textFont(bigShouldersDisplay);
@@ -261,7 +260,7 @@ function drawLost() {
   if (gameState != stateLost)
     return;
 
-  // Main text
+  // Main text.
   push();
   textSize(36);
   textFont(bigShouldersDisplay);

@@ -3,10 +3,9 @@
 "use strict";
 
 // Images
-
 let imgLogo;
-
 let imgIntroduction;
+let imgHowToPlay;
 
 // Image for the start button.
 let imgStartButtonReleased;
@@ -31,6 +30,9 @@ function preloadHome() {
 
   // Introduction to the game.
   imgIntroduction         = loadImage("assets/images/introduction.png");
+
+  // Intstructions on how to play the game.
+  imgHowToPlay         = loadImage("assets/images/howtoplay.png");
 }
 
 
@@ -40,10 +42,20 @@ background(250);
 // Logo, The Platform.
 push();
 imageMode(CORNER);
-image(imgLogo, width/2 - imgLogo.width/2, 15);
+image(imgLogo, width/2 - imgLogo.width/2, 28);
 pop();
 
-// Introduction image. Description and plan
+// Inspired by the movie
+push();
+textSize(28);
+textAlign(CENTER);
+textLeading(15);
+fill('#4F4F4F');
+textFont(bigShouldersDisplay);
+text(`Inspired by the movie.`, width/2, 32);
+pop();
+
+// Introduction image. Description and plan.
 push();
 imageMode(CENTER);
 image(imgIntroduction, width/2, height/2);
@@ -61,14 +73,20 @@ Every day, a platform comes from above and \nbrings plenty of meals down to all 
 The problem: the inmates on the first levels eat too much food, and by the time the platform reaches the lower \nprisoners, there is nothing left.`, 62, 110, 500, 500);
 pop();
 
+// How to play.
+push();
+imageMode(CORNER);
+image(imgHowToPlay, 10, 550);
+pop();
+
 // Big text at the bottom.
 push();
-textSize(28);
+textSize(24);
 textAlign(CORNER, CENTER);
 textLeading(35);
 fill('#000000');
 text(`You are a lucky one the first level, you can end this.\n
-You must protect the platform and the food from the hostile prisoners.`, 50, 450, 1100, 500);
+You must protect the platform and the food from the hostile prisoners.`, 600, 450, 620, 500);
 pop();
 
 // Button.

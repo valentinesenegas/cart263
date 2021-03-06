@@ -22,7 +22,6 @@ class Food {
   draw() {
     push();
     imageMode(CENTER);
-    // image(imgFood[0], this.x, this.y);
     image(this.img, this.x, this.y);
     pop();
   }

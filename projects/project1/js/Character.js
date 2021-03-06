@@ -124,10 +124,9 @@ function drawHealth() {
     fill('rgba(0,255,0, 0.25)');
     rect(width/2 - maxHealthWidth/2, 140, (maxHealthWidth / character.getMaxHealth()) * character.getHealth(), 40, 4);
     pop();
-    // rgba(202, 18, 18, 1)
   }
 
-  // Stroke. Does not change.
+  // Stroke around the health. Does not change.
   push();
   stroke(100);
   strokeWeight(3);
