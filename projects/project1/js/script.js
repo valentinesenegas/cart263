@@ -13,7 +13,7 @@ let gameStarted = false;
 function preload() {
   preloadCharacter();
   preloadEnemies();
-  preloadScene();
+  preloadFontsSounds();
   preloadFood();
   preloadHome();
 }
@@ -45,6 +45,7 @@ function draw() {
   if (checkGameStarted() && gameStarted == false) {
       gameStarted = true;
       gameState = stateFloorEnter;
+      playMusic();
   }
 
   // If the game has started, then check detect input and draw the game.

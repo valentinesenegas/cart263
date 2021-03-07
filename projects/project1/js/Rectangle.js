@@ -1,4 +1,5 @@
-// Rectangle and Collisions
+// Rectangle and Collisions.
+// Rectangles are drawn above the character and the enemies to detect collisions using p5.collide2D, but are in fact not drawn on the canvas for aesthetic reasons.
 
 "use strict";
 

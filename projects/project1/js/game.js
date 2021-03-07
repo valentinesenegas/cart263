@@ -22,7 +22,8 @@ let floor1;
 let floor2;
 
 // Used to know which side to attack depending on the last arrow key pressed.
-let lastKeyPressedLeft = true;
+let lastKeyPressedLeft = false;
+let lastKeyPressedRight = false;
 
 
 //*********************************************************************
@@ -84,26 +85,28 @@ function detectKeyboardInput() {
   if (character.getState() == injured || gameState == stateLost)
     return;
 
-  if (keyIsDown(LEFT_ARROW)) {
-    character.moveLeft();
-    lastKeyPressedLeft = true;
-
-  } else if (keyIsDown(RIGHT_ARROW)) {
-    character.moveRight();
-    lastKeyPressedLeft = false;
-  } else
-      character.setState(standing);
-
   // Space bar: attack left or right depending on the last arrow key pressed.
   if (keyIsDown(32)) {
-    if (lastKeyPressedLeft === true) {
+    if (lastKeyPressedLeft === true)
       character.setState(fightLeft);
-    }
-    if (lastKeyPressedLeft === false) {
+    if (lastKeyPressedRight === true)
       character.setState(fightRight);
-    }
   }
-  else if (keyIsPressed && keyCode === 32)
+
+  //  Determine direction based on last left/right arrow pressed.
+  if (keyIsDown(LEFT_ARROW)) {
+    if (character.getState() == fightRight)
+      character.setState(standing);
+    character.moveLeft();
+    lastKeyPressedLeft = true;
+    lastKeyPressedRight = false;
+  } else if (keyIsDown(RIGHT_ARROW)) {
+    if (character.getState() == fightLeft)
+      character.setState(standing);
+    character.moveRight();
+    lastKeyPressedLeft = false;
+    lastKeyPressedRight = true;
+  } else
     character.setState(standing);
 }
 
@@ -139,10 +142,15 @@ function drawEnemies() {
         if (character.getHealth() == 0)
           gameState = stateLost;
       }
-      if (character.getState() == fightLeft)
+      if (character.getState() == fightLeft) {
         enemy1.exitLeft();
-      else if (character.getState() == fightRight)
+        playSoundPunch();
+      }
+
+      else if (character.getState() == fightRight) {
         enemy1.exitRight();
+        playSoundPunch();
+      }
     }
   }
 
@@ -162,10 +170,14 @@ function drawEnemies() {
         if (character.getHealth() == 0)
           gameState = stateLost;
       }
-      if (character.getState() == fightRight)
+      if (character.getState() == fightRight) {
         enemy2.exitRight();
-      else if (character.getState() == fightLeft)
+        playSoundPunch();
+      }
+      else if (character.getState() == fightLeft) {
         enemy2.exitLeft();
+        playSoundPunch();
+      }
     }
   }
 }
@@ -206,7 +218,7 @@ function drawFloor() {
 
 function checkEndOfLevel() {
 
-  if (level < levelMax) {
+  if (level <= levelMax) {
     // When the two enemies have exited the screen, the floor leaves and new ones appear.
     if (gameState == stateFight && enemy1.getState() === enemyHasExited && enemy2.getState() === enemyHasExited)
       gameState = stateFloorLeave;
@@ -233,7 +245,7 @@ function drawWin() {
   text(`You won!`, width/2, 110);
   pop();
 
-  // Secondary text.
+  // Secondary text on the left.
   push();
   textSize(18);
   textAlign(CORNER, CENTER);
@@ -241,7 +253,7 @@ function drawWin() {
   textLeading(22);
   text(`The current top-down hierarchy is harmful, ` +
     `and it could easily be avoided if we distributed wisely ` +
-    `and be satisfied with a reasonable amount of food and wealth.`, 50, 100, 250, 500);
+    `and be satisfied with a reasonable amount of food and wealth.`, 50, 100, 375, 500);
   pop();
 
   // Big text at the bottom.
@@ -279,4 +291,21 @@ function drawLost() {
   text(`When resources are shared equally,\n` +
     `there is more than enough for everybody.`, width/2, 750);
   pop();
+}
+
+function playMusic() {
+  if (music.isPlaying())
+  music.stop();
+ else
+  music.play();
+}
+
+function playSoundPunch() {
+  if (gameState != stateWin && gameState != stateLost) {
+    if (soundPunch.isPlaying())
+      soundPunch.stop();
+    else
+      soundPunch.play();
+  }
+
 }

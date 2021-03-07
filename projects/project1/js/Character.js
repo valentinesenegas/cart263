@@ -62,6 +62,7 @@ class Character {
     this.state = state;
   }
 
+
   getState() {
     return this.state;
   }
@@ -105,6 +106,8 @@ class Character {
     this.health--;
     this.state = injured;
     this.timeoutInjured = 50;
+    // soundPunch.play();
+    playSoundPunch();
   }
 
 }

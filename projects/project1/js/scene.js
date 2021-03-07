@@ -1,20 +1,27 @@
 "use strict";
 
-// Creation of canvas, background, prealoading fonts.
+// Creation of canvas, background, prealoading fonts and sounds.
 // Creation of the Platform.
 // ---------- //
 
-// Fonts
+// -- Fonts -- //
 let bigShouldersDisplay;
 let lexendDeca;
 
-function preloadScene() {
+// -- Sounds -- //
+let music;
+let soundPunch;
+
+function preloadFontsSounds() {
   // Google Fonts: Big Shoulders Display and Lexend Mega
   // Title:
   bigShouldersDisplay = loadFont("assets/fonts/BigShouldersDisplay-Regular.ttf");
   // Body text:
   lexendDeca = loadFont("assets/fonts/LexendDeca-Regular.ttf");
-  // lexendMega = loadFont("assets/fonts/LexendMega-Regular.ttf");
+
+  // Sounds
+  music = loadSound("assets/sounds/DesertofLostSouls.mp3");
+  soundPunch = loadSound("assets/sounds/punch.wav");
 }
 
 // Create the canvas and set default font.
@@ -37,10 +44,12 @@ function drawScene() {
   pop();
 
   // Display the current level.
-  push();
-  textSize(62);
-  textFont(bigShouldersDisplay);
-  fill(79,79,79);
-  text(`Level ${level}`, 10, 60);
-  pop();
+  if (gameState != stateWin) {
+    push();
+    textSize(62);
+    textFont(bigShouldersDisplay);
+    fill(79,79,79);
+    text(`Level ${level}`, 10, 60);
+    pop();
+  }
 }
