@@ -1,5 +1,9 @@
 "use strict";
 
+// //////////////////////// //
+// Variables and constants //
+// ////////////////////// //
+
 // The state of the game.
 let gameState;
 // gameState possible values:
@@ -11,9 +15,8 @@ const stateLost = 4;
 
 // Level of the game, 0 means game not started.
 let level = 0;
-let levelMax = 3;   // Level to reach to win the game.
+let levelMax = 10; // Level to reach to win the game.
 
-// Variables
 let character;
 let foods = [];
 let enemy1 = null;
@@ -45,16 +48,16 @@ function setupGame() {
 // Set up the beginning of a level. Create new enemies and new floors.
 function setupLevel() {
 
-    level++;
+  level++;
 
-    // The floors appear from the bottom of the screen, one on the left, one on the right side.
-    // Enemy 1 is on the left side, Enemy 2 is on the right side.
-    // Enemy Parameters: x, yFinal, index.
-    enemy1 = new Enemy(100, 270, 0);
-    enemy2 = new Enemy(width-150, 270, 1);
+  // The floors appear from the bottom of the screen, one on the left, one on the right side.
+  // Enemy 1 is on the left side, Enemy 2 is on the right side.
+  // Enemy Parameters: x, yFinal, index.
+  enemy1 = new Enemy(100, 270, 0);
+  enemy2 = new Enemy(width - 150, 270, 1);
 
-    floor1 = new Floor(0);
-    floor2 = new Floor(900);
+  floor1 = new Floor(0);
+  floor2 = new Floor(900);
 }
 
 
@@ -82,7 +85,7 @@ function drawGame() {
 // Detect keyboard input from the user.
 function detectKeyboardInput() {
   // Arrow keys: move left or right.
-  if (character.getState() == injured || gameState == stateLost)
+  if (character.getState() === injured || gameState === stateLost)
     return;
 
   // Space bar: attack left or right depending on the last arrow key pressed.
@@ -95,13 +98,13 @@ function detectKeyboardInput() {
 
   //  Determine direction based on last left/right arrow pressed.
   if (keyIsDown(LEFT_ARROW)) {
-    if (character.getState() == fightRight)
+    if (character.getState() === fightRight)
       character.setState(standing);
     character.moveLeft();
     lastKeyPressedLeft = true;
     lastKeyPressedRight = false;
   } else if (keyIsDown(RIGHT_ARROW)) {
-    if (character.getState() == fightLeft)
+    if (character.getState() === fightLeft)
       character.setState(standing);
     character.moveRight();
     lastKeyPressedLeft = false;
@@ -118,7 +121,7 @@ function drawFood() {
     foods[food].draw();
 }
 
-// Draw the character
+// Draw the character.
 function drawCharacter() {
   character.drawCharacter();
 }
@@ -129,25 +132,23 @@ function drawEnemies() {
 
   // Enemy 1
   if (enemy1 != null) {
-    if (gameState == stateFloorEnter)
+    if (gameState === stateFloorEnter)
       enemy1.goUpStart();
-    else if (gameState == stateFight)
+    else if (gameState === stateFight)
       enemy1.move(character.getState(), character.getX());
     enemy1.drawCharacter();
 
     let collisionEnemy1 = character.getRectangle().detectCollision(enemy1.getRectangle());
     if (collisionEnemy1) {
-      if (enemy1.getState() == enemyFightingLeft || enemy1.getState() == enemyFightingRight) {
+      if (enemy1.getState() === enemyFightingLeft || enemy1.getState() === enemyFightingRight) {
         character.hit();
-        if (character.getHealth() == 0)
+        if (character.getHealth() === 0)
           gameState = stateLost;
       }
-      if (character.getState() == fightLeft) {
+      if (character.getState() === fightLeft) {
         enemy1.exitLeft();
         playSoundPunch();
-      }
-
-      else if (character.getState() == fightRight) {
+      } else if (character.getState() === fightRight) {
         enemy1.exitRight();
         playSoundPunch();
       }
@@ -156,25 +157,24 @@ function drawEnemies() {
 
   // Enemy 2
   if (enemy2 != null) {
-    if (gameState == stateFloorEnter)
+    if (gameState === stateFloorEnter)
       enemy2.goUpStart();
-    else if (gameState == stateFight)
+    else if (gameState === stateFight)
       enemy2.move(character.getState(), character.getX());
     enemy2.drawCharacter();
 
-    let collisionEnemy2 =character.getRectangle().detectCollision(enemy2.getRectangle());
+    let collisionEnemy2 = character.getRectangle().detectCollision(enemy2.getRectangle());
 
     if (collisionEnemy2) {
-      if (enemy2.getState() == enemyFightingLeft || enemy2.getState() == enemyFightingRight) {
+      if (enemy2.getState() === enemyFightingLeft || enemy2.getState() === enemyFightingRight) {
         character.hit();
-        if (character.getHealth() == 0)
+        if (character.getHealth() === 0)
           gameState = stateLost;
       }
-      if (character.getState() == fightRight) {
+      if (character.getState() === fightRight) {
         enemy2.exitRight();
         playSoundPunch();
-      }
-      else if (character.getState() == fightLeft) {
+      } else if (character.getState() === fightLeft) {
         enemy2.exitLeft();
         playSoundPunch();
       }
@@ -182,7 +182,7 @@ function drawEnemies() {
   }
 }
 
-
+// Floors on each side of the screen.
 function drawFloor() {
   if (gameState === stateFloorEnter) {
     if (floor1.hasReachedStartPosition() === false) {
@@ -192,11 +192,10 @@ function drawFloor() {
     if (floor2.hasReachedStartPosition() === false) {
       floor2.goUpStart();
       if (floor1.hasReachedStartPosition() === true &&
-          floor2.hasReachedStartPosition() === true)
-            gameState = stateFight;
+        floor2.hasReachedStartPosition() === true)
+        gameState = stateFight;
     }
-  }
-  else if (gameState === stateFloorLeave) {
+  } else if (gameState === stateFloorLeave) {
     if (floor1.hasReachedEndPosition() === false) {
       floor1.goUpEnd();
     }
@@ -204,9 +203,9 @@ function drawFloor() {
     if (floor2.hasReachedEndPosition() === false) {
       floor2.goUpEnd();
       if (floor1.hasReachedEndPosition() === true &&
-          floor2.hasReachedEndPosition() === true) {
-            setupLevel();
-            gameState = stateFloorEnter;
+        floor2.hasReachedEndPosition() === true) {
+        setupLevel();
+        gameState = stateFloorEnter;
       }
     }
   }
@@ -220,29 +219,28 @@ function checkEndOfLevel() {
 
   if (level <= levelMax) {
     // When the two enemies have exited the screen, the floor leaves and new ones appear.
-    if (gameState == stateFight && enemy1.getState() === enemyHasExited && enemy2.getState() === enemyHasExited)
+    if (gameState === stateFight && enemy1.getState() === enemyHasExited && enemy2.getState() === enemyHasExited)
       gameState = stateFloorLeave;
-  }
-  else {
+  } else {
     // When the user completes the last level, they win.
     character.setState(win);
     gameState = stateWin;
   }
 }
 
-
+// When the user wins.
 function drawWin() {
   if (gameState != stateWin)
     return;
 
   // Main text.
   push();
-  textSize(36);
+  textSize(48);
   textFont(bigShouldersDisplay);
   textAlign(CENTER);
   fill('#000000');
   textLeading(28);
-  text(`You won!`, width/2, 110);
+  text(`You won!`, width / 2, 110);
   pop();
 
   // Secondary text on the left.
@@ -251,9 +249,9 @@ function drawWin() {
   textAlign(CORNER, CENTER);
   fill('#000000');
   textLeading(22);
-  text(`The current top-down hierarchy is harmful, ` +
-    `and it could easily be avoided if we distributed wisely ` +
-    `and be satisfied with a reasonable amount of food and wealth.`, 50, 100, 375, 500);
+  text(`The current top-down hierarchy is harmful,   ` +
+    `and it can easily be avoided if we distribute wisely ` +
+    `and are satisfied with a reasonable  amount of food and wealth.`, 50, 100, 385, 500);
   pop();
 
   // Big text at the bottom.
@@ -263,23 +261,23 @@ function drawWin() {
   textLeading(35);
   fill('#000000');
   text(`When resources are shared equally,\n
-    there is more than enough for everybody.`, width/2, 750);
+    there is more than enough for everybody.`, width / 2, 750);
   pop();
 }
 
-
+// When the user loses.
 function drawLost() {
   if (gameState != stateLost)
     return;
 
   // Main text.
   push();
-  textSize(36);
+  textSize(48);
   textFont(bigShouldersDisplay);
   textAlign(CENTER);
   fill('#000000');
   textLeading(28);
-  text(`You lost...`, width/2, 110);
+  text(`You lost...`, width / 2, 110);
   pop();
 
   // Big text at the bottom.
@@ -288,16 +286,19 @@ function drawLost() {
   textAlign(CENTER, CENTER);
   textLeading(35);
   fill('#000000');
-  text(`When resources are shared equally,\n` +
-    `there is more than enough for everybody.`, width/2, 750);
+  text(`The food did not reach the lowest level...`, width / 2, 750);
   pop();
 }
 
+// ////////////////  //
+// Music and sounds //
+// //////////////  //
+
 function playMusic() {
   if (music.isPlaying())
-  music.stop();
- else
-  music.play();
+    music.stop();
+  else
+    music.play();
 }
 
 function playSoundPunch() {
@@ -307,5 +308,4 @@ function playSoundPunch() {
     else
       soundPunch.play();
   }
-
 }

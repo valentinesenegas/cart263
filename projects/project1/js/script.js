@@ -42,7 +42,7 @@ function setup() {
 // Draw the scene, the main characters and the enemies.
 function draw() {
   // Check if user has started the game.
-  if (checkGameStarted() && gameStarted == false) {
+  if (checkGameStarted() && gameStarted === false) {
       gameStarted = true;
       gameState = stateFloorEnter;
       playMusic();

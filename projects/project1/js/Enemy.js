@@ -9,11 +9,6 @@ let imgEnemy2 = [];
 let imgEnemies = [imgEnemy1, imgEnemy2];
 
 //  Index of each state.
-// const standing = 0;
-// const fightLeft = 1;
-// const fightRight = 2;
-// crouchLeft = 3
-// crouchRight = 4
 const enemyStanding = 0;
 const enemyFightingLeft = 1;
 const enemyFightingRight = 2;
@@ -55,29 +50,29 @@ class Enemy {
 
   drawCharacter() {
     // If the enemy has exited (is dead), don't draw.
-    if (this.state == enemyHasExited)
+    if (this.state === enemyHasExited)
       return;
 
     // Draw the enemy with the correct index.
     push();
     imageMode(CORNER);
     let img = this.images[0];
-    if (this.state == enemyFightingLeft)
+    if (this.state === enemyFightingLeft)
       img = this.images[1];
-    else if (this.state == enemyFightingRight)
+    else if (this.state === enemyFightingRight)
       img = this.images[2];
     image(img, this.x, this.y);
     pop();
   }
 
   move(characterState, characterX) {
-    if (this.state == enemyHasExited)
+    if (this.state === enemyHasExited)
       return;
-    if (this.state == enemyExitingLeft)
+    if (this.state === enemyExitingLeft)
       this.x -= (this.speedX++);
-    else if (this.state == enemyExitingRight)
+    else if (this.state === enemyExitingRight)
       this.x += (this.speedX++);
-    if (this.state == enemyExitingLeft || this.state == enemyExitingRight) {
+    if (this.state === enemyExitingLeft || this.state === enemyExitingRight) {
       if (this.x + this.w < 0 || this.x > width)
         this.state = enemyHasExited;
       return;
@@ -87,7 +82,7 @@ class Enemy {
       let newMove = random() * 10;
 
       // Moving away.
-      if (characterState == injured || newMove < 2) {
+      if (characterState === injured || newMove < 2) {
         this.state = enemyStanding;
         this.speedX = (this.x > characterX) ? normalEnemySpeed : -normalEnemySpeed;
       }
@@ -155,9 +150,9 @@ class Enemy {
   // Create a rectangle on top of the enemy to detect collisions.
   getRectangle() {
     //fill('rgba(0,255,0, 0.25)'); Debug code, do not delete.
-    if (this.state == fightLeft)
+    if (this.state === fightLeft)
       return new Rectangle(this.x, this.y + 220, 200, 100);
-    else if (this.state == fightRight)
+    else if (this.state === fightRight)
       return new Rectangle(this.x, this.y + 220, 200, 100);
     else
       return new Rectangle(this.x, this.y, 110, 392);

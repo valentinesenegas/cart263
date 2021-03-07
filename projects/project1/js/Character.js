@@ -45,7 +45,7 @@ class Character {
     pop();
     if (this.timeoutInjured != 0) {
       this.timeoutInjured--;
-      if (this.timeoutInjured == 0)
+      if (this.timeoutInjured === 0)
         this.state = standing;
     }
 
@@ -82,9 +82,9 @@ class Character {
   // Create a rectangle on top of the character to detect collisions.
   getRectangle() {
     // fill('rgba(0,255,0, 0.25)'); Debug code, do not delete.
-    if (this.state == fightLeft)
+    if (this.state === fightLeft)
       return new Rectangle(this.x, this.y + 220, 150, 60);
-    else if (this.state == fightRight)
+    else if (this.state === fightRight)
       return new Rectangle(this.x + 60, this.y + 220, 150, 60);
     else
       return new Rectangle(this.x, this.y, 110, 392); // Standing
@@ -101,7 +101,7 @@ class Character {
 
   // The character is hit by an enemy.
   hit() {
-    if (this.state == injured)
+    if (this.state === injured)
       return;
     this.health--;
     this.state = injured;
@@ -114,7 +114,7 @@ class Character {
 
 // Display the health of the main character.
 function drawHealth() {
-  if (gameState == stateWin || gameState == stateLost)
+  if (gameState === stateWin || gameState === stateLost)
     return;
 
   let maxHealthWidth = 300;
