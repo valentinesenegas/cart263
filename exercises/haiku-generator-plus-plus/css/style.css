@@ -19,7 +19,7 @@ body {
   overflow: hidden; /* Hide anything that goes off the window size */
   background-color: #abcbab;
 
-  font-Family: Helvetica, sans-serif;
+  font-Family: 'Ubuntu', Helvetica, sans-serif;
 }
 
 input[type="button" i] {
@@ -28,6 +28,9 @@ input[type="button" i] {
   background-color: #ffe7e6;
   padding: 8px;
   border-radius: 2px;
+  font-Family: 'Ubuntu', Helvetica, sans-serif;
+
+  cursor: pointer;
 }
 
 #haiku {
@@ -38,6 +41,11 @@ input[type="button" i] {
 
   background-color: #fff8f7;
   padding: 2px 16px;
+  border-radius: 2px;
+}
+
+#haiku h1, #haiku p {
+  cursor: pointer;
 }
 
 .flexbox {
@@ -52,6 +60,7 @@ input[type="button" i] {
 
 .sentiment img {
   max-width: 500px;
+  border-radius: 2px;
 }
 
 .haiku-and-sentiment {
