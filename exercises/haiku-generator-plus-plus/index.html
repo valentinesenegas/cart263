@@ -9,15 +9,22 @@
 
   <!-- CSS stylesheet(s) -->
   <link rel="stylesheet" type="text/css" href="css/style.css" />
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Parisienne&display=swap" rel="stylesheet">
 
   <!-- Library script(s) -->
   <script src="js/libraries/p5.min.js"></script>
   <script src="js/libraries/p5.sound.min.js"></script>
-
+  <script src="https://unpkg.com/ml5@latest/dist/ml5.min.js"></script>
 
 </head>
 
-<body>
+<body id="body">
+
+  <h1>Haiku Generator</h1>
+  <h2>Click on the lines to change them and change the overall sentiment.</h2>
+
+<section class="flexbox haiku-and-sentiment">
   <section id="haiku">
 
     <h1 id="title">Title</h1>
@@ -27,6 +34,16 @@
     <p id="line-3"></p>
 
   </section>
+
+  <section class="sentiment flexbox column">
+    <input id="sentiment-button" type="button" value="Is the haiku sad or happy?">
+
+    <p id="sentiment-statement"></p>
+    <img id="sentiment-image" src="https://media.giphy.com/media/l46CsrL8AHHZivYyc/giphy.gif" alt="A frong that jumps in a pond">
+
+  </section>
+</section>
+
 
   <!-- My script(s) -->
   <script src="js/script.js"></script>

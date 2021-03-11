@@ -3,8 +3,16 @@
 /**
 Haiku Generator
 Valentine Sénégas
-
 */
+
+// Create a new Sentiment method
+const sentiment = ml5.sentiment('movieReviews', modelReady);
+
+let modelIsReady = false;
+
+let image = document.getElementById(`sentiment-image`);
+
+let statement = document.getElementById(`sentiment-statement`);
 
 // Our pre-made haiku lines
 let haikuLines = {
@@ -34,7 +42,16 @@ let haikuLines = {
     `Nature`,
     `Birds`,
     `Wind`,
-    `Light`
+    `Light`,
+    `Silence`,
+    `Joy`,
+    `Moonlight`,
+    `Dawn`,
+    `Rain`,
+    `Moon`,
+    `Away`,
+    `Sleep`,
+    `Loneliness`
   ]
 };
 
@@ -45,6 +62,7 @@ let title = document.getElementById(`title`);
 let line1 = document.getElementById(`line-1`);
 let line2 = document.getElementById(`line-2`);
 let line3 = document.getElementById(`line-3`);
+
 
 // Set up the starting lines
 setupLines();
@@ -96,8 +114,7 @@ function fadeOut(element, opacity) {
     requestAnimationFrame(function() {
       fadeOut(element, opacity);
     });
-  }
-  else {
+  } else {
     // If not, we can switch lines and fade in...
     // Set a new line of poem for the element
     setNewLine(element);
@@ -121,8 +138,7 @@ function fadeIn(element, opacity) {
     requestAnimationFrame(function() {
       fadeIn(element, opacity);
     });
-  }
-  else {
+  } else {
     // Do nothing - we're done!
   }
 }
@@ -135,13 +151,14 @@ function setNewLine(element) {
   if (element === line1 || element === line3) {
     // If the element is line1 or line3, use five syllables
     element.innerText = random(haikuLines.fiveSyllables);
-  }
-  else if (element === line2) {
+    makePrediction();
+  } else if (element === line2) {
     // If the element is line2 use seven
     element.innerText = random(haikuLines.sevenSyllables);
-  }
-  else if (element === title) {
+    makePrediction();
+  } else if (element === title) {
     element.innerText = random(haikuLines.title);
+    makePrediction();
   }
 }
 
@@ -151,3 +168,52 @@ A helper function that returns a random element from the provided array
 function random(array) {
   return array[Math.floor(Math.random() * array.length)];
 }
+
+// Sentiment
+
+// function createSentiment() {
+//   // Create a new Sentiment method
+//   const sentiment = ml5.sentiment('movieReviews', modelReady);
+// }
+
+// When the model is loaded
+function modelReady() {
+  // model is ready
+  console.log("Model Loaded!");
+  modelIsReady = true;
+}
+
+function makePrediction() {
+
+  if (modelIsReady) {
+    console.log(modelReady);
+    let haiku = document.getElementById(`haiku`);
+
+    // make the prediction.
+    const prediction = sentiment.predict(haiku.innerText);
+    console.log(prediction);
+
+    // Value between 0 ("negative") and 1 ("positive").
+    // If the prediction is somewhat positive, the background color turns light blue.
+    if (prediction.score >= 0.5) {
+      // body.style.backgroundColor = #ffffff;
+      document.body.style[`background-color`] = `#cffffe`;
+      image.setAttribute(`src`, `https://media.giphy.com/media/VJwpqKafe4nwOAqBjd/giphy.gif`);
+      statement.innerText = `Happy!`
+    } else {
+      document.body.style[`background-color`] = `#6e6e6e`;
+      image.setAttribute(`src`, `https://media.giphy.com/media/gRnSZSRzOJeG4/giphy.gif`);
+      statement.innerText = `Sad :'(`
+    }
+  }
+}
+
+// Button
+let button = document.getElementById(`sentiment-button`);
+
+button.addEventListener(`click`, function(event) {
+  // We can get the current value set on the slider through its .value property
+  // let value = slider.value;
+  // alert(value);
+  makePrediction();
+});

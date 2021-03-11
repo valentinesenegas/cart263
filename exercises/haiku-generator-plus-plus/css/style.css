@@ -18,11 +18,42 @@ body {
   height: 100vh; /* Body is the height of the viewport */
   overflow: hidden; /* Hide anything that goes off the window size */
   background-color: #abcbab;
+
+  font-Family: Helvetica, sans-serif;
+}
+
+input[type="button" i] {
+  width: 200px;
+  border: none;
+  background-color: #ffe7e6;
+  padding: 8px;
+  border-radius: 2px;
 }
 
 #haiku {
-  font-Family: Helvetica, sans-serif;
+  font-Family: 'Parisienne', cursive;
   font-size: 2rem;
   font-weight: bold;
+  width: auto;
+
+  background-color: #fff8f7;
+  padding: 2px 16px;
+}
+
+.flexbox {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.column {
+  flex-direction: column;
+}
+
+.sentiment img {
+  max-width: 500px;
+}
+
+.haiku-and-sentiment {
   width: 80vw;
 }
