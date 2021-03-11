@@ -21,8 +21,25 @@ let haikuLines = {
     `The autumn stretches its legs`,
     `Nothing can satisfy you`,
     `They will not come back again`
+  ],
+  title: [
+    `Thunder`,
+    `Lightning`,
+    `Winter`,
+    `Sakura`,
+    `Fuji`,
+    `Tsuki`,
+    `Samushi`,
+    `Water`,
+    `Nature`,
+    `Birds`,
+    `Wind`,
+    `Light`
   ]
 };
+
+
+let title = document.getElementById(`title`);
 
 // Our three elements on the page that contain each line of the poem
 let line1 = document.getElementById(`line-1`);
@@ -41,12 +58,16 @@ function setupLines() {
   line1.innerText = random(haikuLines.fiveSyllables);
   line2.innerText = random(haikuLines.sevenSyllables);
   line3.innerText = random(haikuLines.fiveSyllables);
+
+  title.innerText = random(haikuLines.title);
 }
 
 /**
 Adds event listeners for changing each line of the poem
 */
 function addListeners() {
+  title.addEventListener(`click`, changeLine);
+
   line1.addEventListener(`click`, changeLine);
   line2.addEventListener(`click`, changeLine);
   line3.addEventListener(`click`, changeLine);
@@ -115,9 +136,12 @@ function setNewLine(element) {
     // If the element is line1 or line3, use five syllables
     element.innerText = random(haikuLines.fiveSyllables);
   }
-  else {
+  else if (element === line2) {
     // If the element is line2 use seven
     element.innerText = random(haikuLines.sevenSyllables);
+  }
+  else if (element === title) {
+    element.innerText = random(haikuLines.title);
   }
 }
 
