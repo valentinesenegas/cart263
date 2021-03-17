@@ -18,3 +18,21 @@ body {
   height: 100vh; /* Body is the height of the viewport */
   overflow: hidden; /* Hide anything that goes off the window size */
 }
+
+#secret-document {
+  font-family: monospace;
+  font-size: 1.25rem;
+  width: 50vw;
+  margin: auto;
+}
+
+.redacted {
+  background-color: black;
+  user-select: none;
+}
+
+.revealed {
+  background-color: none;
+  color: red;
+  text-decoration: underline;
+}
