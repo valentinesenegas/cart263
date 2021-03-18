@@ -47,6 +47,15 @@ elements in the selection
 */
 function revelation() {
   $secrets.each(attemptReveal);
+
+// If none of the secret texts have the class redacted, it means they are all revealed.
+if (!$(`.secret`).hasClass("redacted")) {
+  console.log("All the secrets are revealed!");
+  let $lost = $(`#lost`);
+  $lost.css(`display`, `flex`);
+  let $redacted =  $(`.redacted`);
+  $redacted.css(`user-select`, `none`);
+}
 }
 
 /**
