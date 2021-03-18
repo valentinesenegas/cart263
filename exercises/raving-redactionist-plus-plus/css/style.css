@@ -9,6 +9,7 @@ Also hides overflow.
 
 **********************************************/
 
+/* --- GENERAL --- */
 body {
   padding: 0;
   margin: 0;
@@ -16,7 +17,6 @@ body {
   /* justify-content: center; */
   /* align-content: center; */
   height: 100vh; /* Body is the height of the viewport */
-  overflow: hidden; /* Hide anything that goes off the window size */
   background-color: #e7eff0;
   font-family: monospace;
 }
@@ -25,6 +25,21 @@ a {
   color: white;
   text-decoration: none;
 }
+
+.flexbox {
+  display: flex;
+}
+
+.column {
+  flex-direction: column;
+}
+
+.row {
+  flex-direction: row;
+}
+
+
+/* --- SPECIFIC STYLES --- */
 
 #secret-document {
   font-family: monospace;
@@ -42,6 +57,7 @@ a {
   background-color: none;
   color: red;
   text-decoration: underline;
+  cursor: pointer;
 }
 
 header {
@@ -62,6 +78,7 @@ header {
   margin: auto;
 }
 
+/* Warning section */
 .warning {
   display: flex;
   justify-content: center;
@@ -75,12 +92,23 @@ header {
   margin: 0;
 }
 
+.warning img {
+  width: 100px;
+  object-fit: contain;
+}
 
+.warning .text {
+  width: 80%;
+}
+
+
+/* Lost modal */
 #lost {
   position: absolute;
   left: 25vw;
+  top: 30vh;
   margin: auto;
-  padding: 8px;
+  padding: 16px;
 
   display: none;
   align-items: center;
@@ -95,5 +123,12 @@ header {
   font-size: 35px;
   color: white;
   border-radius: 4px;
+}
 
+#lost p {
+ margin: 0;
+}
+
+#lost img {
+  width: 250px;
 }

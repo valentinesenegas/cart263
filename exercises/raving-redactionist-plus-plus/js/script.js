@@ -1,5 +1,5 @@
 /**
-Raving Redactionist
+Top Secret SCP File
 Valentine Sénégas
 You are redacting a document, but it keeps becoming unredacted!
 Click the secret information to hide it, don`t let all the
@@ -7,7 +7,6 @@ secrets become revealed!
 */
 
 "use strict";
-
 
 // The chance a span will be revealed per update
 const REVEAL_PROBABILITY = 0.1;
@@ -19,9 +18,7 @@ let $secrets;
 
 setup();
 
-/**
-Sets the click handler and starts the time loop
-*/
+/** Sets the click handler and starts the time loop */
 function setup() {
   // Save the selection of all secrets (since we do stuff to them multiple times)
   $secrets = $(`.secret`);
@@ -36,8 +33,10 @@ When a secret is clicked we remove its revealed class and add the redacted class
 thus blacking it out
 */
 function redact() {
-  $(this).removeClass(`revealed`);
-  $(this).addClass(`redacted`);
+  if ($(`.secret`).hasClass("redacted")) {
+    $(this).removeClass(`revealed`);
+    $(this).addClass(`redacted`);
+  }
 }
 
 /**
@@ -48,14 +47,16 @@ elements in the selection
 function revelation() {
   $secrets.each(attemptReveal);
 
-// If none of the secret texts have the class redacted, it means they are all revealed.
-if (!$(`.secret`).hasClass("redacted")) {
-  console.log("All the secrets are revealed!");
-  let $lost = $(`#lost`);
-  $lost.css(`display`, `flex`);
-  let $redacted =  $(`.redacted`);
-  $redacted.css(`user-select`, `none`);
-}
+  // If none of the secret texts have the class redacted, it means they are all revealed.
+  if (!$(`.secret`).hasClass("redacted")) {
+    console.log("All the secrets are revealed!");
+
+    let $lost = $(`#lost`);
+    $lost.css(`display`, `flex`);
+
+    let $revealed = $(`.redacted`);
+    $revealed.css(`user-select`, `none`);
+  }
 }
 
 /**
