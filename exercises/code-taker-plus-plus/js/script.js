@@ -20,6 +20,7 @@ let secret = `Francessargentosgood`;
 
 // Turn the dialog div into an actual dialog
 $(`#solved-dialog`).dialog({
+   width: "347px",
   // Don't open it right away
   autoOpen: false,
   // Add a condescending button to close it
@@ -57,6 +58,9 @@ $(`#answer`).droppable({
     if ($(`#answer`).text() === secret) {
       // If they did, display the dialog!
       $(`#solved-dialog`).dialog(`open`);
+
+      $(`#secret-image`).removeClass(`img-hidden`);
+      $(`#secret-image`).addClass(`img-revealed`);
     }
   }
 });

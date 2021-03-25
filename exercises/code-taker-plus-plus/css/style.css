@@ -9,17 +9,49 @@ Also hides overflow.
 
 **********************************************/
 
+body {
+  font-family: 'Kiwi Maru', serif;
+  width: 1200px;
+  margin: auto;
+  background-color: #f9eaf1;
+}
+
+::selection{
+  background: #ebb9cf;
+}
+
 #poem {
   font-size: 1.2rem;
+  width: 634px;
 }
 
 #answer {
-  width: 11rem;
+  width: 16rem;
   height: 2rem;
-  border: 1px dashed black;
+  border: 1px dashed #dc88ac;
   letter-spacing: 1px;
 }
 
 .found {
-  color: red;
+  color: #c63976;
+}
+
+
+.flex {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.img {
+  width: 215px;
+  margin: 0px;
+}
+
+.img-hidden {
+  opacity: 0;
+}
+
+.img-revealed {
+  opacity: 100;
 }

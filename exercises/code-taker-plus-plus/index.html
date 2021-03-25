@@ -8,8 +8,10 @@
   <title>Code taker</title>
 
   <!-- CSS stylesheet(s) -->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Kiwi+Maru&display=swap" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="css/style.css" />
-  <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.11.4/themes/vader/jquery-ui.css" />
+  <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.11.4/themes/base/jquery-ui.css" />
 
   <!-- Library script(s) -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
@@ -19,36 +21,48 @@
 <body>
 
   <!-- The poem, secret letters are in spans with class "secret" -->
-  <section id="poem">
-    <h2><em>A Valentine</em></h2>
-    <p>
-      <span class="secret">F</span>or her this rhyme is penned, whose luminous eyes,<br />
-      B<span class="secret">r</span>ightly expressive as the twins of Leda,<br />
-      Sh<span class="secret">a</span>ll find her own sweet name, that nestling lies<br />
-      Upo<span class="secret">n</span> the page, enwrapped from every reader.<br />
-      Sear<span class="secret">c</span>h narrowly the lines!- they hold a treasure<br />
-      Divin<span class="secret">e</span>- a talisman- an amulet<br />
-      That mu<span class="secret">s</span>t be worn at heart. Search well the measure-
-    </p>
-    <p>
-      The word<span class="secret">s</span>- the syllables! Do not forget<br />
-      The trivi<span class="secret">a</span>lest point, or you may lose your labor<br />
-      And yet the<span class="secret">r</span>e is in this no Gordian knot<br />
-      Which one mi<span class="secret">g</span>ht not undo without a sabre,<br />
-      If one could m<span class="secret">e</span>rely comprehend the plot.<br />
-      Enwritten upo<span class="secret">n</span> the leaf where now are peering<br />
-      Eyes scintilla<span class="secret">t</span>ing soul, there lie perdus
-    </p>
-    <p>
-      Three eloquent w<span class="secret">o</span>rds oft uttered in the hearing<br />
-      Of poets, by poets- a<span class="secret">s</span> the name is a poet’s, too,<br />
-      Its letters, althou<span class="secret">g</span>h naturally lying<br />
-      Like the knight Pint<span class="secret">o</span>- Mendez Ferdinando-<br />
-      Still form a synonym f<span class="secret">o</span>r Truth- Cease trying!<br />
-      You will not read the ri<span class="secret">d</span>dle, though you do the best you can do.
-    </p>
-    <h4>Edgar Allan Poe</h4>
+
+  <section class="instruction">
+    <p>A secret message is hidden in this poem. Can you find it?</p>
+    <p>Hint: Take the first letter from the first line, then the second letter from the second line, and try to find a pattern...</p>
   </section>
+  <div class="flex">
+    <section id="poem">
+      <h2><em>A Valentine</em></h2>
+      <p>
+        <span class="secret">F</span>or her this rhyme is penned, whose luminous eyes,<br />
+        B<span class="secret">r</span>ightly expressive as the twins of Leda,<br />
+        Sh<span class="secret">a</span>ll find her own sweet name, that nestling lies<br />
+        Upo<span class="secret">n</span> the page, enwrapped from every reader.<br />
+        Sear<span class="secret">c</span>h narrowly the lines!- they hold a treasure<br />
+        Divin<span class="secret">e</span>- a talisman- an amulet<br />
+        That mu<span class="secret">s</span>t be worn at heart. Search well the measure-
+      </p>
+      <p>
+        The word<span class="secret">s</span>- the syllables! Do not forget<br />
+        The trivi<span class="secret">a</span>lest point, or you may lose your labor<br />
+        And yet the<span class="secret">r</span>e is in this no Gordian knot<br />
+        Which one mi<span class="secret">g</span>ht not undo without a sabre,<br />
+        If one could m<span class="secret">e</span>rely comprehend the plot.<br />
+        Enwritten upo<span class="secret">n</span> the leaf where now are peering<br />
+        Eyes scintilla<span class="secret">t</span>ing soul, there lie perdus
+      </p>
+      <p>
+        Three eloquent w<span class="secret">o</span>rds oft uttered in the hearing<br />
+        Of poets, by poets- a<span class="secret">s</span> the name is a poet’s, too,<br />
+        Its letters, althou<span class="secret">g</span>h naturally lying<br />
+        Like the knight Pint<span class="secret">o</span>- Mendez Ferdinando-<br />
+        Still form a synonym f<span class="secret">o</span>r Truth- Cease trying!<br />
+        You will not read the ri<span class="secret">d</span>dle, though you do the best you can do.
+      </p>
+      <h4>Edgar Allan Poe</h4>
+    </section>
+    <section id="secret-image" class="img img-hidden">
+      <img src="https://www.womenhistoryblog.com/wp-content/uploads/2011/08/fannylongfellow2-237x300.jpg" alt="The secret person">
+      <p>Frances Sargent Osgood</p>
+    </section>
+  </div>
+
 
   <!-- The secret answer area-->
   <section id="answer"></section>
