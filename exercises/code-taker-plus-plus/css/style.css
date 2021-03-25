@@ -14,9 +14,10 @@ Also hides overflow.
 }
 
 #answer {
-  width: 10rem;
+  width: 11rem;
   height: 2rem;
   border: 1px dashed black;
+  letter-spacing: 1px;
 }
 
 .found {

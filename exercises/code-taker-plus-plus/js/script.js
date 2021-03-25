@@ -4,7 +4,7 @@
 Code Taker
 Valentine Sénégas
 
-
+Can you find Edgar Allan Poe's secret?
 The user can uncover secret letters in the poem by mousing over them. Once found
 they can drag the letters in the correct order to the answer area to find the
 name of an amazing instrument (the theremin) and receive congratulations.
@@ -16,7 +16,7 @@ https://jqueryui.com
 */
 
 // The secret answer we're looking for (including capitalization)
-let secret = `Theremin`;
+let secret = `Francessargentosgood`;
 
 // Turn the dialog div into an actual dialog
 $(`#solved-dialog`).dialog({
