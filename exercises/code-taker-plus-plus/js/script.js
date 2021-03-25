@@ -61,6 +61,8 @@ $(`#answer`).droppable({
 
       $(`#secret-image`).removeClass(`img-hidden`);
       $(`#secret-image`).addClass(`img-revealed`);
+
+      $('audio#bells')[0].play();
     }
   }
 });

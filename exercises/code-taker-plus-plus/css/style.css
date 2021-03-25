@@ -27,9 +27,14 @@ body {
 
 #answer {
   width: 16rem;
-  height: 2rem;
+  height: 4rem;
   border: 1px dashed #dc88ac;
   letter-spacing: 1px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
 }
 
 .found {
