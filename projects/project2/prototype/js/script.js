@@ -28,17 +28,19 @@ let score = 0;
 // The number at the center of the screen.
 let number;
 
-// Sounds and Font.
+// Fonts, sounds and images.
 let workSansRegular;
 let workSansBold;
-
+let soundCorrect;
+let soundWrong;
 let instructions;
 
-// Preload the sounds and font.
+// Preload the fonts, sounds and images.
 function preload() {
   workSansRegular = loadFont('assets/fonts/WorkSans-Regular.ttf');
   workSansBold = loadFont('assets/fonts/WorkSans-Bold.ttf');
-
+  soundCorrect = loadSound('assets/sounds/correct.mp3');
+  soundWrong = loadSound('assets/sounds/wrong.mp3');
   instructions = loadImage(`assets/images/instructions.png`);
 }
 
@@ -212,7 +214,7 @@ function ending() {
   textSize(30);
   textStyle(BOLD);
   textAlign(CENTER, CENTER);
-  text(`Yay! You gave ${score} correct answers!`, width / 2, height / 2);
+  text(`Yay! You got ${score} correct answers!`, width / 2, height / 2);
   pop();
 }
 
@@ -220,6 +222,7 @@ function ending() {
 // Increment the score.
 function incrementScore() {
   score++;
+  soundCorrect.play();
 
   // When the user has had 10 good answers, switch to the ending state.
   if (score === 10) {
@@ -229,6 +232,7 @@ function incrementScore() {
 
 function decrementScore() {
   score--;
+  soundWrong.play();
 }
 
 // Display the number of bubbles that were popped.

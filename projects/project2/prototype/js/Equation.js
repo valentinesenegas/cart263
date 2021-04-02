@@ -71,7 +71,7 @@ class Equation {
     // Circle.
     push();
     noStroke();
-    fill(100, 100, 200, 150);
+    fill(75, 77, 237, 150);
     ellipse(this.x, this.y, this.size);
 
     /// Equation written inside.
