@@ -2,6 +2,11 @@
 
 /**
 The user must push away the equations that are not equal to the number at the center of the screen.
+When a correct equation touches the number, the score increases. When an incorrect equation touches the number, the score decreases.
+When the user pushes away a correct equation, the score decreases. When the user pushes away an incorrect equation, the score increases.
+
+The starting point for this prototype was the Bubble Popper exercice.
+https://valentinesenegas.github.io/cart263/exercises/bubble-popper-plus-plus/
 
 Uses:
 ml5.js Handpose:
