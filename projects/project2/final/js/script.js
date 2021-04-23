@@ -39,6 +39,7 @@ let workSansBold;
 let soundCorrect;
 let soundWrong;
 let instructions;
+let instructionsSayTheColour;
 
 // Preload the fonts, sounds and images.
 function preload() {
@@ -46,7 +47,9 @@ function preload() {
   workSansBold = loadFont('assets/fonts/WorkSans-Bold.ttf');
   soundCorrect = loadSound('assets/sounds/correct.mp3');
   soundWrong = loadSound('assets/sounds/wrong.mp3');
+
   instructions = loadImage(`assets/images/instructions.png`);
+  instructionsSayTheColour = loadImage(`assets/images/instructionsSayTheColour.png`);
 }
 
 /**
@@ -93,8 +96,20 @@ function draw() {
     title();
   } else if (state === `ending`) {
     ending();
+  } else if (state === `titlePushEquations`) {
+    titlePushEquations();
+  } else if (state === `titleSayTheColour`) {
+    titleSayTheColour();
+  } else if (state === `runningSayTheColour`) {
+    runningSayTheColour();
+    displayScore();
   }
+
+  // Draw notification is any.
+  drawNotification();
 }
+
+
 
 //----||||****  STATES  ****||||----//
 
@@ -119,144 +134,65 @@ Displays a title screen with instructions.
 function title() {
   push();
   fill(74, 74, 104);
+  textAlign(CENTER, CENTER);
+
+  // Main title
+  textSize(20);
+  textFont(workSansBold);
+  text(`Cerebral Training Game`, width / 2, 30);
+
+  // Other text
   textFont(workSansRegular);
   textSize(18);
-  textStyle(BOLD);
-  textAlign(CENTER, CENTER);
-  text(`Use only one hand. Don’t move it too fast.`, width / 2, 60);
-  textSize(18);
-  text(`Press any key to start.`, width / 2, 500);
-  textFont(workSansBold);
-  text(`Push away the equations that are not equal to the number.`, width / 2, 30);
+  text(`A serie of tests will train your cognitive abilities!`, width / 2, 60);
+
+  text(`Press A to play “Push the equations”
+Press S to play “Say the colour”`, width / 2, 500);
+
   pop();
-  image(instructions, 10, 150);
+  // image(instructions, 10, 150);
 }
 
-//---- RUNNING ----//
-/**
-Displays the webcam.
-If there is a hand it outlines it and highlights all of the points of the hand.
-*/
-function running() {
-  // Use these lines to see the video feed
-  // const flippedVideo = ml5.flipImage(video);
-  // image(flippedVideo, 0, 0, width, height);
-
-  background(250, 250, 250);
-
-  displayNumber();
-
-  if (equation.isRejected() === false) {
-    for (let i = 0; i < predictions.length; i += 1) {
-      const prediction = predictions[i];
-      for (let j = 0; j < prediction.landmarks.length; j += 1) {
-        const keypoint = prediction.landmarks[j];
-        let d = dist(equation.x, equation.y, keypoint[0], keypoint[1]);
-        if (d < 20) {
-          equation.reject();
-          equation.reverseSpeed();
-          if (equation.isCorrect())
-            decrementScore();
-          else
-            incrementScore();
-        }
-      }
-    }
-  }
-
-  drawKeypoints();
-
-  // Handle the equation's movement and display (independent of hand detection
-  // so it doesn't need to be inside the predictions check)
-  equation.move();
-  if (equation.isOutOfBounds())  {
-    equation = new Equation(1);
-    equation.generate();
-  }
-  else if (equation.isAtCenter()) {
-    if (equation.isCorrect())
-      incrementScore();
-    else
-      decrementScore();
-    equation = new Equation(1);
-    equation.generate();
-  }
-  equation.display();
-  displayScore();
-}
-
-// A function to draw ellipses over the detected keypoints
-function drawKeypoints() {
-  for (let i = 0; i < predictions.length; i += 1) {
-    const prediction = predictions[i];
-    for (let j = 0; j < prediction.landmarks.length; j += 1) {
-      const keypoint = prediction.landmarks[j];
-      fill(216, 138, 85);
-      noStroke();
-      ellipse(keypoint[0], keypoint[1], 10, 10);
-    }
-  }
-}
-
-
-// Display the number at the center of the screen.
-function displayNumber() {
-  push();
-  fill(75, 77, 237);
-  textFont(workSansBold);
-  textSize(40);
-  textAlign(CENTER, CENTER);
-  text(equation.getResult(), width / 2, height / 2);
-  pop();
-}
-
-
-//---- ENDING ----//
-function ending() {
-  push();
-  fill(74, 74, 104);
-  textFont(workSansRegular);
-  textSize(30);
-  textStyle(BOLD);
-  textAlign(CENTER, CENTER);
-  text(`Yay! You got ${score} correct answers!`, width / 2, height / 2);
-  pop();
-}
-
-
-// Increment the score.
-function incrementScore() {
-  score++;
-  soundCorrect.play();
-
-  // When the user has had 10 good answers, switch to the ending state.
-  if (score === 10) {
-    state = `ending`;
-  }
-}
-
-function decrementScore() {
-  score--;
-  soundWrong.play();
-}
-
-// Display the number of bubbles that were popped.
-function displayScore() {
-  push();
-  textFont(workSansRegular);
-  textSize(24);
-  fill(237, 75, 158);
-  text(`Score: ` + score, 15, 40);
-  pop();
-}
 
 // ---------------------------- //
+
+// Arrow keys and their keyCodes
+let keyA = 65;
+let keyS = 83;
+let keyD = 68;
+let keyF = 70;
+
+let keyH = 72;
+let keyJ = 74;
+let keyK = 75;
+let keyL = 76;
+
+let keyEnter = 13;
 
 // Keyboard control.
 // Press any key to start the game.
 function keyPressed() {
+
+  // When in the title screen of each game, any key starts the game.
   // Switch to the running state.
-  if (state === `title`) {
+  if (state === `titlePushEquations`) {
     state = `running`;
+  }
+
+  if (state === `titleSayTheColour`) {
+    state = `runningSayTheColour`;
+  }
+
+  // Temporary: When in the title screen, letters of the keyboard allow to access specific games.
+  // A: Push pushTheEquations.
+  // B: Say The Colour.
+  if (state === `title`) {
+    if (keyIsDown(keyA)){
+      state = `titlePushEquations`;
+    }
+
+    if (keyIsDown(keyS)) {
+      state = `titleSayTheColour`;
+    }
   }
 }
