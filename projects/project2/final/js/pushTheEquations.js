@@ -1,5 +1,8 @@
 // Game: Push the equations.
 
+// Change the scale of the hand points drawn on screen.
+let scale = 2;
+
 // Title for the game where the user pushes the equations away
 function titlePushEquations() {
   push();
@@ -36,7 +39,7 @@ function running() {
       const prediction = predictions[i];
       for (let j = 0; j < prediction.landmarks.length; j += 1) {
         const keypoint = prediction.landmarks[j];
-        let d = dist(equation.x, equation.y, keypoint[0], keypoint[1]);
+        let d = dist(equation.x, equation.y, keypoint[0] * scale, keypoint[1] * scale);
         if (d < 20) {
           equation.reject();
           equation.reverseSpeed();
@@ -78,7 +81,7 @@ function drawKeypoints() {
       const keypoint = prediction.landmarks[j];
       fill(216, 138, 85);
       noStroke();
-      ellipse(keypoint[0], keypoint[1], 10, 10);
+      ellipse(keypoint[0] * scale, keypoint[1] * scale, 10, 10);
     }
   }
 }

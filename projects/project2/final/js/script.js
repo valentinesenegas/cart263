@@ -21,6 +21,7 @@ let video;
 let modelName = `Handpose`;
 // Handpose object (using the name of the model).
 let handpose;
+
 // The current set of predictions made by Handpose once it's running.
 let predictions = [];
 
@@ -56,7 +57,7 @@ function preload() {
 Starts the webcam and the Handpose, creates the equation.
 */
 function setup() {
-  createCanvas(600, 550);
+  createCanvas(1440, 900);
 
   // Start webcam and hide the resulting HTML element
   video = createCapture(VIDEO);
@@ -103,6 +104,10 @@ function draw() {
   } else if (state === `runningSayTheColour`) {
     runningSayTheColour();
     displayScore();
+  } else if (state === `titleMemory`) {
+    titleMemory();
+  } else if (state === `drawMemory`) {
+    drawMemory();
   }
 
   // Draw notification is any.
@@ -147,7 +152,8 @@ function title() {
   text(`A serie of tests will train your cognitive abilities!`, width / 2, 60);
 
   text(`Press A to play “Push the equations”
-Press S to play “Say the colour”`, width / 2, 500);
+Press S to play “Say the colour”
+Press D to play “Memory game”`, width / 2, 480);
 
   pop();
   // image(instructions, 10, 150);
@@ -183,6 +189,11 @@ function keyPressed() {
     state = `runningSayTheColour`;
   }
 
+  if (state === `titleMemory`) {
+    initMemory();
+    state = `drawMemory`;
+  }
+
   // Temporary: When in the title screen, letters of the keyboard allow to access specific games.
   // A: Push pushTheEquations.
   // B: Say The Colour.
@@ -193,6 +204,10 @@ function keyPressed() {
 
     if (keyIsDown(keyS)) {
       state = `titleSayTheColour`;
+    }
+
+    if (keyIsDown(keyD)) {
+      state = `titleMemory`;
     }
   }
 }
