@@ -34,13 +34,26 @@ let score = 0;
 // The number at the center of the screen.
 let number;
 
-// Fonts, sounds and images.
+// -- Fonts, sounds and images -- //
+
+// Fonts.
 let workSansRegular;
 let workSansBold;
+
+// Sounds.
 let soundCorrect;
 let soundWrong;
+
+// Images.
 let instructions;
 let instructionsSayTheColour;
+let homeBackground;
+
+// Images of buttons
+let buttonPushTheEquations;
+let buttonSayTheColour;
+let buttonMemory;
+let buttonSpeed;
 
 // Preload the fonts, sounds and images.
 function preload() {
@@ -51,6 +64,12 @@ function preload() {
 
   instructions = loadImage(`assets/images/instructions.png`);
   instructionsSayTheColour = loadImage(`assets/images/instructionsSayTheColour.png`);
+  homeBackground = loadImage(`assets/images/homeBackground.jpg`);
+
+  buttonPushTheEquations = loadImage(`assets/images/buttons/buttonPushTheEquations.png`);
+  buttonSayTheColour = loadImage(`assets/images/buttons/buttonSayTheColour.png`);
+  buttonMemory = loadImage(`assets/images/buttons/buttonMemory.png`);
+  buttonSpeed = loadImage(`assets/images/buttons/buttonSpeed.png`);
 }
 
 /**
@@ -87,7 +106,8 @@ function setup() {
 Handles the two states of the program: loading, running
 */
 function draw() {
-  background(255, 255, 255);
+
+  drawBackground();
 
   if (state === `loading`) {
     loading();
@@ -114,6 +134,13 @@ function draw() {
   drawNotification();
 }
 
+function drawBackground() {
+  background(255, 255, 255);
+  push();
+  image(homeBackground, 0, 0);
+  pop();
+}
+
 
 
 //----||||****  STATES  ****||||----//
@@ -134,29 +161,38 @@ function loading() {
 
 //---- TITLE ----//
 /**
-Displays a title screen with instructions.
+Displays the main title screen with instructions.
 */
 function title() {
   push();
-  fill(74, 74, 104);
-  textAlign(CENTER, CENTER);
+  // textAlign(CENTER, CENTER);
 
   // Main title
-  textSize(20);
   textFont(workSansBold);
-  text(`Cerebral Training Game`, width / 2, 30);
+  textSize(26);
+  fill(255, 255, 255);
+  text(`Selection Test for the`, 40, 70);
+  textSize(36);
+  fill(237, 75, 158);
+  text(`Mars Exploration Program`, 40, 110);
 
   // Other text
   textFont(workSansRegular);
   textSize(18);
-  text(`A serie of tests will train your cognitive abilities!`, width / 2, 60);
+  fill(255, 255, 255);
+  text(`A serie of tests will train your cognitive abilities!`, 40, 280);
+  text(`At the end, we'll let you know if you can join the program!`, 40, 320);
 
   text(`Press A to play “Push the equations”
 Press S to play “Say the colour”
-Press D to play “Memory game”`, width / 2, 480);
+Press D to play “Memory game”`, 40, 780);
 
   pop();
-  // image(instructions, 10, 150);
+
+  image(buttonPushTheEquations, 40, 400);
+  image(buttonSayTheColour, 340, 400);
+  image(buttonMemory, 640, 400);
+  image(buttonSpeed, 940, 400);
 }
 
 

@@ -60,6 +60,11 @@ function initMemory() {
 }
 
 function drawMemory() {
+
+  displayAllWords();
+}
+
+function displayAllWords() {
   if (displayAllWordsTTL != 0)
     displayAllWordsTTL--;
   push();
@@ -72,4 +77,65 @@ function drawMemory() {
       if (displayAllWordsTTL != 0)
         text(pool[selectedWords[x + y * 3]], (x + 1) * width / 4, (y + 1) * height / 4 );
   pop();
+}
+
+function listenToUser() {
+
+    // Is annyang available?
+    if (annyang) {
+      // Create the guessing command
+      let commands = {
+        '*word': guessWord
+      };
+      // Setup annyang and start
+      annyang.addCommands(commands);
+      annyang.start();
+    }
+}
+
+
+// Verifies if the given answer is correct or not.
+function guessWord(guessedWord) {
+
+  currentAnswer = guessedWord;
+  console.log(currentAnswer);
+
+  if (gameStarted && currentAnswer != ``) {
+    if (currentAnswer.toLowerCase() === currentColour) {
+      correctGuessWord();
+      console.log(`correct`);
+    } else {
+      incorrectGuessWord();
+      console.log(`incorrect`);
+    }
+    // text(currentAnswer, width / 2, height / 2);
+    // incrementNbAnswers();
+  }
+}
+
+
+/**
+Function that is called when the user guesses correctly.
+*/
+function correctGuessWord() {
+  setNotification(`Correct`);
+
+  if (!nbCorrectAnwersIncremented) {
+    incrementScore();
+    nbCorrectAnswers += 1;
+    nbCorrectAnwersIncremented = true;
+  }
+}
+
+/**
+Function that is called when the user guesses correctly.
+*/
+function incorrectGuessWord() {
+  setNotification(`Incorrect`);
+
+  if (!nbIncorrectAnwersIncremented) {
+    decrementScore();
+    nbIncorrectAnswers += 1;
+    nbIncorrectAnwersIncremented = true;
+  }
 }
