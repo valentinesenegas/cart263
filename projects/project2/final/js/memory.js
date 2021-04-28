@@ -35,8 +35,7 @@ function titleMemory() {
   text(`You will be asked to repeat them shortly after.`, width / 2, height/2 + 60);
 
   textSize(18);
-  text(`Press any key to start.`, width / 2, 500);
-
+  text(`Press any key to start.`, width / 2, 800);
   pop();
 }
 
@@ -62,8 +61,10 @@ function initMemory() {
 function drawMemory() {
 
   displayAllWords();
+  listenToUser();
 }
 
+// Display the words at the beginning.
 function displayAllWords() {
   if (displayAllWordsTTL != 0)
     displayAllWordsTTL--;

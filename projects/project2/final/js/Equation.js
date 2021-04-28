@@ -1,4 +1,4 @@
-
+"use strict";
 
 const timeToReachCenter = 3000; // 3 seconds
 
@@ -71,11 +71,11 @@ class Equation {
     // Circle.
     push();
     noStroke();
-    fill(75, 77, 237, 150);
+    fill(237, 75, 158, 850);
     ellipse(this.x, this.y, this.size);
 
     /// Equation written inside.
-    fill(74, 74, 104);
+    fill(255, 255, 255);
     textAlign(CENTER, CENTER);
     textFont(workSansRegular);
     textSize(28);

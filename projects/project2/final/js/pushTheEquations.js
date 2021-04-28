@@ -1,6 +1,35 @@
-// Game: Push the equations.
+"use strict";
 
-// Change the scale of the hand points drawn on screen.
+// Game: Push the equations.
+/*The user must push away the equations that are not equal to the number at the center of the screen.
+When a correct equation touches the number, the score increases. When an incorrect equation touches the number, the score decreases.
+When the user pushes away a correct equation, the score decreases. When the user pushes away an incorrect equation, the score increases.
+
+The starting point for this prototype was the Bubble Popper exercice.
+https://valentinesenegas.github.io/cart263/exercises/bubble-popper-plus-plus/*/
+
+// Current state of program
+let state = `loading`; // loading, running
+// User's webcam.
+let video;
+// The name of our model.
+let modelName = `Handpose`;
+// Handpose object (using the name of the model).
+let handpose;
+
+// The current set of predictions made by Handpose once it's running.
+let predictions = [];
+
+// The equations that will arrive towards the center.
+let equation;
+
+// The number of correct answers.
+let score = 0;
+
+// The number at the center of the screen.
+let number;
+
+// The scale of the hand points drawn on screen.
 let scale = 2;
 
 // Title for the game where the user pushes the equations away
@@ -12,12 +41,15 @@ function titlePushEquations() {
   textStyle(BOLD);
   textAlign(CENTER, CENTER);
   text(`Use only one hand. Don’t move it too fast.`, width / 2, 60);
+
   textSize(18);
   text(`Press any key to start.`, width / 2, 500);
+
   textFont(workSansBold);
   text(`Push away the equations that are not equal to the number.`, width / 2, 30);
+
   pop();
-  image(instructions, 10, 150);
+  image(instructions, 400, 250);
 }
 
 //---- RUNNING ----//
@@ -25,7 +57,7 @@ function titlePushEquations() {
 Displays the webcam.
 If there is a hand it outlines it and highlights all of the points of the hand.
 */
-function running() {
+function drawPushEquations() {
   // Use these lines to see the video feed
   // const flippedVideo = ml5.flipImage(video);
   // image(flippedVideo, 0, 0, width, height);
@@ -100,14 +132,14 @@ function displayNumber() {
 
 
 //---- ENDING ----//
-function ending() {
+function endingPushEquations() {
   push();
   fill(74, 74, 104);
   textFont(workSansRegular);
   textSize(30);
   textStyle(BOLD);
   textAlign(CENTER, CENTER);
-  text(`Yay! You got ${score} correct answers!`, width / 2, height / 2);
+  text(`You got ${score} correct answers!`, width / 2, height / 2);
   pop();
 }
 
@@ -119,7 +151,7 @@ function incrementScore() {
 
   // When the user has had 10 good answers, switch to the ending state.
   if (score === 10) {
-    state = `ending`;
+    state = `endingPushEquations`;
   }
 }
 
@@ -128,7 +160,7 @@ function decrementScore() {
   soundWrong.play();
 }
 
-// Display the number of bubbles that were popped.
+// Display the number of correct answers.
 function displayScore() {
   push();
   textFont(workSansRegular);

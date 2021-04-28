@@ -52,7 +52,7 @@ function titleSayTheColour() {
 }
 
 // When the game runs.
-function runningSayTheColour() {
+function drawSayTheColour() {
 
 // If there is no current colour
   if (currentColour === ``) {
