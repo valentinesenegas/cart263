@@ -1,15 +1,17 @@
 "use strict";
 
-// Game: Push the equations.
-/*The user must push away the equations that are not equal to the number at the center of the screen.
-When a correct equation touches the number, the score increases. When an incorrect equation touches the number, the score decreases.
-When the user pushes away a correct equation, the score decreases. When the user pushes away an incorrect equation, the score increases.
+/*************************************
+Game: Push the equations.
+The user must push away the equations that are not equal to the number at the center of the screen.
+When a correct equation touches the number, the score increases.
+When the user pushes away an incorrect equation, the score increases.
 
-The starting point for this prototype was the Bubble Popper exercice.
-https://valentinesenegas.github.io/cart263/exercises/bubble-popper-plus-plus/*/
+The starting point for this game was the Bubble Popper exercice.
+https://valentinesenegas.github.io/cart263/exercises/bubble-popper-plus-plus/
+*************************************/
 
 // Current state of program
-let state = `loading`; // loading, running
+let state = `loading`;
 // User's webcam.
 let video;
 // The name of our model.
@@ -29,8 +31,9 @@ let equation;
 // The number of correct answers for this mini game.
 let scorePushTheEquations = 0;
 
-// Number of rounds the user has to play
+// Number of rounds the user has to play.
 let roundMaxPushTheEquations = 10;
+// Current round.
 let round = 0;
 
 // The number at the center of the screen.
@@ -133,20 +136,6 @@ function displayNumber() {
   text(equation.getResult(), width / 2, height / 2);
   pop();
 }
-
-
-//---- ENDING ----//
-function endingPushEquations() {
-  push();
-  fill(74, 74, 104);
-  textFont(workSansRegular);
-  textSize(30);
-  textStyle(BOLD);
-  textAlign(CENTER, CENTER);
-  text(`You got ${scorePushTheEquations/10} correct answers!`, width / 2, height / 2);
-  pop();
-}
-
 
 // When correct answer: Increment the score, play a sound.
 function correctAnswerPushTheEquations() {

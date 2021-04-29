@@ -1,6 +1,9 @@
 "use strict";
 
-// Game: Say The Colour
+/*************************************
+Game: Say The Colour
+The user has to say the colour of the word and not the word itself.
+*************************************/
 
 // Possible colours: their names and their RBG values.
 const colourNames = [`yellow`, `orange`, `red`,  `pink`, `purple`, `blue`, `green`,  `black`];
@@ -30,8 +33,9 @@ let sayTheColourStarted = false;
 let scoreSayTheColour = 0;
 let scoreSayTheColourIncremented = false;
 
-// Number of rounds the user has to play
-let roundMaxSayTheColour = 3;
+// Number of rounds the user has to play.
+let roundMaxSayTheColour = 10;
+// Current round.
 let roundSayTheColour = 0;
 
 let annyangAlreadyStartedSayTheColour = false;
@@ -66,17 +70,17 @@ function drawSayTheColour() {
       generateColourTrap();
   }
 
-  // Displays the colour at the center of the screen
+  // Displays the colour at the center of the screen.
   displayColour();
 
   sayTheColourStarted = true;
   // Voice recognition
   startAnnyang();
 
-  // Draw feedback : correct or incorrect
   displayScoreSayTheColour();
 }
 
+// Create the commands for annyang.
 function startAnnyang() {
   // Is annyang available?
   if (annyang && sayTheColourStarted && !annyangAlreadyStartedSayTheColour) {
@@ -174,6 +178,7 @@ Function that is called when the user guesses correctly.
 */
 function correctAnswerSayTheColour() {
   setNotification(`Correct`);
+  soundCorrect.play();
 
   if (!scoreSayTheColourIncremented) {
     scoreSayTheColour += 10;
@@ -187,13 +192,15 @@ Function that is called when the user guesses correctly.
 */
 function incorrectAnswerSayTheColour() {
   setNotification(`Incorrect`);
+  soundWrong.play();
   newRoundSayTheColour();
 }
 
+// Trigger a new round. Compares the current round with the max rounds.
 function newRoundSayTheColour() {
   roundSayTheColour++;
-  console.log(`round: `+roundSayTheColour);
-  // When the user has had reached the last round, switch to the ending state.
+  // When the user has had reached the last round,
+  // pause annyang and remove commands, and switch to the title state.
   if (roundSayTheColour === roundMaxSayTheColour) {
     roundSayTheColour = 0;
     annyang.pause();
@@ -215,13 +222,14 @@ function displayScoreSayTheColour() {
   pop();
 }
 
-
-// Correct and incorrect guesses.
+// Set the length of time during which the notification will be displayed.
+// In parameter, the text that will appear in the notification.
 function setNotification(notificationText) {
   notification = notificationText;
   notificationTTL = 60;
 }
 
+// Display a notification on screen for correct and incorrect guesses.
 function drawNotification() {
   if (notification == '' || notificationTTL === 0)
     return;
