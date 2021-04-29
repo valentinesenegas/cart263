@@ -33,7 +33,7 @@ let imgLastStartButton = [null, null, null, null];
 // Scoreboard
 let scoreBoardX = 800;
 let scoreBoardY = 600;
-let scoreBoardW = 450;
+let scoreBoardW = 350;
 let scoreBoardH = 250;
 let borderRadius = 10;
 
@@ -62,12 +62,6 @@ function title() {
   text(`A serie of tests will train your cognitive abilities!`, 600, 260);
   text(`At the end, you will know your cognitive score and you will
 be able to compare your score with other candidates!`, 600, 300);
-
-  // Temporary controls.
-  textSize(12);
-  text(`Press A to play “Push the equations”
-Press S to play “Say the colour”
-Press D to play “Memory game”`, 900, 50);
 
   pop();
 
@@ -107,13 +101,22 @@ function drawIconsAndButtons() {
   textFont(workSansRegular);
   fill(255, 255, 255);
   textSize(18);
+  if (scorePushTheEquations === 0)
   text(`Last score: none`, iconX1 + iconW/2, iconY1 + iconH + 82);
+  else
+  text(`Last score: ` + scorePushTheEquations, iconX1 + iconW/2, iconY1 + iconH + 82);
 
   image(iconSayTheColour, iconX1, iconY2);
+  if (scoreSayTheColour === 0)
   text(`Last score: none`, iconX1 + iconW/2, iconY2 + iconH + 82);
+  else
+  text(`Last score: ` + scoreSayTheColour, iconX1 + iconW/2, iconY2 + iconH + 82);
 
   image(iconMemory, iconX2, iconY1);
+  if (scoreMemory === 0)
   text(`Last score: none`, iconX2 + iconW/2, iconY1 + iconH + 82);
+  else
+  text(`Last score: ` + scoreMemory, iconX2 + iconW/2, iconY1 + iconH + 82);
 
   image(iconSpeed, iconX2, iconY2);
   text(`Last score: none`, iconX2 + iconW/2, iconY2 + iconH + 82);
@@ -140,7 +143,7 @@ function drawScoreboard() {
   textSize(24);
   fill(75, 77, 237);
   text(`Candidates`, scoreBoardX + mediumMargin, scoreBoardY + bigMargin);
-  text(`Score`, scoreBoardX + scoreBoardW/2, scoreBoardY + bigMargin);
+  text(`Score`, scoreBoardX + scoreBoardW * 0.75, scoreBoardY + bigMargin);
   pop();
 
   // Lines
@@ -155,15 +158,20 @@ function drawScoreboard() {
   textFont(workSansRegular);
   textSize(20);
   fill(75, 77, 237);
+  textAlign(LEFT);
+  text(`Fred`, scoreBoardX + mediumMargin, scoreBoardY + 3 * bigMargin);
+  textAlign(RIGHT);
+  text(`90`, scoreBoardX + scoreBoardW * 0.93, scoreBoardY + 3 * bigMargin);
 
-  text(`Fred`, scoreBoardX + mediumMargin, scoreBoardY + 3*bigMargin);
-  text(`35`, scoreBoardX + scoreBoardW/2, scoreBoardY + 3*bigMargin);
+  textAlign(LEFT);
+  text(`Val`, scoreBoardX + mediumMargin, scoreBoardY + 4 * bigMargin);
+  textAlign(RIGHT);
+  text(`86`, scoreBoardX + scoreBoardW * 0.93, scoreBoardY + 4 * bigMargin);
 
-  text(`Val`, scoreBoardX + mediumMargin, scoreBoardY + 4*bigMargin);
-  text(`32`, scoreBoardX + scoreBoardW/2, scoreBoardY + 4*bigMargin);
-
-  text(`Clau`, scoreBoardX + mediumMargin, scoreBoardY + 5*bigMargin);
-  text(`32`, scoreBoardX + scoreBoardW/2, scoreBoardY + 5*bigMargin);
+  textAlign(LEFT);
+  text(`Clau`, scoreBoardX + mediumMargin, scoreBoardY + 5 * bigMargin);
+  textAlign(RIGHT);
+  text(`80`, scoreBoardX + scoreBoardW * 0.93, scoreBoardY + 5 * bigMargin);
   pop();
 }
 
@@ -175,9 +183,10 @@ Displays a simple loading screen with the loading model's name.
 function loading() {
   push();
   textFont(workSansRegular);
-  textSize(32);
+  textSize(24);
   textStyle(BOLD);
   textAlign(CENTER, CENTER);
-  text(`Loading ${modelName}...`, width / 2, height / 2);
+  fill(255, 255, 255);
+  text(`Loading ${modelName}...`, width / 2, 800);
   pop();
 }

@@ -26,11 +26,12 @@ let notificationTTL = 0;
 
 let gameStarted = false;
 
-let nbCorrectAnswers = 0;
-let nbCorrectAnwersIncremented = false;
+// The number of correct answers for this mini game.
+let scoreSayTheColour = 0;
+let scoreSayTheColourIncremented = false;
 
-let nbIncorrectAnswers = 0;
-let nbIncorrectAnwersIncremented = false;
+// Number of rounds the user has to play
+let roundMaxSayTheColour = 10;
 
 
 // TITLE
@@ -39,13 +40,13 @@ function titleSayTheColour() {
   push();
   fill(74, 74, 104);
   textFont(workSansRegular);
-  textSize(18);
+  textSize(24);
   textStyle(BOLD);
   textAlign(CENTER, CENTER);
   text(`Say out loud the colour of the words.`, width / 2, 60);
 
   textSize(18);
-  text(`Press any key to start.`, width / 2, 500);
+  text(`Press any key to start.`, width / 2, height - 200);
 
   image(instructionsSayTheColour, width/2 - instructionsSayTheColour.width/2, 150);
   pop();
@@ -68,7 +69,7 @@ function drawSayTheColour() {
   gameStarted = true;
 
   // Draw feedback : correct or incorrect
-
+  displayScoreSayTheColour();
 }
 
 
@@ -132,9 +133,9 @@ Display the current answer in red if incorrect and green if correct
 function displayAnswer() {
   if (gameStarted && currentAnswer != ``) {
     if (currentAnswer === currentColour) {
-      correctGuess();
+      correctAnswerSayTheColour();
     } else {
-      incorrectGuess();
+      incorrectAnswerSayTheColour();
     }
     text(currentAnswer, width / 2, height / 2);
     incrementNbAnswers();
@@ -150,11 +151,11 @@ function guessColour(colour) {
 
   if (gameStarted && currentAnswer != ``) {
     if (currentAnswer.toLowerCase() === currentColour) {
-      correctGuess();
+      correctAnswerSayTheColour();
       console.log(`correct`);
       resetColour();
     } else {
-      incorrectGuess();
+      incorrectAnswerSayTheColour();
       console.log(`incorrect`);
       resetColour();
     }
@@ -167,28 +168,40 @@ function guessColour(colour) {
 /**
 Function that is called when the user guesses correctly.
 */
-function correctGuess() {
+function correctAnswerSayTheColour() {
   setNotification(`Correct`);
 
-  if (!nbCorrectAnwersIncremented) {
-    incrementScore();
-    nbCorrectAnswers += 1;
-    nbCorrectAnwersIncremented = true;
+  if (!scoreSayTheColourIncremented) {
+        // incrementScore();
+    // nbCorrectAnswers += 1;
+    scoreSayTheColour += 10;
+    scoreSayTheColourIncremented = true;
+    round++;
+  }
+
+  if (round === roundMaxSayTheColour) {
+    round = 0;
+    state = `title`;
   }
 }
 
 /**
 Function that is called when the user guesses correctly.
 */
-function incorrectGuess() {
+function incorrectAnswerSayTheColour() {
   setNotification(`Incorrect`);
-
-  if (!nbIncorrectAnwersIncremented) {
-    decrementScore();
-    nbIncorrectAnswers += 1;
-    nbIncorrectAnwersIncremented = true;
-  }
 }
+
+// Display the number of correct answers.
+function displayScoreSayTheColour() {
+  push();
+  textFont(workSansRegular);
+  textSize(24);
+  fill(237, 75, 158);
+  text(`Score: ` + scoreSayTheColour, 15, 40);
+  pop();
+}
+
 
 // Correct and incorrect guesses.
 function setNotification(notificationText) {
@@ -223,4 +236,6 @@ function resetColour() {
   // The colour of the word that is not necessarily the same.
   currentColourTrap = ``;
   indexTrap = null;
+
+  scoreSayTheColourIncremented = false;
 }

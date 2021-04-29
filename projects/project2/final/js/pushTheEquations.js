@@ -20,36 +20,42 @@ let handpose;
 // The current set of predictions made by Handpose once it's running.
 let predictions = [];
 
+// The scale of the hand points drawn on screen.
+let scale = 2;
+
 // The equations that will arrive towards the center.
 let equation;
 
-// The number of correct answers.
-let score = 0;
+// The number of correct answers for this mini game.
+let scorePushTheEquations = 0;
+
+// Number of rounds the user has to play
+let roundMaxPushTheEquations = 10;
+let round = 0;
 
 // The number at the center of the screen.
 let number;
 
-// The scale of the hand points drawn on screen.
-let scale = 2;
 
 // Title for the game where the user pushes the equations away
 function titlePushEquations() {
   push();
   fill(74, 74, 104);
   textFont(workSansRegular);
-  textSize(18);
+  textSize(24);
   textStyle(BOLD);
   textAlign(CENTER, CENTER);
-  text(`Use only one hand. Don’t move it too fast.`, width / 2, 60);
+  text(`Push away the equations that are not equal to the number.`, width / 2, 30);
+  text(`Use only one hand. Don’t move it too fast.`, width / 2, 80);
 
   textSize(18);
-  text(`Press any key to start.`, width / 2, 500);
+  text(`Press any key to start.`, width / 2, height - 200);
 
   textFont(workSansBold);
-  text(`Push away the equations that are not equal to the number.`, width / 2, 30);
+
 
   pop();
-  image(instructions, 400, 250);
+  image(instructionsPushTheEquations, 400, 250);
 }
 
 //---- RUNNING ----//
@@ -76,9 +82,9 @@ function drawPushEquations() {
           equation.reject();
           equation.reverseSpeed();
           if (equation.isCorrect())
-            decrementScore();
+            incorrectAnswerPushTheEquations();
           else
-            incrementScore();
+            correctAnswerPushTheEquations();
         }
       }
     }
@@ -95,14 +101,14 @@ function drawPushEquations() {
   }
   else if (equation.isAtCenter()) {
     if (equation.isCorrect())
-      incrementScore();
+      correctAnswerPushTheEquations();
     else
-      decrementScore();
+      incorrectAnswerPushTheEquations();
     equation = new Equation(1);
     equation.generate();
   }
   equation.display();
-  displayScore();
+  displayScorePushTheEquations();
 }
 
 // A function to draw ellipses over the detected keypoints
@@ -139,33 +145,35 @@ function endingPushEquations() {
   textSize(30);
   textStyle(BOLD);
   textAlign(CENTER, CENTER);
-  text(`You got ${score} correct answers!`, width / 2, height / 2);
+  text(`You got ${scorePushTheEquations/10} correct answers!`, width / 2, height / 2);
   pop();
 }
 
 
-// Increment the score.
-function incrementScore() {
-  score++;
+// When correct answer: Increment the score, play a sound.
+function correctAnswerPushTheEquations() {
+  scorePushTheEquations += 10;
+  round++;
   soundCorrect.play();
 
-  // When the user has had 10 good answers, switch to the ending state.
-  if (score === 10) {
-    state = `endingPushEquations`;
+  // When the user has had reached the last round, switch to the ending state.
+  if (round === roundMaxPushTheEquations) {
+    round = 0;
+    state = `title`;
   }
 }
 
-function decrementScore() {
-  score--;
+// When incorrect answer, only play a sound.
+function incorrectAnswerPushTheEquations() {
   soundWrong.play();
 }
 
 // Display the number of correct answers.
-function displayScore() {
+function displayScorePushTheEquations() {
   push();
   textFont(workSansRegular);
   textSize(24);
   fill(237, 75, 158);
-  text(`Score: ` + score, 15, 40);
+  text(`Score: ` + scorePushTheEquations, 15, 40);
   pop();
 }

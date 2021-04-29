@@ -22,7 +22,7 @@ let soundCorrect;
 let soundWrong;
 
 // Images.
-let instructions;
+let instructionsPushTheEquations;
 let instructionsSayTheColour;
 let homeBackground;
 
@@ -36,6 +36,10 @@ let imgStartButtonReleased;
 let imgStartButtonHover;
 let imgStartButtonPressed;
 
+let imgDoneButtonReleased;
+let imgDoneButtonHover;
+let imgDoneButtonPressed;
+
 // /////////////////////////////// //
 // The global score is the sum of the scores of each mini game.
 let globalScore;
@@ -48,7 +52,7 @@ function preload() {
   soundCorrect = loadSound('assets/sounds/correct.mp3');
   soundWrong = loadSound('assets/sounds/wrong.mp3');
 
-  instructions = loadImage(`assets/images/instructions.png`);
+  instructionsPushTheEquations = loadImage(`assets/images/instructionsPushTheEquations.png`);
   instructionsSayTheColour = loadImage(`assets/images/instructionsSayTheColour.png`);
   homeBackground = loadImage(`assets/images/homeBackground.jpg`);
 
@@ -60,6 +64,10 @@ function preload() {
   imgStartButtonReleased = loadImage(`assets/images/buttons/buttonStartReleased.png`);
   imgStartButtonHover = loadImage(`assets/images/buttons/buttonStartHover.png`);
   imgStartButtonPressed = loadImage(`assets/images/buttons/buttonStartPressed.png`);
+
+  imgDoneButtonReleased = loadImage(`assets/images/buttons/buttonDoneReleased.png`);
+  imgDoneButtonHover = loadImage(`assets/images/buttons/buttonDoneHover.png`);
+  imgDoneButtonPressed = loadImage(`assets/images/buttons/buttonDonePressed.png`);
 }
 
 /**
@@ -122,7 +130,6 @@ function draw() {
     titleSayTheColour();
   } else if (state === `drawSayTheColour`) {
     drawSayTheColour();
-    displayScore();
   }
 
   else if (state === `titleMemory`) {
@@ -138,30 +145,20 @@ function draw() {
 
 // Backgrounds
 function drawBackgroundPale() {
-  background(255, 255, 255);
+  background(250, 252, 254);
 }
 
 function drawBackgroundSpace() {
-  background(255, 255, 255);
   push();
   image(homeBackground, 0, 0);
   pop();
 }
 
+function calculateGlobalScore() {
+  globalScore = (scorePushTheEquations + scoreSayTheColour + scoreMemory) / 3;
+}
+
 // ---------------------------- //
-
-// Arrow keys and their keyCodes
-let keyA = 65;
-let keyS = 83;
-let keyD = 68;
-let keyF = 70;
-
-let keyH = 72;
-let keyJ = 74;
-let keyK = 75;
-let keyL = 76;
-
-let keyEnter = 13;
 
 // Keyboard control.
 function keyPressed() {
@@ -179,23 +176,5 @@ function keyPressed() {
   if (state === `titleMemory`) {
     initMemory();
     state = `drawMemory`;
-  }
-
-  // Temporary: When in the title screen, letters of the keyboard allow to access specific games.
-  // A: Push pushTheEquations.
-  // B: Say The Colour.
-  // D: Memory.
-  if (state === `title`) {
-    if (keyIsDown(keyA)){
-      state = `titlePushEquations`;
-    }
-
-    if (keyIsDown(keyS)) {
-      state = `titleSayTheColour`;
-    }
-
-    if (keyIsDown(keyD)) {
-      state = `titleMemory`;
-    }
   }
 }
