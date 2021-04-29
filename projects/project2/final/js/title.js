@@ -32,10 +32,14 @@ let imgLastStartButton = [null, null, null, null];
 
 // Scoreboard
 let scoreBoardX = 800;
-let scoreBoardY = 600;
+let scoreBoardY = iconY2;
 let scoreBoardW = 350;
-let scoreBoardH = 250;
+let scoreBoardH = 220;
 let borderRadius = 10;
+
+let scoreboardNames = [`Fred`, `Val`, `Clau`, `Cam`, `Lau`];
+let scoreboardScores = [90, 86, 82, 76, 74];
+let lastPlayerScorePosition = -1;
 
 
 //---- TITLE ----//
@@ -59,18 +63,20 @@ function title() {
   textFont(workSansRegular);
   textSize(24);
   fill(255, 255, 255);
-  text(`A serie of tests will train your cognitive abilities!`, 600, 260);
+  text(`A serie of games will test your cognitive abilities!`, 600, 260);
   text(`At the end, you will know your cognitive score and you will
-be able to compare your score with other candidates!`, 600, 300);
+be able to compare it with other candidates!`, 600, 300);
 
   pop();
 
   drawIconsAndButtons();
 
   drawScoreboard();
+
+  calculateGlobalScore();
 }
 
-
+// The icons and Start Button for each game.
 function drawIconsAndButtons() {
   let button;
   let pressedButton = -1;
@@ -146,10 +152,10 @@ function drawScoreboard() {
   text(`Score`, scoreBoardX + scoreBoardW * 0.75, scoreBoardY + bigMargin);
   pop();
 
-  // Lines
+  // Line
   push();
   stroke(75, 77, 237);
-  strokeWeight(3);
+  strokeWeight(2.5);
   line(scoreBoardX, scoreBoardY + bigMargin + smallMargin, scoreBoardX + scoreBoardW, scoreBoardY + bigMargin + smallMargin);
   pop();
 
@@ -157,22 +163,41 @@ function drawScoreboard() {
   push();
   textFont(workSansRegular);
   textSize(20);
-  fill(75, 77, 237);
-  textAlign(LEFT);
-  text(`Fred`, scoreBoardX + mediumMargin, scoreBoardY + 3 * bigMargin);
-  textAlign(RIGHT);
-  text(`90`, scoreBoardX + scoreBoardW * 0.93, scoreBoardY + 3 * bigMargin);
-
-  textAlign(LEFT);
-  text(`Val`, scoreBoardX + mediumMargin, scoreBoardY + 4 * bigMargin);
-  textAlign(RIGHT);
-  text(`86`, scoreBoardX + scoreBoardW * 0.93, scoreBoardY + 4 * bigMargin);
-
-  textAlign(LEFT);
-  text(`Clau`, scoreBoardX + mediumMargin, scoreBoardY + 5 * bigMargin);
-  textAlign(RIGHT);
-  text(`80`, scoreBoardX + scoreBoardW * 0.93, scoreBoardY + 5 * bigMargin);
+  for (let name = 0; name < scoreboardNames.length; name++) {
+    fill(75, 77, 237);
+    textAlign(LEFT);
+    text(scoreboardNames[name], scoreBoardX + mediumMargin, scoreBoardY + (3 + name) * bigMargin);
+    textAlign(RIGHT);
+    text(scoreboardScores[name], scoreBoardX + scoreBoardW * 0.93, scoreBoardY + (3 + name) * bigMargin);
+  }
   pop();
+}
+
+function insertPlayerScore(name, score) {
+  let player;
+  if (lastPlayerScorePosition != -1) {
+    scoreboardNames.splice(lastPlayerScorePosition, 1);
+    scoreboardScores.splice(lastPlayerScorePosition, 1);
+  }
+
+  // Loop on all players and insert new score at the right position.
+  for (player = 0 ; player < scoreboardNames.length; player++) {
+    if (score > scoreboardScores[player])
+      break;
+  }
+
+  // Insert name/score of player at the right position.
+  lastPlayerScorePosition = player;
+  scoreboardNames.splice(player, 0, name);
+  scoreboardScores.splice(player, 0, score);
+}
+
+function calculateGlobalScore() {
+
+  if (scorePushTheEquations != 0 && scoreSayTheColour != 0 && scoreMemory != 0) {
+    globalScore = (scorePushTheEquations + scoreSayTheColour + scoreMemory) / 3;
+    insertPlayerScore(`You`, Math.floor(globalScore));
+  }
 }
 
 

@@ -26,7 +26,7 @@ let foundWords = [];
 // Number of words that have been randomly selected and that will be displayed on the screen.
 let numberOfSelectedWords = 9;
 
-let displayAllWordsTTL = 60 * 5; // 60 fps x 5 seconds
+let displayAllWordsTTL = 60 * 1; // 60 fps x 5 seconds
 
 // The score for this mini game.
 let scoreMemory = 0;
@@ -38,6 +38,9 @@ let doneButtonW = 133;
 let doneButtonH = 48;
 let doneButtonX = 1440/2 - doneButtonW/2;
 let doneButtonY = 800;
+
+let commandsMemory;
+let annyangAlreadyStartedMemory = false;
 
 // TITLE
 // Title screen for the game. Contains instructions.
@@ -127,6 +130,9 @@ function displayAllWords() {
             if (mouseIsPressed) {
               imgDoneButton = imgDoneButtonPressed;
               state = `title`;
+              annyang.removeCommands();
+              annyang.pause();
+              annyangAlreadyStartedMemory = false;
             }
             else if (imgLastDoneButton != imgDoneButtonPressed)
               imgDoneButton = imgDoneButtonHover;
@@ -141,14 +147,16 @@ function displayAllWords() {
 
 function listenToUser() {
     // Is annyang available?
-    if (annyang) {
+    if (annyang && !annyangAlreadyStartedMemory) {
       // Create the guessing command
-      let commands = {
+      commandsMemory = {
         '*word': guessWord
       };
       // Setup annyang and start
-      annyang.addCommands(commands);
+      annyang.addCommands(commandsMemory);
       annyang.start();
+      console.log(`annyang started`);
+      annyangAlreadyStartedMemory = true;
     }
 }
 

@@ -24,14 +24,19 @@ let currentAnswer = ``;
 let notification = ``;
 let notificationTTL = 0;
 
-let gameStarted = false;
+let sayTheColourStarted = false;
 
 // The number of correct answers for this mini game.
 let scoreSayTheColour = 0;
 let scoreSayTheColourIncremented = false;
 
 // Number of rounds the user has to play
-let roundMaxSayTheColour = 10;
+let roundMaxSayTheColour = 3;
+let roundSayTheColour = 0;
+
+let annyangAlreadyStartedSayTheColour = false;
+
+let commandsSayTheColour;
 
 
 // TITLE
@@ -64,25 +69,26 @@ function drawSayTheColour() {
   // Displays the colour at the center of the screen
   displayColour();
 
+  sayTheColourStarted = true;
   // Voice recognition
   startAnnyang();
-  gameStarted = true;
 
   // Draw feedback : correct or incorrect
   displayScoreSayTheColour();
 }
 
-
 function startAnnyang() {
   // Is annyang available?
-  if (annyang) {
+  if (annyang && sayTheColourStarted && !annyangAlreadyStartedSayTheColour) {
     // Create the guessing command
-    let commands = {
+    commandsSayTheColour = {
       '*colour': guessColour
     };
     // Setup annyang and start
-    annyang.addCommands(commands);
     annyang.start();
+    annyang.addCommands(commandsSayTheColour);
+    console.log(`annyang started`);
+    annyangAlreadyStartedSayTheColour = true;
   }
 }
 
@@ -131,7 +137,7 @@ Display the current answer in red if incorrect and green if correct
 (Displays nothing if no guess entered yet)
 */
 function displayAnswer() {
-  if (gameStarted && currentAnswer != ``) {
+  if (sayTheColourStarted && currentAnswer != ``) {
     if (currentAnswer === currentColour) {
       correctAnswerSayTheColour();
     } else {
@@ -149,7 +155,7 @@ function guessColour(colour) {
   currentAnswer = colour;
   console.log(currentAnswer);
 
-  if (gameStarted && currentAnswer != ``) {
+  if (sayTheColourStarted && currentAnswer != ``) {
     if (currentAnswer.toLowerCase() === currentColour) {
       correctAnswerSayTheColour();
       console.log(`correct`);
@@ -159,8 +165,6 @@ function guessColour(colour) {
       console.log(`incorrect`);
       resetColour();
     }
-    // text(currentAnswer, width / 2, height / 2);
-    // incrementNbAnswers();
   }
 }
 
@@ -172,16 +176,9 @@ function correctAnswerSayTheColour() {
   setNotification(`Correct`);
 
   if (!scoreSayTheColourIncremented) {
-        // incrementScore();
-    // nbCorrectAnswers += 1;
     scoreSayTheColour += 10;
     scoreSayTheColourIncremented = true;
-    round++;
-  }
-
-  if (round === roundMaxSayTheColour) {
-    round = 0;
-    state = `title`;
+    newRoundSayTheColour();
   }
 }
 
@@ -190,6 +187,22 @@ Function that is called when the user guesses correctly.
 */
 function incorrectAnswerSayTheColour() {
   setNotification(`Incorrect`);
+  newRoundSayTheColour();
+}
+
+function newRoundSayTheColour() {
+  roundSayTheColour++;
+  console.log(`round: `+roundSayTheColour);
+  // When the user has had reached the last round, switch to the ending state.
+  if (roundSayTheColour === roundMaxSayTheColour) {
+    roundSayTheColour = 0;
+    annyang.pause();
+    annyang.removeCommands();
+    console.log(`annyang stopped`);
+    sayTheColourStarted = false;
+    state = `title`;
+    annyangAlreadyStartedSayTheColour = false;
+  }
 }
 
 // Display the number of correct answers.

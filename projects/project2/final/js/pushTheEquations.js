@@ -41,18 +41,16 @@ let number;
 function titlePushEquations() {
   push();
   fill(74, 74, 104);
+  textAlign(CENTER, CENTER);
+  textFont(workSansBold);
+  textSize(28);
+  text(`Push away the equations that are not equal to the number.`, width / 2, 50);
   textFont(workSansRegular);
   textSize(24);
-  textStyle(BOLD);
-  textAlign(CENTER, CENTER);
-  text(`Push away the equations that are not equal to the number.`, width / 2, 30);
-  text(`Use only one hand. Don’t move it too fast.`, width / 2, 80);
+  text(`Use only one hand. Make sure to keep it open and don’t move it too fast.`, width / 2, 100);
 
   textSize(18);
   text(`Press any key to start.`, width / 2, height - 200);
-
-  textFont(workSansBold);
-
 
   pop();
   image(instructionsPushTheEquations, 400, 250);
@@ -152,20 +150,24 @@ function endingPushEquations() {
 
 // When correct answer: Increment the score, play a sound.
 function correctAnswerPushTheEquations() {
+  newRoundPushTheEquations();
   scorePushTheEquations += 10;
-  round++;
   soundCorrect.play();
+}
 
+// When incorrect answer, only play a sound.
+function incorrectAnswerPushTheEquations() {
+  newRoundPushTheEquations();
+  soundWrong.play();
+}
+
+function newRoundPushTheEquations() {
+  round++;
   // When the user has had reached the last round, switch to the ending state.
   if (round === roundMaxPushTheEquations) {
     round = 0;
     state = `title`;
   }
-}
-
-// When incorrect answer, only play a sound.
-function incorrectAnswerPushTheEquations() {
-  soundWrong.play();
 }
 
 // Display the number of correct answers.

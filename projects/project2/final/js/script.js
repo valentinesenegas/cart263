@@ -98,6 +98,7 @@ function setup() {
   // Create our basic equation.
   equation = new Equation(1);
   equation.generate();
+
 }
 
 /**
@@ -152,10 +153,6 @@ function drawBackgroundSpace() {
   push();
   image(homeBackground, 0, 0);
   pop();
-}
-
-function calculateGlobalScore() {
-  globalScore = (scorePushTheEquations + scoreSayTheColour + scoreMemory) / 3;
 }
 
 // ---------------------------- //
