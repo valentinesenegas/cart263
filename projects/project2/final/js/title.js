@@ -1,8 +1,13 @@
 "use strict";
 
-// Main Title page.
+/*************************************
+Main Title page.
+Title of the game, presentation of the game.
+This is where the user can access each mini game.
+There is also a scoreboard.
+*************************************/
 
-// Margins
+// General margins that can be used for all visual elements.
 let smallMargin = 8;
 let mediumMargin = 16;
 let bigMargin = 24;
@@ -42,7 +47,6 @@ let scoreboardScores = [290, 210, 160];
 let lastPlayerScorePosition = -1;
 
 
-//---- TITLE ----//
 /**
 Displays the main title screen with instructions, icons for each game and the scoreboard.
 */
@@ -59,7 +63,7 @@ function title() {
   fill(237, 75, 158);
   text(`Mars Exploration Program`, 40, 140);
 
-  // Presentation / instructions.
+  // Presentation of the game.
   textFont(workSansRegular);
   textSize(24);
   fill(255, 255, 255);
@@ -70,13 +74,11 @@ be able to compare it with other candidates!`, 600, 300);
   pop();
 
   drawIconsAndButtons();
-
   drawScoreboard();
-
   calculateGlobalScore();
 }
 
-// The icons and Start Button for each game.
+// The icons, Start Button and last score for each game.
 function drawIconsAndButtons() {
   let button;
   let pressedButton = -1;
@@ -101,7 +103,8 @@ function drawIconsAndButtons() {
     image(imgStartButton, startButtonX[button], startButtonY[button]);
   }
 
-  // Icons and start buttons.
+  // Icons, start buttons and scores.
+  // If no last score, write none.
   image(iconPushTheEquations, iconX1, iconY1);
 
   textFont(workSansRegular);
@@ -155,7 +158,7 @@ function drawScoreboard() {
   text(`Global Score`, scoreBoardX + scoreBoardW * 0.55, scoreBoardY + bigMargin);
   pop();
 
-  // Line
+  // Dividing line.
   push();
   stroke(75, 77, 237);
   strokeWeight(2.5);
@@ -174,12 +177,13 @@ function drawScoreboard() {
     text(scoreboardScores[name], scoreBoardX + scoreBoardW * 0.93, scoreBoardY + (3 + name) * bigMargin);
   }
 
-    textAlign(CENTER);
-    fill(255, 255, 255);
-    text(`Maximum possible score: 390`, scoreBoardX + scoreBoardW/2 , scoreBoardY + scoreBoardH + bigMargin);
+  textAlign(CENTER);
+  fill(255, 255, 255);
+  text(`Maximum possible score: 390`, scoreBoardX + scoreBoardW/2 , scoreBoardY + scoreBoardH + bigMargin);
   pop();
 }
 
+// Insert the score of the player into the scoreboard.
 function insertPlayerScore(name, score) {
   let player;
   if (lastPlayerScorePosition != -1) {
@@ -199,6 +203,7 @@ function insertPlayerScore(name, score) {
   scoreboardScores.splice(player, 0, score);
 }
 
+// Calculate the global score: sum the scores of all the games.
 function calculateGlobalScore() {
   if (scorePushTheEquations != 0 || scoreSayTheColour != 0 || scoreMemory != 0 || scoreSuperFocus != 0) {
     globalScore = (scorePushTheEquations + scoreSayTheColour + scoreMemory + scoreSuperFocus);
@@ -209,7 +214,7 @@ function calculateGlobalScore() {
 
 //---- LOADING ----//
 /**
-Displays a simple loading screen with the loading model's name.
+Displays a loading screen with the loading model's name.
 */
 function loading() {
   push();
@@ -218,6 +223,6 @@ function loading() {
   textStyle(BOLD);
   textAlign(CENTER, CENTER);
   fill(255, 255, 255);
-  text(`Loading ${modelName}...`, width / 2, 800);
+  text(`Loading ${modelName}...`, width / 2, 805);
   pop();
 }

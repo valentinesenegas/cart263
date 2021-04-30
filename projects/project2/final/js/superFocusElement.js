@@ -1,5 +1,8 @@
 "use strict";
 
+// The element used for the game SuperFocus.
+// The element moves across the screen. It is a word inside a circle.
+
 const timeToReachCenterElement = 5000; // 5 seconds
 
 class Element {
@@ -47,7 +50,7 @@ class Element {
     console.log(`this.representation: `+ this.representation);
   }
 
-  // Displays the element
+  // Displays the element: text inside a circle.
   display() {
     // Circle.
     push();
@@ -64,14 +67,14 @@ class Element {
     pop();
   }
 
-  // The element moves toward the center or towards the screen edges if rejected.
+  // The element moves across the screen and disappears if rejected.
   move() {
     let elapsed = millis() - this.startTime;
     this.x = this.initX + this.vx * elapsed;
     this.y = this.initY + this.vy * elapsed;
   }
 
-
+  // Check if the element is out of the screen.
   isOutOfBounds() {
     if (this.y < 0 || this.x < 0 || this.y > height || this.x > width) {
       return true;

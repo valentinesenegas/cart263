@@ -2,15 +2,14 @@
 
 /*************************************
 Game: Super Focus
-The user will be shown words or numbers for a few seconds.
-On the next screen, the user must touch only the words and
-numbers that have been shown to them.
+The user will be shown words for a few seconds.
+On the next screen, the user must touch only the words that have been shown to them.
 *************************************/
 
 // List of selected words that will be presented to the user.
 let selectedWordsSuperFocus = [];
 
-// Words found by the user.
+// Words already found by the user.
 let foundWordsSuperFocus = [];
 
 // Number of words that are randomly selected and that will be displayed on the screen.
@@ -18,7 +17,7 @@ let numberOfSelectedWordsSuperFocus = 9;
 
 // Countdown.
 let displayAllWordsTTLSuperFocus;
-let displayAllWordsTTLMaxSuperFocus = 60 * 1; // 60 fps x 5 seconds
+let displayAllWordsTTLMaxSuperFocus = 60 * 5; // 60 fps x 5 seconds
 
 // Display the countdown in a horizontal bar.
 let rectangleTimeLeftXSuperFocus = 0;
@@ -34,7 +33,7 @@ let roundMaxSuperFocus = 10;
 // Current round.
 let roundSuperFocus = 0;
 
-// The element that will arrive towards the center.
+// The element that will move in the screen.
 let element = null;
 
 // Title screen for the game. Contains instructions.
@@ -64,7 +63,6 @@ function isWordAlreadySelectedSuperFocus(numberOfWordsAlreadySelectedSuperFocus,
 
 // Select random words from the pool of possible words.
 function initSuperFocus() {
-
   for (let word = 0; word < numberOfSelectedWordsSuperFocus; word++) {
     let candidate;
     do
@@ -75,12 +73,13 @@ function initSuperFocus() {
     displayAllWordsTTLSuperFocus = displayAllWordsTTLMaxSuperFocus;
   }
 
+  // Create a new word.
   element = new Element();
   element.generate();
-
 }
 
-// Display the words and the score.
+// Display the words at the beginning of the game.
+// When words disappear, instructions to touch the words appear.
 function drawSuperFocus() {
   push();
   noStroke();
@@ -91,7 +90,7 @@ function drawSuperFocus() {
   if (displayAllWordsTTLSuperFocus != 0)
     displayAllWordsTTLSuperFocus--;
 
-  // Table with 9 cells.
+  // Table with 9 cells to display the words.
   for (let y = 0; y < 3; y++)
     for (let x = 0; x < 3; x++) {
       let word = x + y * 3;
@@ -102,25 +101,26 @@ function drawSuperFocus() {
         fill('rgba(140,140,161, 0.4)');
         rect((x + 1) * width / 4, (y + 1) * height / 4, 300, 100, borderRadius, borderRadius, borderRadius, borderRadius);
 
+        // The words.
         textSize(22);
         fill(255, 255, 255);
         text(pool[selectedWordsSuperFocus[word]], (x + 1) * width / 4, (y + 1) * height / 4);
 
         displayTimeLeftSuperFocus();
       } else {
+        // When the time is up, instructions to touch the words.
         textSize(32);
         fill(140, 140, 161);
         text(`Touch the words you remember.`, width / 2, 100);
-
+        // We can start drawing the hand and the moving words.
         drawSuperFocusHandAndElement();
       }
     }
-
   pop();
 }
 
 // Display the time left with the words appearing on the screen.
-// It is displayed in a horizontal bar. Its width decreases.
+// It is displayed in a horizontal bar which width decreases.
 function displayTimeLeftSuperFocus() {
   push();
   rectMode(CORNER);
@@ -135,6 +135,8 @@ function displayTimeLeftSuperFocus() {
 /**
 Displays the hand as instructed by the webcam.
 If there is a hand it outlines it and highlights all of the points of the hand.
+If the hand touches the word and the word is correct, score increases and sound plays.
+Otherwise, if the hand touches but the word is not correct, only a sound plays.
 */
 function drawSuperFocusHandAndElement() {
   let testOutOfBounds = true;
@@ -160,6 +162,7 @@ function drawSuperFocusHandAndElement() {
   // Move the element.
   element.move();
   // Test if the element is out of the screen and check if it was correct to let it go out of the screen.
+  // Create a new element.
   if (testOutOfBounds) {
     if (element.isOutOfBounds()) {
       if (element.isCorrect())
@@ -189,7 +192,7 @@ function drawKeypoints() {
   }
 }
 
-// When correct answer: Increment the score, play a sound.
+// When correct answer, increment the score, play a sound.
 function correctAnswerSuperFocus() {
   newRoundSuperFocus();
   scoreSuperFocus += 10;
@@ -202,16 +205,17 @@ function incorrectAnswerSuperFocus() {
   soundWrong.play();
 }
 
+// Triggers a new round. Compares the current round with the max rounds.
 function newRoundSuperFocus() {
   roundSuperFocus++;
-  // When the user has had reached the last round, switch to the ending state.
+  // When the user has had reached the last round, switch to the title state.
   if (roundSuperFocus === roundMaxSuperFocus) {
     roundSuperFocus = 0;
     state = `title`;
   }
 }
 
-// Display the number of correct answers.
+// Display the score of the current game.
 function displayScoreSuperFocus() {
   push();
   textFont(workSansRegular);

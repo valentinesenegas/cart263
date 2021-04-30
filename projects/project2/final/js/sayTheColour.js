@@ -6,10 +6,10 @@ The user has to say the colour of the word and not the word itself.
 *************************************/
 
 // Possible colours: their names and their RBG values.
-const colourNames = [`yellow`, `orange`, `red`,  `pink`, `purple`, `blue`, `green`,  `black`];
-const coloursR =    [242,       242,      235,    237,    75,       47,     39,       29];
-const coloursG =    [201,       153,      87,     75,     77,       128,    174,      29];
-const coloursB =    [76,        74,       87,     158,    237,      237,    96,       29];
+const colourNames = [`yellow`, `orange`, `red`,  `pink`, `purple`, `blue`, `green`,  `white`];
+const coloursR =    [242,       242,      235,    237,    127,       47,     39,       255];
+const coloursG =    [201,       153,      87,     75,     81,       128,    174,      255];
+const coloursB =    [76,        74,       87,     158,    224,      237,    96,       255];
 
 
 // The current colour name the user is trying to guess.
@@ -24,12 +24,9 @@ let indexTrap;
 // The current answer given by the user.
 let currentAnswer = ``;
 
-let notification = ``;
-let notificationTTL = 0;
-
 let sayTheColourStarted = false;
 
-// The number of correct answers for this mini game.
+// The score for this mini game.
 let scoreSayTheColour = 0;
 let scoreSayTheColourIncremented = false;
 
@@ -63,7 +60,7 @@ function titleSayTheColour() {
 // When the game runs.
 function drawSayTheColour() {
 
-// If there is no current colour
+// If there is no current colour, generate a new one and a colour trap.
   if (currentColour === ``) {
       generateColour();
       generateColourTrap();
@@ -81,76 +78,54 @@ function drawSayTheColour() {
 
 // Create the commands for annyang.
 function startAnnyang() {
-  // Is annyang available?
+  // If annyang is available and the game is started.
   if (annyang && sayTheColourStarted && !annyangAlreadyStartedSayTheColour) {
-    // Create the guessing command
+    // Create the guessing command for this game.
     commandsSayTheColour = {
       '*colour': guessColour
     };
-    // Setup annyang and start
+    // Setup annyang and start.
     annyang.start();
     annyang.addCommands(commandsSayTheColour);
-    console.log(`annyang started`);
     annyangAlreadyStartedSayTheColour = true;
   }
 }
 
-// The correct colour. The color of the text, but will not be written on screen.
+// The correct colour. (The colour of the text, but will not be written on screen.)
 function generateColour() {
   // Get a random element from the colourNames array
-
 indexCurrentColour = Math.floor(random(colourNames.length));
-console.log(`index: ` + indexCurrentColour);
+// console.log(`Index: ` + indexCurrentColour);
 
 currentColour = colourNames[indexCurrentColour];
-console.log(`current colour: `+ currentColour);
+// console.log(`Current colour: `+ currentColour);
 }
 
 // The word that will be written, but it's a trap! This is not the correct colour.
 function generateColourTrap() {
   // Get a random element from the colourNames array
+  indexTrap = Math.floor(random(colourNames.length));
+  console.log(`index trap: ` + indexTrap);
 
-indexTrap = Math.floor(random(colourNames.length));
-console.log(`index trap: ` + indexTrap);
-
-currentColourTrap = colourNames[indexTrap];
-console.log(`Colour Trap: `+ currentColourTrap);
-
-// Math.floor(colours.length)
+  currentColourTrap = colourNames[indexTrap];
+  console.log(`Colour Trap: `+ currentColourTrap);
 }
 
-
+// Display the word and its colour in the center of the screen.
 function displayColour() {
 // If there is a colour to display
   if (currentColour != ``) {
     push();
-    // This is the correct colour (The user should say this)
+    // This is the correct colour (The user should say this).
     fill(coloursR[indexCurrentColour], coloursG[indexCurrentColour], coloursB[indexCurrentColour]);
     textFont(workSansBold);
     textSize(38);
     textAlign(CENTER, CENTER);
-    // This is the colour trap.
+    // This (text) is the colour trap.
     text(currentColourTrap, width / 2, height/2);
     pop();
   }
 }
-
-/**
-Display the current answer in red if incorrect and green if correct
-(Displays nothing if no guess entered yet)
-*/
-function displayAnswer() {
-  if (sayTheColourStarted && currentAnswer != ``) {
-    if (currentAnswer === currentColour) {
-      correctAnswerSayTheColour();
-    } else {
-      incorrectAnswerSayTheColour();
-    }
-    text(currentAnswer, width / 2, height / 2);
-    incrementNbAnswers();
-  }
-}
-
 
 // Verifies if the given answer is correct or not.
 function guessColour(colour) {
@@ -171,12 +146,9 @@ function guessColour(colour) {
   }
 }
 
-
-/**
-Function that is called when the user guesses correctly.
-*/
+// Function that is called when the user guesses correctly.
 function correctAnswerSayTheColour() {
-  setNotification(`Correct`);
+  setNotification(`Correct`, 49, 208, 170);
   soundCorrect.play();
 
   if (!scoreSayTheColourIncremented) {
@@ -186,16 +158,14 @@ function correctAnswerSayTheColour() {
   }
 }
 
-/**
-Function that is called when the user guesses correctly.
-*/
+// Function that is called when the user guesses correctly.
 function incorrectAnswerSayTheColour() {
-  setNotification(`Incorrect`);
+  setNotification(`Incorrect`, 235, 87, 87);
   soundWrong.play();
   newRoundSayTheColour();
 }
 
-// Trigger a new round. Compares the current round with the max rounds.
+// Triggers a new round. Compares the current round with the max rounds.
 function newRoundSayTheColour() {
   roundSayTheColour++;
   // When the user has had reached the last round,
@@ -211,7 +181,7 @@ function newRoundSayTheColour() {
   }
 }
 
-// Display the number of correct answers.
+// Display the score of the current game.
 function displayScoreSayTheColour() {
   push();
   textFont(workSansRegular);
@@ -220,32 +190,6 @@ function displayScoreSayTheColour() {
   text(`Score: ` + scoreSayTheColour, 15, 40);
   pop();
 }
-
-// Set the length of time during which the notification will be displayed.
-// In parameter, the text that will appear in the notification.
-function setNotification(notificationText) {
-  notification = notificationText;
-  notificationTTL = 60;
-}
-
-// Display a notification on screen for correct and incorrect guesses.
-function drawNotification() {
-  if (notification == '' || notificationTTL === 0)
-    return;
-
-  push();
-  textFont(workSansRegular);
-  textSize(18);
-  textAlign(CENTER, CENTER);
-  fill(237, 87, 87);
-  textSize(20);
-  text(notification, width/2, 400);
-  pop();
-  notificationTTL--;
-  if (notificationTTL === 0)
-    notification = '';
-}
-
 
 // Reset the colour. Ready to be assigned a new one.
 function resetColour() {

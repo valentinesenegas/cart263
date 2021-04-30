@@ -162,7 +162,7 @@ function displayAllWords() {
 }
 
 // Display the time left with the words appearing on the screen.
-// It is displayed in a horizontal bar. Its width decreases.
+// It is displayed in a horizontal bar which width decreases.
 function displayTimeLeft() {
   push();
   rectMode(CORNER);
@@ -175,7 +175,7 @@ function displayTimeLeft() {
 
 // Create the commands for annyang.
 function startAnnyangMemory() {
-  // Is annyang available?
+  // If annyang is available and the game is started
   if (annyang && !annyangAlreadyStartedMemory) {
     // Create the guessing command
     commandsMemory = {
@@ -191,9 +191,7 @@ function startAnnyangMemory() {
 
 // Verifies if the given answer is correct or not.
 function guessWord(guessedWord) {
-
   currentAnswer = guessedWord;
-  console.log(currentAnswer);
 
   if (currentAnswer != ``) {
     let indexWord;
@@ -206,7 +204,8 @@ function guessWord(guessedWord) {
         break;
       }
     }
-
+    // If the guess corresponds to none of the words in the array, it is an incorrect guess.
+    // (Goes through the array without finding a match)
     if (indexWord === selectedWords.length) {
       incorrectGuessWord();
       soundWrong.play();
@@ -215,18 +214,18 @@ function guessWord(guessedWord) {
   }
 }
 
-//Function that is called when the user guesses correctly.
+// Function that is called when the user guesses correctly.
 function correctGuessWord() {
-  setNotification(`Correct`);
+  setNotification(`Correct`, 49, 208, 170);
   scoreMemory += 10;
 }
 
-//Function that is called when the user guesses correctly.
+// Function that is called when the user guesses correctly.
 function incorrectGuessWord() {
-  setNotification(`Incorrect`);
+  setNotification(`Incorrect`, 235, 87, 87);
 }
 
-// Display the number of correct answers.
+// Display the score of the current game.
 function displayScoreMemory() {
   push();
   textFont(workSansRegular);

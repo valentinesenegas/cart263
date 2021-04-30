@@ -39,8 +39,7 @@ let round = 0;
 // The number at the center of the screen.
 let number;
 
-
-// Title for the game where the user pushes the equations away
+// Title for the game where the user pushes the equations away.
 function titlePushEquations() {
   push();
   fill(255, 255, 255);
@@ -68,8 +67,6 @@ function drawPushEquations() {
   // Use these lines to see the video feed
   // const flippedVideo = ml5.flipImage(video);
   // image(flippedVideo, 0, 0, width, height);
-
-  // background(250, 250, 250);
 
   displayNumber();
 
@@ -112,7 +109,7 @@ function drawPushEquations() {
   displayScorePushTheEquations();
 }
 
-// A function to draw ellipses over the detected keypoints
+// A function to draw ellipses over the detected keypoints of the hand.
 function drawKeypoints() {
   for (let i = 0; i < predictions.length; i += 1) {
     const prediction = predictions[i];
@@ -124,7 +121,6 @@ function drawKeypoints() {
     }
   }
 }
-
 
 // Display the number at the center of the screen.
 function displayNumber() {
@@ -150,16 +146,17 @@ function incorrectAnswerPushTheEquations() {
   soundWrong.play();
 }
 
+// Triggers a new round. Compares the current round with the max rounds.
 function newRoundPushTheEquations() {
   round++;
-  // When the user has had reached the last round, switch to the ending state.
+  // When the user has had reached the last round, switch to the title state.
   if (round === roundMaxPushTheEquations) {
     round = 0;
     state = `title`;
   }
 }
 
-// Display the number of correct answers.
+// Display the score of the current game.
 function displayScorePushTheEquations() {
   push();
   textFont(workSansRegular);
