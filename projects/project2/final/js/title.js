@@ -212,9 +212,8 @@ function calculateGlobalScore() {
 }
 
 
-//---- LOADING ----//
 /**
-Displays a loading screen with the loading model's name.
+Displays a loading screen with the loading model's name. In this case, Handpose.
 */
 function loading() {
   push();

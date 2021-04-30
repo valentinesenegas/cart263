@@ -97,11 +97,16 @@ function drawSuperFocus() {
 
       // Display the words if the time is not up.
       if (displayAllWordsTTLSuperFocus != 0) {
+        textSize(32);
+        fill(140, 140, 161);
+        text(`Remember these words.`, width / 2, 100);
+
         // Rectangles underneath the words.
         fill('rgba(140,140,161, 0.4)');
         rect((x + 1) * width / 4, (y + 1) * height / 4, 300, 100, borderRadius, borderRadius, borderRadius, borderRadius);
 
         // The words.
+        textFont(workSansBold);
         textSize(22);
         fill(255, 255, 255);
         text(pool[selectedWordsSuperFocus[word]], (x + 1) * width / 4, (y + 1) * height / 4);
@@ -110,6 +115,7 @@ function drawSuperFocus() {
       } else {
         // When the time is up, instructions to touch the words.
         textSize(32);
+        textFont(workSansRegular);
         fill(140, 140, 161);
         text(`Touch the words you remember.`, width / 2, 100);
         // We can start drawing the hand and the moving words.

@@ -3,6 +3,7 @@
 /*************************************
 Game: Push the equations.
 The user must push away the equations that are not equal to the number at the center of the screen.
+The equations come from outside of the screen and go towards the number at the center.
 When a correct equation touches the number, the score increases.
 When the user pushes away an incorrect equation, the score increases.
 

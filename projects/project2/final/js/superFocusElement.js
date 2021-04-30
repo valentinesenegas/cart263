@@ -38,16 +38,13 @@ class Element {
       index = Math.floor(random(selectedWordsSuperFocus.length)); // Correct choice.
       this.representation = pool[selectedWordsSuperFocus[index]];
       this.correct = true;
-    }
-    else {
+    } else {
       do
         index = Math.floor(random(pool.length)); // Incorrect choice.
       while (isWordAlreadySelectedSuperFocus(selectedWordsSuperFocus.length, index));
       this.representation = pool[index];
       this.correct = false;
-
     }
-    console.log(`this.representation: `+ this.representation);
   }
 
   // Displays the element: text inside a circle.
@@ -81,7 +78,7 @@ class Element {
     }
   }
 
-  get () {
+  get() {
     return this.result;
   }
 

@@ -1,5 +1,8 @@
 "use strict";
 
+// The equation used for the game pushTheEquations.
+// The equation goes toward the center of the screen.
+
 const timeToReachCenter = 3000; // 3 seconds
 
 class Equation {

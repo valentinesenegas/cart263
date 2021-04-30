@@ -95,20 +95,14 @@ function startAnnyang() {
 function generateColour() {
   // Get a random element from the colourNames array
 indexCurrentColour = Math.floor(random(colourNames.length));
-// console.log(`Index: ` + indexCurrentColour);
-
 currentColour = colourNames[indexCurrentColour];
-// console.log(`Current colour: `+ currentColour);
 }
 
 // The word that will be written, but it's a trap! This is not the correct colour.
 function generateColourTrap() {
   // Get a random element from the colourNames array
   indexTrap = Math.floor(random(colourNames.length));
-  console.log(`index trap: ` + indexTrap);
-
   currentColourTrap = colourNames[indexTrap];
-  console.log(`Colour Trap: `+ currentColourTrap);
 }
 
 // Display the word and its colour in the center of the screen.
@@ -131,16 +125,13 @@ function displayColour() {
 function guessColour(colour) {
 
   currentAnswer = colour;
-  console.log(currentAnswer);
 
   if (sayTheColourStarted && currentAnswer != ``) {
     if (currentAnswer.toLowerCase() === currentColour) {
       correctAnswerSayTheColour();
-      console.log(`correct`);
       resetColour();
     } else {
       incorrectAnswerSayTheColour();
-      console.log(`incorrect`);
       resetColour();
     }
   }

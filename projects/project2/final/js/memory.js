@@ -120,12 +120,18 @@ function displayAllWords() {
 
       // Display the words if the time is not up.
       if (displayAllWordsTTL != 0) {
+        textSize(32);
+        fill(140, 140, 161);
+        text(`Remember these words.`, width / 2, 100);
+
+        textFont(workSansBold);
         textSize(22);
         fill(255, 255, 255);
         text(pool[selectedWords[word]], (x + 1) * width / 4, (y + 1) * height / 4);
 
         displayTimeLeft();
       } else {
+        textFont(workSansRegular);
         textSize(32);
         fill(140, 140, 161);
         text(`Say out loud the words you remember.`, width / 2, 100);
