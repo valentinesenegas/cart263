@@ -1,4 +1,5 @@
 # Selection Test for the Mars Exploration Program
+## By Valentine Sénégas
 
 The *Selection Test for the Mars Exploration Program* is a recruitment tool to select the most brilliant Earthlings to represent us on the Red Planet!
 Seriously, this test consists of several mini-games which will test different skills, such as short-term memory, mathematical abilities, and focus. The goal is simple: entertain players in innovative ways using machine learning and voice recognition. For instance, one of the games combines hand gestures with mental calculation. These new ways of interacting make the game more difficult, but also funnier!
