@@ -25,6 +25,7 @@ let soundWrong;
 let instructionsPushTheEquations;
 let instructionsSayTheColour;
 let homeBackground;
+let gameBackground;
 
 // Images of icons and buttons.
 let iconPushTheEquations;
@@ -55,6 +56,7 @@ function preload() {
   instructionsPushTheEquations = loadImage(`assets/images/instructionsPushTheEquations.png`);
   instructionsSayTheColour = loadImage(`assets/images/instructionsSayTheColour.png`);
   homeBackground = loadImage(`assets/images/homeBackground.jpg`);
+  gameBackground = loadImage(`assets/images/gameBackground.jpg`);
 
   iconPushTheEquations = loadImage(`assets/images/icons/iconPushTheEquations.png`);
   iconSayTheColour = loadImage(`assets/images/icons/iconSayTheColour.png`);
@@ -106,14 +108,14 @@ Handles the states of the program: loading, running
 */
 function draw() {
 
-  drawBackgroundPale();
+  drawGameBackground();
 
   if (state === `loading`) {
-    drawBackgroundSpace();
+    drawHomeBackground();
     loading();
   }
   else if (state === `title`) {
-    drawBackgroundSpace();
+    drawHomeBackground();
     title();
   }
 
@@ -139,6 +141,12 @@ function draw() {
     drawMemory();
   }
 
+  else if (state === `titleSuperFocus`) {
+    titleSuperFocus();
+  } else if (state === `drawSuperFocus`) {
+    drawSuperFocus();
+  }
+
   // Draw notification if any.
   drawNotification();
 }
@@ -149,9 +157,15 @@ function drawBackgroundPale() {
   background(250, 252, 254);
 }
 
-function drawBackgroundSpace() {
+function drawHomeBackground() {
   push();
   image(homeBackground, 0, 0);
+  pop();
+}
+
+function drawGameBackground() {
+  push();
+  image(gameBackground, 0, 0);
   pop();
 }
 
@@ -173,5 +187,10 @@ function keyPressed() {
   if (state === `titleMemory`) {
     initMemory();
     state = `drawMemory`;
+  }
+
+  if (state === `titleSuperFocus`) {
+    initSuperFocus();
+    state = `drawSuperFocus`;
   }
 }

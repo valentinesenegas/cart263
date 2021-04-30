@@ -56,13 +56,12 @@ let annyangAlreadyStartedMemory = false;
 // Title screen for the game. Contains instructions.
 function titleMemory() {
   push();
-  fill(74, 74, 104);
-  textFont(workSansRegular);
+  fill(255, 255, 255);
+  textFont(workSansBold);
   textSize(24);
-  textStyle(BOLD);
   textAlign(CENTER, CENTER);
-  text(`Try to remember the words that will appear on screen.`, width / 2, height / 2);
-  text(`You will be asked to repeat them shortly after.`, width / 2, height / 2 + 60);
+  text(`Try to remember the words that will appear on screen.`, width / 2, 70);
+  text(`You will be asked to repeat them shortly after.`, width / 2, 120);
 
   textSize(18);
   text(`Press any key to start.`, width / 2, height - 200);
@@ -116,7 +115,7 @@ function displayAllWords() {
       let word = x + y * 3;
 
       // Rectangles underneath the words.
-      fill(140, 140, 161);
+      fill('rgba(140,140,161, 0.4)');
       rect((x + 1) * width / 4, (y + 1) * height / 4, 300, 100, borderRadius, borderRadius, borderRadius, borderRadius);
 
       // Display the words if the time is not up.

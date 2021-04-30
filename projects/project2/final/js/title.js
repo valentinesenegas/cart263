@@ -37,8 +37,8 @@ let scoreBoardW = 350;
 let scoreBoardH = 220;
 let borderRadius = 10;
 
-let scoreboardNames = [`Fred`, `Val`, `Clau`, `Cam`, `Lau`];
-let scoreboardScores = [90, 86, 82, 76, 74];
+let scoreboardNames = [`Fred`, `Val`, `Clau`];
+let scoreboardScores = [290, 210, 160];
 let lastPlayerScorePosition = -1;
 
 
@@ -108,28 +108,31 @@ function drawIconsAndButtons() {
   fill(255, 255, 255);
   textSize(18);
   if (scorePushTheEquations === 0)
-  text(`Last score: none`, iconX1 + iconW/2, iconY1 + iconH + 82);
+    text(`Last score: none`, iconX1 + iconW/2, iconY1 + iconH + 82);
   else
-  text(`Last score: ` + scorePushTheEquations, iconX1 + iconW/2, iconY1 + iconH + 82);
+    text(`Last score: ` + scorePushTheEquations, iconX1 + iconW/2, iconY1 + iconH + 82);
 
   image(iconSayTheColour, iconX1, iconY2);
   if (scoreSayTheColour === 0)
-  text(`Last score: none`, iconX1 + iconW/2, iconY2 + iconH + 82);
+    text(`Last score: none`, iconX1 + iconW/2, iconY2 + iconH + 82);
   else
-  text(`Last score: ` + scoreSayTheColour, iconX1 + iconW/2, iconY2 + iconH + 82);
+    text(`Last score: ` + scoreSayTheColour, iconX1 + iconW/2, iconY2 + iconH + 82);
 
   image(iconMemory, iconX2, iconY1);
   if (scoreMemory === 0)
-  text(`Last score: none`, iconX2 + iconW/2, iconY1 + iconH + 82);
+    text(`Last score: none`, iconX2 + iconW/2, iconY1 + iconH + 82);
   else
-  text(`Last score: ` + scoreMemory, iconX2 + iconW/2, iconY1 + iconH + 82);
+    text(`Last score: ` + scoreMemory, iconX2 + iconW/2, iconY1 + iconH + 82);
 
   image(iconSpeed, iconX2, iconY2);
-  text(`Last score: none`, iconX2 + iconW/2, iconY2 + iconH + 82);
+  if (scoreSuperFocus === 0)
+    text(`Last score: none`, iconX2 + iconW/2, iconY2 + iconH + 82);
+  else
+    text(`Last score: ` + scoreSuperFocus, iconX2 + iconW/2, iconY2 + iconH + 82);
   pop();
 
   // Start game?
-  let games = [`titlePushEquations`, `titleSayTheColour`, `titleMemory`, `titleMemory`]
+  let games = [`titlePushEquations`, `titleSayTheColour`, `titleMemory`, `titleSuperFocus`]
   if (pressedButton != -1)
       state = games[pressedButton];
 }
@@ -149,7 +152,7 @@ function drawScoreboard() {
   textSize(24);
   fill(75, 77, 237);
   text(`Candidates`, scoreBoardX + mediumMargin, scoreBoardY + bigMargin);
-  text(`Score`, scoreBoardX + scoreBoardW * 0.75, scoreBoardY + bigMargin);
+  text(`Global Score`, scoreBoardX + scoreBoardW * 0.55, scoreBoardY + bigMargin);
   pop();
 
   // Line
@@ -170,6 +173,10 @@ function drawScoreboard() {
     textAlign(RIGHT);
     text(scoreboardScores[name], scoreBoardX + scoreBoardW * 0.93, scoreBoardY + (3 + name) * bigMargin);
   }
+
+    textAlign(CENTER);
+    fill(255, 255, 255);
+    text(`Maximum possible score: 390`, scoreBoardX + scoreBoardW/2 , scoreBoardY + scoreBoardH + bigMargin);
   pop();
 }
 
@@ -193,9 +200,8 @@ function insertPlayerScore(name, score) {
 }
 
 function calculateGlobalScore() {
-
-  if (scorePushTheEquations != 0 && scoreSayTheColour != 0 && scoreMemory != 0) {
-    globalScore = (scorePushTheEquations + scoreSayTheColour + scoreMemory) / 3;
+  if (scorePushTheEquations != 0 || scoreSayTheColour != 0 || scoreMemory != 0 || scoreSuperFocus != 0) {
+    globalScore = (scorePushTheEquations + scoreSayTheColour + scoreMemory + scoreSuperFocus);
     insertPlayerScore(`You`, Math.floor(globalScore));
   }
 }

@@ -43,7 +43,7 @@ let number;
 // Title for the game where the user pushes the equations away
 function titlePushEquations() {
   push();
-  fill(74, 74, 104);
+  fill(255, 255, 255);
   textAlign(CENTER, CENTER);
   textFont(workSansBold);
   textSize(28);
@@ -69,7 +69,7 @@ function drawPushEquations() {
   // const flippedVideo = ml5.flipImage(video);
   // image(flippedVideo, 0, 0, width, height);
 
-  background(250, 250, 250);
+  // background(250, 250, 250);
 
   displayNumber();
 
@@ -79,7 +79,7 @@ function drawPushEquations() {
       for (let j = 0; j < prediction.landmarks.length; j += 1) {
         const keypoint = prediction.landmarks[j];
         let d = dist(equation.x, equation.y, keypoint[0] * scale, keypoint[1] * scale);
-        if (d < 20) {
+        if (d < equation.size/2) {
           equation.reject();
           equation.reverseSpeed();
           if (equation.isCorrect())

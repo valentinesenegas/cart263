@@ -8,17 +8,16 @@ class Equation {
     if (random() < 0.5) {
       this.x = random(width);                 // Choose the X position at random.
       this.y = random() < (0.5) ? 0 : height; // Chosse if the equation appears at the top or at the bottom.
-    }
-    else {
+    } else {
       // Left/right
       this.x = random() < (0.5) ? 0 : width; // Chosse if the equation appears at the left or at the right.
-      this.y = random(height);              // Choose the Y position at random.
+      this.y = random(height);               // Choose the Y position at random.
     }
     this.initX = this.x;
     this.initY = this.y;
     this.size = 100;
-    this.vx = (width/2 - this.x) / timeToReachCenter;
-    this.vy = (height/2 - this.y) / timeToReachCenter;
+    this.vx = (width / 2 - this.x) / timeToReachCenter;
+    this.vy = (height / 2 - this.y) / timeToReachCenter;
     this.rejected = false;
 
     this.difficulty = difficulty;
@@ -29,7 +28,7 @@ class Equation {
   }
 
 
-// Generate the two numbers that will be added or multipied together and the result of this operation.
+  // Generate the two numbers that will be added or multipied together and the result of this operation.
   generate() {
     let nb1;
     let nb2;
@@ -46,7 +45,7 @@ class Equation {
         this.correct = true;
         break;
 
-      // Multiplication
+        // Multiplication
       case 1:
         nb1 = Math.floor(random(10) + 1);
         nb2 = Math.floor(random(10) + 1);
@@ -110,7 +109,7 @@ class Equation {
   }
 
   isAtCenter() {
-    return (dist(this.x, this.y,  width / 2, height / 2) < 10);
+    return (dist(this.x, this.y, width / 2, height / 2) < 10);
   }
 
   getResult() {

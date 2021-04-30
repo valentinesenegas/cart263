@@ -47,13 +47,12 @@ let commandsSayTheColour;
 // Title screen for the game. Contains instructions.
 function titleSayTheColour() {
   push();
-  fill(74, 74, 104);
-  textFont(workSansRegular);
+  fill(255, 255, 255);
+  textFont(workSansBold);
   textSize(24);
-  textStyle(BOLD);
   textAlign(CENTER, CENTER);
   text(`Say out loud the colour of the words.`, width / 2, 60);
-
+  textFont(workSansRegular);
   textSize(18);
   text(`Press any key to start.`, width / 2, height - 200);
 
